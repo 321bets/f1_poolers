@@ -101,7 +101,7 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                             <div className="bg-[#1f1f27] p-4 sm:p-6 rounded-lg border border-gray-800">
                                 <h3 className="text-blue-400 font-black uppercase italic mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                                     <i className="fas fa-clock"></i>
-                                    {t('article2')} (Multiplier Mechanics)
+                                    {t('article2')} ({t('multiplierMechanics')})
                                 </h3>
                                 <div className="space-y-4">
                                     <p className="text-gray-400 text-[10px] sm:text-xs leading-relaxed">{t('multiplierIntro')}</p>
@@ -142,14 +142,14 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                                                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gray-700 border-2 border-gray-500 flex items-center justify-center text-white shadow-lg overflow-hidden">
                                                     <img src="https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/verstappen.jpg.img.1024.medium.jpg" className="w-full h-full object-cover" alt="" />
                                                 </div>
-                                                <div className="text-[8px] sm:text-[10px] text-gray-500 font-bold uppercase">1. Tap Grid</div>
+                                                <div className="text-[8px] sm:text-[10px] text-gray-500 font-bold uppercase">1. {t('tapGrid')}</div>
                                             </div>
                                             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gray-700/20 border-2 border-dashed border-[#e10600] flex items-center justify-center text-[#e10600] relative">
                                                 <i className="fas fa-plus"></i>
-                                                <div className="absolute -bottom-5 sm:-bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] sm:text-[10px] text-gray-500 font-bold uppercase">2. Select Slot</div>
+                                                <div className="absolute -bottom-5 sm:-bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] sm:text-[10px] text-gray-500 font-bold uppercase">2. {t('selectSlot')}</div>
                                             </div>
                                         </div>
-                                        <p className="text-[10px] text-gray-400 italic text-center">Tap any driver from the grid, then select your desired P1-P5 spot.</p>
+                                        <p className="text-[10px] text-gray-400 italic text-center">{t('tapAnyDriver')}</p>
                                     </div>
                                     
                                     <div className="space-y-3 sm:space-y-4">
@@ -175,24 +175,23 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                         <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-300">
                              <div className="bg-[#1f1f27] p-4 sm:p-6 rounded-lg border border-gray-800">
                                 <h3 className="text-[#e10600] font-black uppercase italic text-lg sm:text-xl mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
-                                    <i className="fas fa-user-astronaut"></i> {t('article1')} (Driver Predictions)
+                                    <i className="fas fa-user-astronaut"></i> {t('article1')} ({t('driverPredictions')})
                                 </h3>
                                 <p className="text-gray-400 text-xs mb-4 leading-relaxed italic border-b border-gray-800 pb-4">
-                                    Predict the exact finish order of the top 5 drivers. Exact matches award maximum points. 
-                                    Partial matches (driver in top 5 but wrong position) award a flat safety bonus.
+                                    {t('driverPredictionsDesc')}
                                 </p>
                                 
                                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                     <div className="space-y-3">
                                         <div className="bg-[#e10600] text-white text-[9px] sm:text-[10px] font-black uppercase py-1 px-3 skew-btn inline-block mb-2">
-                                            <span className="skew-content">Main Race</span>
+                                            <span className="skew-content">{t('mainRace')}</span>
                                         </div>
                                         <table className="w-full text-[10px] sm:text-xs">
                                             <thead>
                                                 <tr className="text-gray-500 border-b border-gray-800">
-                                                    <th className="text-left pb-1">Pos</th>
-                                                    <th className="text-right pb-1">Exact</th>
-                                                    <th className="text-right pb-1">Any T5</th>
+                                                    <th className="text-left pb-1">{t('pos')}</th>
+                                                    <th className="text-right pb-1">{t('exact')}</th>
+                                                    <th className="text-right pb-1">{t('anyT5')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="text-gray-300">
@@ -206,14 +205,14 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                                     </div>
                                     <div className="space-y-3">
                                         <div className="bg-purple-600 text-white text-[9px] sm:text-[10px] font-black uppercase py-1 px-3 skew-btn inline-block mb-2">
-                                            <span className="skew-content">Qualifying</span>
+                                            <span className="skew-content">{t('qualifying')}</span>
                                         </div>
                                         <table className="w-full text-[10px] sm:text-xs text-gray-300">
                                             <thead>
                                                 <tr className="text-gray-500 border-b border-gray-800">
-                                                    <th className="text-left pb-1">Pos</th>
-                                                    <th className="text-right pb-1">Exact</th>
-                                                    <th className="text-right pb-1">Any T5</th>
+                                                    <th className="text-left pb-1">{t('pos')}</th>
+                                                    <th className="text-right pb-1">{t('exact')}</th>
+                                                    <th className="text-right pb-1">{t('anyT5')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-gray-800/50">
@@ -227,14 +226,14 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                                     </div>
                                     <div className="space-y-3">
                                         <div className="bg-blue-600 text-white text-[9px] sm:text-[10px] font-black uppercase py-1 px-3 skew-btn inline-block mb-2">
-                                            <span className="skew-content">Sprint Race</span>
+                                            <span className="skew-content">{t('sprintRace')}</span>
                                         </div>
                                         <table className="w-full text-[10px] sm:text-xs text-gray-300">
                                             <thead>
                                                 <tr className="text-gray-500 border-b border-gray-800">
-                                                    <th className="text-left pb-1">Pos</th>
-                                                    <th className="text-right pb-1">Exact</th>
-                                                    <th className="text-right pb-1">Any T5</th>
+                                                    <th className="text-left pb-1">{t('pos')}</th>
+                                                    <th className="text-right pb-1">{t('exact')}</th>
+                                                    <th className="text-right pb-1">{t('anyT5')}</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-gray-800/50">
@@ -252,16 +251,14 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                             {/* Constructor Scoring Detail */}
                             <div className="bg-[#1f1f27] p-4 sm:p-6 rounded-lg border border-gray-800">
                                 <h3 className="text-blue-500 font-black uppercase italic text-lg sm:text-xl mb-4 flex items-center gap-3">
-                                    <i className="fas fa-users-cog"></i> {t('article1_1')} (Team Predictions)
+                                    <i className="fas fa-users-cog"></i> {t('article1_1')} ({t('teamPredictions')})
                                 </h3>
                                 <p className="text-gray-400 text-xs mb-6 leading-relaxed">
-                                    Teams award <span className="text-white font-bold">50% of the total Driver points</span> for that position. 
-                                    If either car from your chosen team finishes in the predicted slot, you earn the points. 
-                                    This is a lower-risk strategy ideal for chaotic sessions.
+                                    {t('teamPredictionsDesc')}
                                 </p>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="bg-blue-900/10 p-4 rounded border border-blue-900/30">
-                                        <p className="text-white font-black uppercase text-[9px] sm:text-[10px] mb-2">Team Main Race Points:</p>
+                                        <p className="text-white font-black uppercase text-[9px] sm:text-[10px] mb-2">{t('teamMainRacePoints')}</p>
                                         <div className="text-[9px] sm:text-[10px] font-bold text-gray-500 grid grid-cols-5 gap-1">
                                             <div className="flex flex-col items-center"><span>P1</span><span className="text-white text-xs sm:text-sm">12.5</span></div>
                                             <div className="flex flex-col items-center"><span>P2</span><span className="text-white text-xs sm:text-sm">9</span></div>
@@ -271,11 +268,11 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                                         </div>
                                     </div>
                                     <div className="bg-blue-900/10 p-4 rounded border border-blue-900/30">
-                                        <p className="text-white font-black uppercase text-[9px] sm:text-[10px] mb-2">Team Strategy Advantages:</p>
+                                        <p className="text-white font-black uppercase text-[9px] sm:text-[10px] mb-2">{t('teamStrategyAdvantages')}</p>
                                         <ul className="text-gray-400 text-[10px] space-y-2">
-                                            <li className="flex justify-between"><span>Double Car Coverage</span> <span className="text-green-400 font-bold">YES</span></li>
-                                            <li className="flex justify-between"><span>Safety Partial Points</span> <span className="text-blue-400 font-bold">2.5 pts</span></li>
-                                            <li className="flex justify-between"><span>Jackpot Eligibility</span> <span className="text-red-500 font-bold">NO</span></li>
+                                            <li className="flex justify-between"><span>{t('doubleCarCoverage')}</span> <span className="text-green-400 font-bold">YES</span></li>
+                                            <li className="flex justify-between"><span>{t('safetyPartialPoints')}</span> <span className="text-blue-400 font-bold">2.5 pts</span></li>
+                                            <li className="flex justify-between"><span>{t('jackpotEligibility')}</span> <span className="text-red-500 font-bold">NO</span></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -284,11 +281,11 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                             {/* Jackpot Protocol Detail */}
                             <div className="bg-[#1f1f27] p-6 rounded-lg border-2 border-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.1)]">
                                 <h3 className="text-yellow-500 font-black uppercase italic text-xl mb-4 flex items-center gap-3">
-                                    <i className="fas fa-gem"></i> {t('article1_2')} (Perfect Score)
+                                    <i className="fas fa-gem"></i> {t('article1_2')} ({t('perfectScore')})
                                 </h3>
                                 <p className="text-gray-300 text-xs mb-4 leading-relaxed">{t('jackpotProtocolDesc')}</p>
                                 <div className="bg-black/40 p-3 rounded text-[10px] text-yellow-400 font-bold flex items-center justify-center gap-2">
-                                    <i className="fas fa-info-circle"></i> Only exact P1-P5 Driver predictions trigger this protocol.
+                                    <i className="fas fa-info-circle"></i> {t('jackpotTrigger')}
                                 </div>
                             </div>
                         </div>
@@ -297,7 +294,7 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                     {activeTab === 'leagues' && (
                         <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-300">
                              <div className="bg-[#1f1f27] p-6 sm:p-8 rounded-lg border border-gray-800 text-center">
-                                <h4 className="text-white font-black uppercase italic text-lg sm:text-2xl mb-3 sm:mb-4 italic tracking-tighter">LEAGUE TELEMETRY</h4>
+                                <h4 className="text-white font-black uppercase italic text-lg sm:text-2xl mb-3 sm:mb-4 italic tracking-tighter">{t('leagueTelemetry')}</h4>
                                 <p className="text-gray-400 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">{t('leagueIntro')}</p>
                             </div>
 
@@ -310,9 +307,9 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                                                 <i className="fas fa-users text-4xl text-blue-500 drop-shadow-xl"></i>
                                             </div>
                                         </div>
-                                        <h5 className="text-blue-500 font-black uppercase italic text-[10px] sm:text-xs mb-2">Create Your Paddock</h5>
+                                        <h5 className="text-blue-500 font-black uppercase italic text-[10px] sm:text-xs mb-2">{t('createYourPaddock')}</h5>
                                         <p className="text-gray-400 text-[10px] sm:text-[11px] leading-relaxed">
-                                            Start private leagues for your coworkers, family, or global race fans. Customize the name, description, and accessibility of your simulation room.
+                                            {t('createPaddockDesc')}
                                         </p>
                                     </div>
                                     <div className="bg-[#1f1f27] p-4 rounded border border-gray-800">
@@ -322,9 +319,9 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                                                 <i className="fas fa-trophy text-4xl text-yellow-500 drop-shadow-xl"></i>
                                             </div>
                                         </div>
-                                        <h5 className="text-yellow-500 font-black uppercase italic text-[10px] sm:text-xs mb-2">Custom Trophies & Rewards</h5>
+                                        <h5 className="text-yellow-500 font-black uppercase italic text-[10px] sm:text-xs mb-2">{t('customTrophiesRewards')}</h5>
                                         <p className="text-gray-400 text-[10px] sm:text-[11px] leading-relaxed">
-                                            Admins can define seasonal prizes, including physical items or digital titles. Create stakes that matter to your group and track who dominates the podium.
+                                            {t('customTrophiesDesc')}
                                         </p>
                                     </div>
                                 </div>
@@ -332,39 +329,39 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                                 <div className="bg-[#1f1f27] p-4 sm:p-6 rounded-lg border border-gray-800 flex flex-col">
                                     <div className="flex-1">
                                         <h5 className="text-red-600 font-black uppercase italic text-xs sm:text-sm mb-4 flex items-center gap-2">
-                                            <i className="fas fa-comment-dots"></i> Social Communication
+                                            <i className="fas fa-comment-dots"></i> {t('socialCommunication')}
                                         </h5>
                                         <div className="bg-black/30 p-4 rounded border border-gray-700 mb-4 space-y-3">
                                             <div className="flex gap-2 items-start">
                                                 <div className="w-6 h-6 rounded-full bg-red-600 flex-shrink-0"></div>
-                                                <div className="bg-gray-800 p-2 rounded text-[10px] text-gray-300">"Max is definitely taking P1 this weekend!"</div>
+                                                <div className="bg-gray-800 p-2 rounded text-[10px] text-gray-300">"{t('chatExample1')}"</div>
                                             </div>
                                             <div className="flex gap-2 items-start flex-row-reverse">
                                                 <div className="w-6 h-6 rounded-full bg-blue-600 flex-shrink-0"></div>
-                                                <div className="bg-blue-900/40 p-2 rounded text-[10px] text-gray-100">"No way, did you see the Ferrari pace in FP2?"</div>
+                                                <div className="bg-blue-900/40 p-2 rounded text-[10px] text-gray-100">"{t('chatExample2')}"</div>
                                             </div>
                                         </div>
                                         <ul className="space-y-3 sm:space-y-4 text-[10px] sm:text-[11px] text-gray-400">
                                             <li className="flex items-start gap-3">
                                                 <i className="fas fa-check-circle text-green-500 mt-0.5"></i>
-                                                <span><strong className="text-white uppercase">Real-Time Chat:</strong> Instant paddock telemetry and banter between sessions.</span>
+                                                <span><strong className="text-white uppercase">{t('realTimeChat')}</strong> {t('realTimeChatDesc')}</span>
                                             </li>
                                             <li className="flex items-start gap-3">
                                                 <i className="fas fa-check-circle text-green-500 mt-0.5"></i>
-                                                <span><strong className="text-white uppercase">Reactions:</strong> Like or dislike predictions to fuel the competitive fire.</span>
+                                                <span><strong className="text-white uppercase">{t('reactions')}</strong> {t('reactionsFeatureDesc')}</span>
                                             </li>
                                             <li className="flex items-start gap-3">
                                                 <i className="fas fa-check-circle text-green-500 mt-0.5"></i>
-                                                <span><strong className="text-white uppercase">High Roller Badges:</strong> Top global players are automatically identified in league chats.</span>
+                                                <span><strong className="text-white uppercase">{t('highRollerBadges')}</strong> {t('highRollerBadgesDesc')}</span>
                                             </li>
                                             <li className="flex items-start gap-3">
                                                 <i className="fas fa-shield-alt text-blue-400 mt-0.5"></i>
-                                                <span><strong className="text-white uppercase">Moderation:</strong> Admins can suspend or ban users to keep the environment sporting.</span>
+                                                <span><strong className="text-white uppercase">{t('moderation')}</strong> {t('moderationDesc')}</span>
                                             </li>
                                         </ul>
                                     </div>
                                     <div className="mt-6 p-4 bg-red-900/10 border border-red-900/30 rounded italic text-[10px] text-gray-500">
-                                        Note: Messages are automatically cleared after 10 days to keep the paddock fresh.
+                                        {t('messageClearNote')}
                                     </div>
                                 </div>
                             </div>
