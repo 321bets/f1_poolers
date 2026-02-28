@@ -110,23 +110,45 @@ let systemSettings: SystemSettings = {
     theme: 'original',
     termsContent: `F1™ POOLERS - TERMS AND CONDITIONS
 
+Last Updated: February 2026
+
 1. ACCEPTANCE OF TERMS
-By accessing or using F1™ Poolers, you agree to be bound by these Terms and Conditions.
+By accessing or using F1™ Poolers, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use this platform.
 
-2. TRADEMARKS AND COPYRIGHTS
-F1, FORMULA 1, F1 logo, and related marks are trademarks of Formula One Licensing BV, a Formula 1 company. All rights reserved. F1™ Poolers is a fan-made platform for entertainment purposes and is NOT an official game or product of Formula 1 or any of its subsidiaries. All car liveries, driver photos, and team logos used in this application are for illustrative purposes to enhance the user experience and remain the property of their respective copyright holders.
+2. NO OFFICIAL AFFILIATION
+F1™ Poolers is NOT officially affiliated with, endorsed by, or connected to Formula 1, the FIA, any F1 teams, or any F1 drivers. F1, FORMULA 1, F1 logo, and related marks are trademarks of Formula One Licensing BV. This is an independent fan-made platform for entertainment purposes only.
 
-3. NO REAL WORLD PRIZES
-F1™ Poolers is strictly a "fun-coins" based platform. "Fun-Coins" are virtual tokens with no real-world monetary value. They cannot be withdrawn, exchanged for cash, or used to purchase physical goods. F1™ Poolers does not pay out any kind of physical or monetary prizes for any results within the application.
+3. FREE SERVICE
+F1™ Poolers is completely free to use. No payment is required to access or participate in the platform.
 
-4. SOCIAL LEAGUES AND THIRD-PARTY PRIZES
-Users have the ability to create and manage private "Leagues". Any prizes, rewards, or stakes offered, promised, or distributed by league creators/admins are the sole responsibility of said individuals. F1™ Poolers is not a party to these arrangements and shall not be held liable for any disputes, non-delivery, or issues arising from league-specific prizes.
+4. NO CASH PRIZES
+F1™ Poolers does NOT pay out any cash prizes, monetary rewards, or real-world compensation of any kind. All coins and points within the platform are virtual and have no real-world monetary value. They cannot be withdrawn, exchanged for cash, or used to purchase physical goods.
 
-5. ELIGIBILITY
+5. USER-CREATED LEAGUES AND PRIZES
+Users may create and manage private leagues. Any prizes, rewards, or stakes offered by league creators or administrators are the sole responsibility of those individuals. F1™ Poolers is NOT responsible for any prizes offered, promised, or distributed within user-created leagues. We shall not be held liable for any disputes, non-delivery, or issues arising from league-specific prizes.
+
+6. RACE RESULTS AND OFFICIAL STANDINGS
+Race results will be posted by F1™ Poolers administrators within 2 (two) hours after the official end of each event. These posted results are final and official for the purposes of this platform. Any penalties, disqualifications, or changes to driver/team standings that occur after this 2-hour window will NOT affect the results on F1™ Poolers. Court decisions, appeals, or any legal proceedings related to race results will NOT impact standings within this platform.
+
+7. CHAT AND USER-GENERATED CONTENT
+F1™ Poolers administrators are NOT responsible for the content of messages sent by users in chat features, league chats, or any other communication channels within the platform. Users are solely responsible for their own messages and must maintain respectful conduct.
+
+8. ELIGIBILITY
 You must be at least 18 years of age to use this platform.
 
-6. CONDUCT
-Users must maintain sporting conduct in league chats. We reserve the right to suspend accounts for abusive behavior.`
+9. USER CONDUCT
+Users must maintain sporting and respectful conduct at all times. We reserve the right to suspend or permanently ban accounts for abusive, offensive, or inappropriate behavior.
+
+10. INTELLECTUAL PROPERTY
+All car liveries, driver photos, and team logos used in this application are for illustrative purposes only and remain the property of their respective copyright holders.
+
+11. LIMITATION OF LIABILITY
+F1™ Poolers is provided "as is" without warranties of any kind. We are not liable for any damages arising from the use of this platform.
+
+12. CHANGES TO TERMS
+We reserve the right to modify these Terms and Conditions at any time. Continued use of the platform constitutes acceptance of any changes.
+
+By using F1™ Poolers, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions.`
 };
 
 // --- SERVICE ---
