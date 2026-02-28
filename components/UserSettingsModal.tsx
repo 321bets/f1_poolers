@@ -40,6 +40,21 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
         }
     };
 
+    const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Image must be less than 2MB');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setAvatarUrl(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     if (!user) return null;
 
     return (
@@ -69,7 +84,18 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                     {activeTab === 'profile' && (
                         <div className="space-y-6">
                             <div className="flex items-center space-x-6">
-                                <img src={avatarUrl} alt="Preview" className="w-24 h-24 rounded-full border-4 border-gray-600" />
+                                <div className="relative">
+                                    <img src={avatarUrl} alt="Preview" className="w-24 h-24 rounded-full border-4 border-gray-600 object-cover" />
+                                    <label className="absolute bottom-0 right-0 bg-red-600 hover:bg-red-700 text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer shadow-lg">
+                                        <i className="fas fa-camera text-sm"></i>
+                                        <input 
+                                            type="file" 
+                                            accept="image/*"
+                                            onChange={handleAvatarUpload}
+                                            className="hidden"
+                                        />
+                                    </label>
+                                </div>
                                 <div className="flex-1">
                                     <h3 className="text-xl font-bold text-white">{user.username}</h3>
                                     <p className="text-gray-400">Member since {new Date().getFullYear()}</p>
@@ -79,16 +105,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                                     {/* Get Fun Coins button hidden for now */}
                                 </div>
                             </div>
-                            <div>
-                                <label className="block text-gray-400 text-sm font-bold mb-2">Avatar URL</label>
-                                <input 
-                                    type="text" 
-                                    value={avatarUrl} 
-                                    onChange={(e) => setAvatarUrl(e.target.value)}
-                                    className="w-full bg-gray-700 text-white rounded p-3 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                                    placeholder="https://..."
-                                />
-                            </div>
+                            <p className="text-xs text-gray-500 mt-2">Click the camera icon to upload a new avatar (max 2MB)</p>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-gray-700 p-3 rounded">
                                     <p className="text-xs text-gray-400">Country</p>
