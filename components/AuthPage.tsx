@@ -96,6 +96,7 @@ const AuthPage: React.FC = () => {
                 await login(username, password);
                 console.log('Login successful!');
             } else {
+                if (!/^\d{5}$/.test(password)) throw new Error(t('passwordMustBe5Digits'));
                 if (password !== confirmPassword) throw new Error("Passwords don't match");
                 if (!age || Number(age) < 18) throw new Error("Min age 18");
                 if (!termsAccepted) throw new Error("Please accept terms and conditions");
@@ -154,14 +155,21 @@ const AuthPage: React.FC = () => {
                     
                     <div className="mb-4">
                         <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">{t('password')}</label>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
+                        {isLoginView ? (
+                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
+                        ) : (
+                            <>
+                                <input type="password" inputMode="numeric" maxLength={5} pattern="\d{5}" value={password} onChange={(e) => { const v = e.target.value.replace(/\D/g, ''); if (v.length <= 5) setPassword(v); }} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
+                                <p className="text-gray-500 text-xs mt-1">{t('passwordHint')}</p>
+                            </>
+                        )}
                     </div>
 
                     {!isLoginView && (
                         <>
                             <div className="mb-4">
                                 <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">{t('confirmPassword')}</label>
-                                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
+                                <input type="password" inputMode="numeric" maxLength={5} pattern="\d{5}" value={confirmPassword} onChange={(e) => { const v = e.target.value.replace(/\D/g, ''); if (v.length <= 5) setConfirmPassword(v); }} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
                             </div>
                             <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div>

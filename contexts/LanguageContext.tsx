@@ -117,7 +117,9 @@ const translations: Record<Language, Record<string, string>> = {
     termsAgree: 'I agree to the',
     termsAndConditions: 'Terms and Conditions',
     close: 'Close',
-    biometricLogin: 'Login with Biometrics'
+    biometricLogin: 'Login with Biometrics',
+    passwordMustBe5Digits: 'Password must be exactly 5 numbers',
+    passwordHint: '5 digits only (e.g. 12345)'
   },
   pt: {
     welcome: 'Bem-vindo ao Paddock',
@@ -226,7 +228,9 @@ const translations: Record<Language, Record<string, string>> = {
     termsAgree: 'Eu concordo com os',
     termsAndConditions: 'Termos e Condições',
     close: 'Fechar',
-    biometricLogin: 'Entrar com Biometria'
+    biometricLogin: 'Entrar com Biometria',
+    passwordMustBe5Digits: 'A senha deve ter exatamente 5 números',
+    passwordHint: 'Apenas 5 dígitos (ex: 12345)'
   },
   es: {
     welcome: 'Bienvenido al Paddock',
@@ -335,7 +339,9 @@ const translations: Record<Language, Record<string, string>> = {
     termsAgree: 'Acepto los',
     termsAndConditions: 'Términos y Condiciones',
     close: 'Cerrar',
-    biometricLogin: 'Iniciar con Biometría'
+    biometricLogin: 'Iniciar con Biometría',
+    passwordMustBe5Digits: 'La contraseña debe tener exactamente 5 números',
+    passwordHint: 'Solo 5 dígitos (ej: 12345)'
   }
 };
 
