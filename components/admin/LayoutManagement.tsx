@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext';
+import { TermsContent } from '../../types';
 
 const LayoutManagement: React.FC = () => {
     const { systemSettings, updateSystemSettings } = useData();
-    const [termsText, setTermsText] = useState(systemSettings.termsContent);
+    const [termsText, setTermsText] = useState<TermsContent>(systemSettings.termsContent);
+    const [activeTermsLang, setActiveTermsLang] = useState<'en' | 'pt' | 'es'>('en');
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
@@ -12,6 +14,10 @@ const LayoutManagement: React.FC = () => {
 
     const handleThemeChange = async (theme: 'original' | 'f1') => {
         await updateSystemSettings({ ...systemSettings, theme });
+    };
+
+    const handleTermsTextChange = (lang: 'en' | 'pt' | 'es', value: string) => {
+        setTermsText(prev => ({ ...prev, [lang]: value }));
     };
 
     const handleSaveTerms = async () => {
@@ -74,9 +80,23 @@ const LayoutManagement: React.FC = () => {
                         Edit the general terms and conditions shown to users on signup. 
                         Ensure all trademark and copyright disclaimers are accurate.
                     </p>
+                    
+                    {/* Language Tabs */}
+                    <div className="flex space-x-2 mb-4">
+                        {(['en', 'pt', 'es'] as const).map((lang) => (
+                            <button
+                                key={lang}
+                                onClick={() => setActiveTermsLang(lang)}
+                                className={`px-4 py-2 rounded-t font-bold uppercase text-sm ${activeTermsLang === lang ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-400 hover:bg-gray-600'}`}
+                            >
+                                {lang === 'en' ? 'English' : lang === 'pt' ? 'Português' : 'Español'}
+                            </button>
+                        ))}
+                    </div>
+                    
                     <textarea 
-                        value={termsText}
-                        onChange={(e) => setTermsText(e.target.value)}
+                        value={termsText[activeTermsLang]}
+                        onChange={(e) => handleTermsTextChange(activeTermsLang, e.target.value)}
                         className="w-full h-80 bg-gray-900 text-gray-200 p-4 rounded border border-gray-700 font-mono text-sm focus:border-red-600 focus:outline-none custom-scrollbar"
                     />
                     <div className="flex justify-end">

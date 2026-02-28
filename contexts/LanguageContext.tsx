@@ -113,7 +113,10 @@ const translations: Record<Language, Record<string, string>> = {
     anyT5: 'Any T5',
     tapGrid: 'Tap Grid',
     selectSlot: 'Select Slot',
-    tapAnyDriver: 'Tap any driver from the grid, then select your desired P1-P5 spot.'
+    tapAnyDriver: 'Tap any driver from the grid, then select your desired P1-P5 spot.',
+    termsAgree: 'I agree to the',
+    termsAndConditions: 'Terms and Conditions',
+    close: 'Close'
   },
   pt: {
     welcome: 'Bem-vindo ao Paddock',
@@ -218,7 +221,10 @@ const translations: Record<Language, Record<string, string>> = {
     anyT5: 'Qualquer T5',
     tapGrid: 'Toque no Grid',
     selectSlot: 'Selecione o Slot',
-    tapAnyDriver: 'Toque em qualquer piloto do grid e selecione sua posição desejada P1-P5.'
+    tapAnyDriver: 'Toque em qualquer piloto do grid e selecione sua posição desejada P1-P5.',
+    termsAgree: 'Eu concordo com os',
+    termsAndConditions: 'Termos e Condições',
+    close: 'Fechar'
   },
   es: {
     welcome: 'Bienvenido al Paddock',
@@ -323,7 +329,10 @@ const translations: Record<Language, Record<string, string>> = {
     anyT5: 'Cualquier T5',
     tapGrid: 'Toca la Parrilla',
     selectSlot: 'Selecciona Espacio',
-    tapAnyDriver: 'Toca cualquier piloto de la parrilla y selecciona tu posición deseada P1-P5.'
+    tapAnyDriver: 'Toca cualquier piloto de la parrilla y selecciona tu posición deseada P1-P5.',
+    termsAgree: 'Acepto los',
+    termsAndConditions: 'Términos y Condiciones',
+    close: 'Cerrar'
   }
 };
 

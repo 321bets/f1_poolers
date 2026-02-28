@@ -159,7 +159,13 @@ export interface AdSettings {
 
 export type AppTheme = 'original' | 'f1';
 
+export interface TermsContent {
+    en: string;
+    pt: string;
+    es: string;
+}
+
 export interface SystemSettings {
     theme: AppTheme;
-    termsContent: string;
+    termsContent: TermsContent;
 }

@@ -132,7 +132,7 @@ const AuthPage: React.FC = () => {
                             <div className="mb-6 flex items-center">
                                 <input id="terms" type="checkbox" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)} className="w-4 h-4 text-red-600 bg-gray-700 border-gray-500 rounded focus:ring-red-600" required />
                                 <label htmlFor="terms" className="ml-2 text-xs font-medium text-gray-300">
-                                    I agree to the <button type="button" onClick={() => setIsTermsModalOpen(true)} className="text-red-500 hover:underline">Terms and Conditions</button>
+                                    {t('termsAgree')} <button type="button" onClick={() => setIsTermsModalOpen(true)} className="text-red-500 hover:underline">{t('termsAndConditions')}</button>
                                 </label>
                             </div>
                         </>
@@ -156,14 +156,14 @@ const AuthPage: React.FC = () => {
                 <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-[110] p-4 backdrop-blur-sm">
                     <div className="bg-gray-800 rounded-lg shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col overflow-hidden border border-gray-700">
                         <div className="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-900">
-                            <h2 className="text-lg font-bold text-white uppercase italic">Terms and Conditions</h2>
+                            <h2 className="text-lg font-bold text-white uppercase italic">{t('termsAndConditions')}</h2>
                             <button onClick={() => setIsTermsModalOpen(false)} className="text-gray-400 hover:text-white text-2xl">&times;</button>
                         </div>
                         <div className="p-6 overflow-y-auto custom-scrollbar bg-gray-800 text-gray-300 text-sm whitespace-pre-wrap leading-relaxed">
-                            {systemSettings.termsContent}
+                            {systemSettings.termsContent[language]}
                         </div>
                         <div className="p-4 border-t border-gray-700 bg-gray-900 flex justify-end">
-                            <button onClick={() => setIsTermsModalOpen(false)} className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded uppercase italic text-xs tracking-widest">Close</button>
+                            <button onClick={() => setIsTermsModalOpen(false)} className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded uppercase italic text-xs tracking-widest">{t('close')}</button>
                         </div>
                     </div>
                 </div>

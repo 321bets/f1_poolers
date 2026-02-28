@@ -322,7 +322,8 @@ class DataService {
   }
 
   async getSystemSettings(): Promise<any> {
-    return { theme: 'original', termsContent: `F1™ POOLERS - TERMS AND CONDITIONS
+    return { theme: 'original', termsContent: {
+      en: `F1™ POOLERS - TERMS AND CONDITIONS
 
 Last Updated: February 2026
 
@@ -362,7 +363,92 @@ F1™ Poolers is provided "as is" without warranties of any kind. We are not lia
 12. CHANGES TO TERMS
 We reserve the right to modify these Terms and Conditions at any time. Continued use of the platform constitutes acceptance of any changes.
 
-By using F1™ Poolers, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions.` };
+By using F1™ Poolers, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions.`,
+
+      pt: `F1™ POOLERS - TERMOS E CONDIÇÕES
+
+Última Atualização: Fevereiro de 2026
+
+1. ACEITAÇÃO DOS TERMOS
+Ao acessar ou usar o F1™ Poolers, você concorda em estar vinculado a estes Termos e Condições. Se você não concordar com estes termos, por favor não use esta plataforma.
+
+2. SEM AFILIAÇÃO OFICIAL E AVISO DE MARCA REGISTRADA
+O F1™ Poolers NÃO é oficialmente afiliado, endossado ou conectado à Formula 1, FIA, qualquer equipe de F1 ou qualquer piloto de F1. "F1", "Formula 1", "Formula One", o logotipo da F1 e todas as marcas relacionadas são marcas registradas da Formula One Licensing BV e NÃO são de propriedade do F1™ Poolers. Essas marcas são usadas apenas para fins informativos e de entretenimento de fãs. Esta é uma plataforma independente feita por fãs apenas para fins de entretenimento.
+
+3. SERVIÇO GRATUITO
+O F1™ Poolers é completamente gratuito. Nenhum pagamento é necessário para acessar ou participar da plataforma.
+
+4. SEM PRÊMIOS EM DINHEIRO
+O F1™ Poolers NÃO paga prêmios em dinheiro, recompensas monetárias ou compensação real de qualquer tipo. Todas as moedas e pontos dentro da plataforma são virtuais e não têm valor monetário real. Eles não podem ser sacados, trocados por dinheiro ou usados para comprar bens físicos.
+
+5. LIGAS CRIADAS POR USUÁRIOS E PRÊMIOS
+Os usuários podem criar e gerenciar ligas privadas. Quaisquer prêmios, recompensas ou apostas oferecidas por criadores ou administradores de ligas são de responsabilidade exclusiva desses indivíduos. O F1™ Poolers NÃO é responsável por quaisquer prêmios oferecidos, prometidos ou distribuídos dentro de ligas criadas por usuários. Não seremos responsabilizados por quaisquer disputas, não entrega ou problemas decorrentes de prêmios específicos da liga.
+
+6. RESULTADOS DE CORRIDAS E CLASSIFICAÇÕES OFICIAIS
+Os resultados das corridas serão publicados pelos administradores do F1™ Poolers dentro de 2 (duas) horas após o término oficial de cada evento. Esses resultados publicados são finais e oficiais para os propósitos desta plataforma. Quaisquer penalidades, desqualificações ou alterações nas classificações de pilotos/equipes que ocorram após esta janela de 2 horas NÃO afetarão os resultados no F1™ Poolers. Decisões judiciais, recursos ou quaisquer procedimentos legais relacionados aos resultados das corridas NÃO impactarão as classificações dentro desta plataforma.
+
+7. CHAT E CONTEÚDO GERADO POR USUÁRIOS
+Os administradores do F1™ Poolers NÃO são responsáveis pelo conteúdo das mensagens enviadas pelos usuários em recursos de chat, chats de liga ou quaisquer outros canais de comunicação dentro da plataforma. Os usuários são os únicos responsáveis por suas próprias mensagens e devem manter uma conduta respeitosa.
+
+8. ELEGIBILIDADE
+Você deve ter pelo menos 18 anos de idade para usar esta plataforma.
+
+9. CONDUTA DO USUÁRIO
+Os usuários devem manter uma conduta esportiva e respeitosa em todos os momentos. Reservamo-nos o direito de suspender ou banir permanentemente contas por comportamento abusivo, ofensivo ou inadequado.
+
+10. PROPRIEDADE INTELECTUAL
+Todas as pinturas de carros, fotos de pilotos e logotipos de equipes usados neste aplicativo são apenas para fins ilustrativos e permanecem propriedade de seus respectivos detentores de direitos autorais.
+
+11. LIMITAÇÃO DE RESPONSABILIDADE
+O F1™ Poolers é fornecido "como está" sem garantias de qualquer tipo. Não somos responsáveis por quaisquer danos decorrentes do uso desta plataforma.
+
+12. ALTERAÇÕES NOS TERMOS
+Reservamo-nos o direito de modificar estes Termos e Condições a qualquer momento. O uso continuado da plataforma constitui aceitação de quaisquer alterações.
+
+Ao usar o F1™ Poolers, você reconhece que leu, entendeu e concorda em estar vinculado a estes Termos e Condições.`,
+
+      es: `F1™ POOLERS - TÉRMINOS Y CONDICIONES
+
+Última Actualización: Febrero de 2026
+
+1. ACEPTACIÓN DE LOS TÉRMINOS
+Al acceder o usar F1™ Poolers, usted acepta estar sujeto a estos Términos y Condiciones. Si no está de acuerdo con estos términos, por favor no use esta plataforma.
+
+2. SIN AFILIACIÓN OFICIAL Y AVISO DE MARCA REGISTRADA
+F1™ Poolers NO está oficialmente afiliado, respaldado ni conectado con Formula 1, la FIA, ningún equipo de F1 ni ningún piloto de F1. "F1", "Formula 1", "Formula One", el logotipo de F1 y todas las marcas relacionadas son marcas registradas de Formula One Licensing BV y NO son propiedad de F1™ Poolers. Estas marcas se utilizan únicamente con fines informativos y de entretenimiento para fans. Esta es una plataforma independiente hecha por fans solo con fines de entretenimiento.
+
+3. SERVICIO GRATUITO
+F1™ Poolers es completamente gratis. No se requiere ningún pago para acceder o participar en la plataforma.
+
+4. SIN PREMIOS EN EFECTIVO
+F1™ Poolers NO paga premios en efectivo, recompensas monetarias ni compensación real de ningún tipo. Todas las monedas y puntos dentro de la plataforma son virtuales y no tienen valor monetario real. No pueden ser retirados, cambiados por dinero ni utilizados para comprar bienes físicos.
+
+5. LIGAS CREADAS POR USUARIOS Y PREMIOS
+Los usuarios pueden crear y administrar ligas privadas. Cualquier premio, recompensa o apuesta ofrecida por creadores o administradores de ligas es responsabilidad exclusiva de esos individuos. F1™ Poolers NO es responsable de ningún premio ofrecido, prometido o distribuido dentro de las ligas creadas por usuarios. No seremos responsables de ninguna disputa, falta de entrega o problemas derivados de premios específicos de la liga.
+
+6. RESULTADOS DE CARRERAS Y CLASIFICACIONES OFICIALES
+Los resultados de las carreras serán publicados por los administradores de F1™ Poolers dentro de las 2 (dos) horas posteriores al final oficial de cada evento. Estos resultados publicados son finales y oficiales para los propósitos de esta plataforma. Cualquier penalización, descalificación o cambio en las clasificaciones de pilotos/equipos que ocurra después de esta ventana de 2 horas NO afectará los resultados en F1™ Poolers. Las decisiones judiciales, apelaciones o cualquier procedimiento legal relacionado con los resultados de las carreras NO impactarán las clasificaciones dentro de esta plataforma.
+
+7. CHAT Y CONTENIDO GENERADO POR USUARIOS
+Los administradores de F1™ Poolers NO son responsables del contenido de los mensajes enviados por los usuarios en funciones de chat, chats de liga o cualquier otro canal de comunicación dentro de la plataforma. Los usuarios son los únicos responsables de sus propios mensajes y deben mantener una conducta respetuosa.
+
+8. ELEGIBILIDAD
+Debe tener al menos 18 años de edad para usar esta plataforma.
+
+9. CONDUCTA DEL USUARIO
+Los usuarios deben mantener una conducta deportiva y respetuosa en todo momento. Nos reservamos el derecho de suspender o prohibir permanentemente las cuentas por comportamiento abusivo, ofensivo o inapropiado.
+
+10. PROPIEDAD INTELECTUAL
+Todas las libreas de autos, fotos de pilotos y logotipos de equipos utilizados en esta aplicación son solo con fines ilustrativos y siguen siendo propiedad de sus respectivos titulares de derechos de autor.
+
+11. LIMITACIÓN DE RESPONSABILIDAD
+F1™ Poolers se proporciona "tal cual" sin garantías de ningún tipo. No somos responsables de ningún daño derivado del uso de esta plataforma.
+
+12. CAMBIOS EN LOS TÉRMINOS
+Nos reservamos el derecho de modificar estos Términos y Condiciones en cualquier momento. El uso continuado de la plataforma constituye la aceptación de cualquier cambio.
+
+Al usar F1™ Poolers, usted reconoce que ha leído, entendido y acepta estar sujeto a estos Términos y Condiciones.`
+    } };
   }
 
   async updateSystemSettings(settings: any): Promise<void> {
