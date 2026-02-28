@@ -81,22 +81,6 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                 <div className="flex-1 overflow-y-auto no-scrollbar bg-[#15151e] p-4 sm:p-6 relative z-10">
                     {activeTab === 'guide' && (
                         <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-300">
-                            {/* Economy Section */}
-                            <div className="bg-gradient-to-br from-[#1f1f27] to-[#15151e] border-l-4 border-yellow-500 p-4 sm:p-6 rounded-r-lg shadow-lg">
-                                <h3 className="text-yellow-500 font-black uppercase italic mb-3 sm:mb-4 flex items-center gap-2 text-base sm:text-lg">
-                                    <i className="fas fa-coins"></i>
-                                    {t('economyTitle')}
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                                    <div className="space-y-4">
-                                        <div className="bg-black/30 p-3 rounded border border-gray-800">
-                                            <p className="text-white font-bold text-xs sm:text-sm uppercase mb-1">🎁 {t('roundBonus')}</p>
-                                            <p className="text-gray-400 text-[10px] sm:text-xs leading-relaxed">{t('economyDesc')}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             {/* Multiplier Details Section */}
                             <div className="bg-[#1f1f27] p-4 sm:p-6 rounded-lg border border-gray-800">
                                 <h3 className="text-blue-400 font-black uppercase italic mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">

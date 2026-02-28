@@ -76,12 +76,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                                     <div className="mt-2 text-yellow-400 font-bold text-lg mb-2">
                                         {user.balance.toLocaleString()} Fun-Coins
                                     </div>
-                                    <button 
-                                        onClick={() => setIsStoreOpen(true)}
-                                        className="bg-green-600 hover:bg-green-700 text-white text-sm font-bold py-1 px-3 rounded-full shadow transition-colors"
-                                    >
-                                        <i className="fas fa-plus-circle mr-1"></i> Get Fun Coins
-                                    </button>
+                                    {/* Get Fun Coins button hidden for now */}
                                 </div>
                             </div>
                             <div>
