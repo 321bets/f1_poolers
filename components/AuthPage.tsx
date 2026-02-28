@@ -38,7 +38,7 @@ const COUNTRIES = [
 
 const AuthPage: React.FC = () => {
     const [isLoginView, setIsLoginView] = useState(true);
-    const { login, signup } = useAuth();
+    const { login, signup, biometricAvailable, biometricRegistered, loginWithBiometric } = useAuth();
     const { t, setLanguage, language } = useLanguage();
     const { systemSettings } = useData();
     const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
@@ -70,6 +70,18 @@ const AuthPage: React.FC = () => {
             }, () => {
                 setLocationStatus('Denied');
             });
+        }
+    };
+
+    const handleBiometricLogin = async () => {
+        setError('');
+        setLoading(true);
+        try {
+            await loginWithBiometric();
+        } catch (err: any) {
+            setError(err.message || 'Biometric login failed');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -180,6 +192,18 @@ const AuthPage: React.FC = () => {
                     >
                         {loading ? '...' : (isLoginView ? t('login') : t('signup'))}
                     </button>
+
+                    {isLoginView && biometricAvailable && biometricRegistered && (
+                        <button
+                            type="button"
+                            onClick={handleBiometricLogin}
+                            disabled={loading}
+                            className="w-full mt-3 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded transition-all disabled:bg-gray-800 border border-gray-600 flex items-center justify-center gap-2 uppercase italic tracking-widest text-sm"
+                        >
+                            <i className="fas fa-fingerprint text-red-500 text-lg"></i>
+                            {t('biometricLogin')}
+                        </button>
+                    )}
                 </form>
             </div>
             

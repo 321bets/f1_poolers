@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { User } from '../types';
 import * as authService from '../services/authService';
+import { isBiometricAvailable, registerBiometric, authenticateBiometric, hasStoredCredentials } from '../services/biometricService';
 
 const AUTH_USER_STORAGE_KEY = 'f1poolers_auth_user';
 
@@ -40,6 +41,9 @@ interface AuthContextType {
   signup: (username: string, password: string, age: number, country: string, location?: {lat: number, lng: number}) => Promise<void>;
   logout: () => void;
   updateUser: (updatedUser: User) => void;
+  biometricAvailable: boolean;
+  biometricRegistered: boolean;
+  loginWithBiometric: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,6 +51,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [biometricAvailable, setBiometricAvailable] = useState(false);
+  const [biometricRegistered, setBiometricRegistered] = useState(hasStoredCredentials());
   const initialized = useRef(false);
 
   // Restore session from localStorage on mount
@@ -59,6 +65,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(storedUser);
     }
     setIsLoading(false);
+
+    isBiometricAvailable().then(setBiometricAvailable);
   }, []);
 
   const login = async (username: string, password: string) => {
@@ -71,6 +79,28 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const newUser = await authService.signup(username, password, age, country, location);
     setUser(newUser);
     persistUser(newUser);
+
+    // Offer biometric registration after signup
+    if (biometricAvailable) {
+      try {
+        const registered = await registerBiometric(newUser.id, username);
+        if (registered) {
+          setBiometricRegistered(true);
+        }
+      } catch {}
+    }
+  };
+
+  const loginWithBiometric = async () => {
+    const username = await authenticateBiometric();
+    if (!username) throw new Error('Biometric authentication failed');
+    // Look up user from stored session or use a known password-less flow
+    const storedUser = getStoredUser();
+    if (storedUser && storedUser.username === username) {
+      setUser(storedUser);
+      return;
+    }
+    throw new Error('Biometric authentication failed. Please log in with your password.');
   };
 
   const logout = () => {
@@ -92,6 +122,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     signup,
     logout,
     updateUser,
+    biometricAvailable,
+    biometricRegistered,
+    loginWithBiometric,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

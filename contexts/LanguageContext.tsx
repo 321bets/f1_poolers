@@ -116,7 +116,8 @@ const translations: Record<Language, Record<string, string>> = {
     tapAnyDriver: 'Tap any driver from the grid, then select your desired P1-P5 spot.',
     termsAgree: 'I agree to the',
     termsAndConditions: 'Terms and Conditions',
-    close: 'Close'
+    close: 'Close',
+    biometricLogin: 'Login with Biometrics'
   },
   pt: {
     welcome: 'Bem-vindo ao Paddock',
@@ -224,7 +225,8 @@ const translations: Record<Language, Record<string, string>> = {
     tapAnyDriver: 'Toque em qualquer piloto do grid e selecione sua posição desejada P1-P5.',
     termsAgree: 'Eu concordo com os',
     termsAndConditions: 'Termos e Condições',
-    close: 'Fechar'
+    close: 'Fechar',
+    biometricLogin: 'Entrar com Biometria'
   },
   es: {
     welcome: 'Bienvenido al Paddock',
@@ -332,7 +334,8 @@ const translations: Record<Language, Record<string, string>> = {
     tapAnyDriver: 'Toca cualquier piloto de la parrilla y selecciona tu posición deseada P1-P5.',
     termsAgree: 'Acepto los',
     termsAndConditions: 'Términos y Condiciones',
-    close: 'Cerrar'
+    close: 'Cerrar',
+    biometricLogin: 'Iniciar con Biometría'
   }
 };
 
