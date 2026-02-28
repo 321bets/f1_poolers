@@ -329,8 +329,8 @@ Last Updated: February 2026
 1. ACCEPTANCE OF TERMS
 By accessing or using F1™ Poolers, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use this platform.
 
-2. NO OFFICIAL AFFILIATION
-F1™ Poolers is NOT officially affiliated with, endorsed by, or connected to Formula 1, the FIA, any F1 teams, or any F1 drivers. F1, FORMULA 1, F1 logo, and related marks are trademarks of Formula One Licensing BV. This is an independent fan-made platform for entertainment purposes only.
+2. NO OFFICIAL AFFILIATION & TRADEMARK NOTICE
+F1™ Poolers is NOT officially affiliated with, endorsed by, or connected to Formula 1, the FIA, any F1 teams, or any F1 drivers. "F1", "Formula 1", "Formula One", the F1 logo, and all related marks are registered trademarks of Formula One Licensing BV and are NOT owned by F1™ Poolers. These trademarks are used for informational and fan entertainment purposes only. This is an independent fan-made platform for entertainment purposes only.
 
 3. FREE SERVICE
 F1™ Poolers is completely free to use. No payment is required to access or participate in the platform.
