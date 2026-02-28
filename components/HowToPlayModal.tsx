@@ -46,8 +46,8 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                     <div className="flex items-center gap-2 sm:gap-4">
                         <div className="flex gap-1">
                             {(['en', 'pt', 'es'] as Language[]).map(l => (
-                                <button key={l} onClick={() => setLanguage(l)} className={`px-1.5 py-0.5 text-[9px] sm:text-[10px] font-bold border rounded ${language === l ? 'bg-red-600 border-red-600 text-white' : 'border-gray-700 text-gray-500'}`}>
-                                    {l.toUpperCase()}
+                                <button key={l} onClick={() => setLanguage(l)} className={`px-1.5 py-0.5 text-lg border rounded ${language === l ? 'bg-red-600/20 border-red-600' : 'border-gray-700'}`}>
+                                    {l === 'en' ? '🇬🇧' : l === 'pt' ? '🇧🇷' : '🇪🇸'}
                                 </button>
                             ))}
                         </div>
