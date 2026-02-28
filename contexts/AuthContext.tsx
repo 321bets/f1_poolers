@@ -1,5 +1,4 @@
-
-import React, { createContext, useState, useContext, ReactNode, useCallback } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { User } from '../types';
 import * as authService from '../services/authService';
 
@@ -8,8 +7,16 @@ const AUTH_USER_STORAGE_KEY = 'f1poolers_auth_user';
 const getStoredUser = (): User | null => {
   try {
     const stored = localStorage.getItem(AUTH_USER_STORAGE_KEY);
-    return stored ? (JSON.parse(stored) as User) : null;
+    if (stored) {
+      const parsed = JSON.parse(stored) as User;
+      // Validate that it has required fields
+      if (parsed && parsed.id && parsed.username) {
+        return parsed;
+      }
+    }
+    return null;
   } catch {
+    localStorage.removeItem(AUTH_USER_STORAGE_KEY);
     return null;
   }
 };
@@ -28,6 +35,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isLoading: boolean;
   login: (username: string, password: string) => Promise<void>;
   signup: (username: string, password: string, age: number, country: string, location?: {lat: number, lng: number}) => Promise<void>;
   logout: () => void;
@@ -37,7 +45,21 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(() => getStoredUser());
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const initialized = useRef(false);
+
+  // Restore session from localStorage on mount
+  useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+    
+    const storedUser = getStoredUser();
+    if (storedUser) {
+      setUser(storedUser);
+    }
+    setIsLoading(false);
+  }, []);
 
   const login = async (username: string, password: string) => {
     const loggedInUser = await authService.login(username, password);
@@ -65,6 +87,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     user,
     isAuthenticated: !!user,
     isAdmin: user?.isAdmin || false,
+    isLoading,
     login,
     signup,
     logout,

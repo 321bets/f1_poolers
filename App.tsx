@@ -9,11 +9,20 @@ import { DataProvider, useData } from './contexts/DataContext';
 
 const MainContent: React.FC = () => {
   const [view, setView] = useState<'dashboard' | 'admin'>('dashboard');
-  const { isAuthenticated, isAdmin } = useAuth();
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
   const { systemSettings } = useData();
 
   // Apply F1 Theme globally when enabled
   const isF1Theme = systemSettings.theme === 'f1';
+
+  // Show loading while checking for stored session
+  if (isLoading) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${isF1Theme ? 'bg-[#15151e]' : 'bg-gray-900'}`}>
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isF1Theme ? 'theme-f1 bg-[#15151e]' : 'bg-gray-900'}`}>
