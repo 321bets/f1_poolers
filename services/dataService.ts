@@ -173,6 +173,42 @@ class DataService {
     return rounds.find(r => new Date(r.startDate) <= now && new Date(r.endDate) >= now);
   }
 
+  async createRound(roundData: Omit<Round, 'id'>): Promise<Round> {
+    const response = await fetch(`${API_URL}/rounds`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(roundData)
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to create round');
+    }
+    return response.json();
+  }
+
+  async updateRound(roundData: Round): Promise<Round> {
+    const response = await fetch(`${API_URL}/rounds/${roundData.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(roundData)
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to update round');
+    }
+    return response.json();
+  }
+
+  async deleteRound(roundId: string): Promise<void> {
+    const response = await fetch(`${API_URL}/rounds/${roundId}`, {
+      method: 'DELETE'
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to delete round');
+    }
+  }
+
   // Events
   async getEvents(): Promise<Event[]> {
     try {
@@ -199,6 +235,42 @@ class DataService {
 
   async getAllEvents(): Promise<Event[]> {
     return this.getEvents();
+  }
+
+  async createEvent(eventData: Omit<Event, 'id' | 'poolPrize' | 'status'>): Promise<Event> {
+    const response = await fetch(`${API_URL}/events`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(eventData)
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to create event');
+    }
+    return response.json();
+  }
+
+  async updateEvent(eventData: Event): Promise<Event> {
+    const response = await fetch(`${API_URL}/events/${eventData.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(eventData)
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to update event');
+    }
+    return response.json();
+  }
+
+  async deleteEvent(eventId: string): Promise<void> {
+    const response = await fetch(`${API_URL}/events/${eventId}`, {
+      method: 'DELETE'
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to delete event');
+    }
   }
 
   // Bets

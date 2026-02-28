@@ -6,7 +6,7 @@ import ResultsForm from './ResultsForm';
 import RaceResultsModal from '../RaceResultsModal';
 
 const EventManagement: React.FC = () => {
-  const { rounds, events, results, createEvent, updateEvent } = useData();
+  const { rounds, events, results, allBets, createEvent, updateEvent, deleteEvent } = useData();
   const [activeTab, setActiveTab] = useState<'manage' | 'results'>('manage');
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
@@ -158,6 +158,29 @@ const EventManagement: React.FC = () => {
                                 <td className="py-3 px-4 text-sm space-x-4">
                                 <button onClick={() => handleOpenEditModal(event)} className="text-blue-400 hover:text-blue-300" title="Edit Event">
                                     <i className="fas fa-edit"></i>
+                                </button>
+                                <button 
+                                    onClick={async () => {
+                                      if (allBets.some(b => b.eventId === event.id)) {
+                                        alert('Cannot delete event with existing bets.');
+                                        return;
+                                      }
+                                      if (results.some(r => r.eventId === event.id)) {
+                                        alert('Cannot delete event with existing results.');
+                                        return;
+                                      }
+                                      if (window.confirm(`Are you sure you want to delete this ${event.type} event?`)) {
+                                        try {
+                                          await deleteEvent(event.id);
+                                        } catch (err: any) {
+                                          alert(err.message || 'Error deleting event');
+                                        }
+                                      }
+                                    }} 
+                                    className="text-red-400 hover:text-red-300" 
+                                    title="Delete Event"
+                                >
+                                    <i className="fas fa-trash"></i>
                                 </button>
                                 </td>
                             </tr>

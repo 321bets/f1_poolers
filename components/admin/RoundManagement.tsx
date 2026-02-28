@@ -4,7 +4,7 @@ import { useData } from '../../contexts/DataContext';
 import { Round } from '../../types';
 
 const RoundManagement: React.FC = () => {
-    const { rounds, createRound, updateRound } = useData();
+    const { rounds, events, createRound, updateRound, deleteRound } = useData();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingRound, setEditingRound] = useState<Round | null>(null);
     const [roundData, setRoundData] = useState({ number: '', name: '', circuit: '', location: '' });
@@ -76,6 +76,25 @@ const RoundManagement: React.FC = () => {
                 <td className="py-3 px-4 text-sm space-x-4">
                   <button onClick={() => handleOpenModal(round)} className="text-blue-400 hover:text-blue-300" title="Edit Round">
                     <i className="fas fa-edit"></i>
+                  </button>
+                  <button 
+                    onClick={async () => {
+                      if (events.some(e => e.roundId === round.id)) {
+                        alert('Cannot delete round with existing events. Delete events first.');
+                        return;
+                      }
+                      if (window.confirm(`Are you sure you want to delete round "${round.name}"?`)) {
+                        try {
+                          await deleteRound(round.id);
+                        } catch (err: any) {
+                          alert(err.message || 'Error deleting round');
+                        }
+                      }
+                    }} 
+                    className="text-red-400 hover:text-red-300" 
+                    title="Delete Round"
+                  >
+                    <i className="fas fa-trash"></i>
                   </button>
                 </td>
               </tr>

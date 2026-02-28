@@ -18,8 +18,10 @@ interface DataContextType {
   systemSettings: SystemSettings;
   createRound: (roundData: Omit<Round, 'id'>) => Promise<void>;
   updateRound: (roundData: Round) => Promise<void>;
+  deleteRound: (roundId: string) => Promise<void>;
   createEvent: (eventData: Omit<Event, 'id' | 'poolPrize' | 'status'>) => Promise<void>;
   updateEvent: (eventData: Event) => Promise<void>;
+  deleteEvent: (eventId: string) => Promise<void>;
   placeBet: (betData: Omit<Bet, 'id' | 'timestamp' | 'status' | 'lockedMultiplier'>) => Promise<{updatedUser: User, updatedEvent: Event}>;
   cancelBet: (betId: string) => Promise<void>;
   addResults: (resultData: Omit<Result, 'winners' | 'totalPrizePool'>) => Promise<void>;
@@ -116,6 +118,11 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     fetchData();
   };
 
+  const deleteRound = async (roundId: string) => {
+    await dataService.deleteRound(roundId);
+    fetchData();
+  };
+
   const createEvent = async (eventData: Omit<Event, 'id' | 'poolPrize' | 'status'>) => {
     await dataService.createEvent(eventData);
     fetchData();
@@ -123,6 +130,11 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const updateEvent = async (eventData: Event) => {
     await dataService.updateEvent(eventData);
+    fetchData();
+  };
+
+  const deleteEvent = async (eventId: string) => {
+    await dataService.deleteEvent(eventId);
     fetchData();
   };
   
@@ -300,8 +312,10 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     systemSettings,
     createRound,
     updateRound,
+    deleteRound,
     createEvent,
     updateEvent,
+    deleteEvent,
     placeBet,
     cancelBet,
     addResults,

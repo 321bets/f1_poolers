@@ -505,6 +505,14 @@ export const dataService = {
     return Promise.resolve(roundData);
   },
 
+  deleteRound: async (roundId: string): Promise<void> => {
+    if (events.some(e => e.roundId === roundId)) {
+      throw new Error("Cannot delete round with existing events. Delete events first.");
+    }
+    rounds = rounds.filter(r => r.id !== roundId);
+    return Promise.resolve();
+  },
+
   createEvent: async (eventData: Omit<Event, 'id' | 'poolPrize' | 'status'>): Promise<Event> => {
     const newEvent: Event = { ...eventData, id: `event${events.length + 1}`, poolPrize: 0, status: EventStatus.UPCOMING };
     events.push(newEvent);
@@ -516,6 +524,17 @@ export const dataService = {
     if (eventIndex === -1) throw new Error('Event not found for update');
     events[eventIndex] = { ...events[eventIndex], ...eventData };
     return Promise.resolve(events[eventIndex]);
+  },
+
+  deleteEvent: async (eventId: string): Promise<void> => {
+    if (bets.some(b => b.eventId === eventId)) {
+      throw new Error("Cannot delete event with existing bets.");
+    }
+    if (results.some(r => r.eventId === eventId)) {
+      throw new Error("Cannot delete event with existing results.");
+    }
+    events = events.filter(e => e.id !== eventId);
+    return Promise.resolve();
   },
   
   createTeam: async (teamData: Omit<Team, 'id'>): Promise<Team> => {
