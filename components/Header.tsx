@@ -35,9 +35,9 @@ const Header: React.FC<HeaderProps> = ({ currentView, onToggleView, onNavigate }
     <>
     <header className="bg-gray-800 shadow-lg relative">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="flex items-center space-x-3">
-          <i className="fas fa-flag-checkered text-red-500 text-3xl"></i>
-          <h1 className="text-2xl font-bold tracking-wider text-white">F1™ POOLERS</h1>
+        <div className="flex items-center space-x-2">
+          <i className="fas fa-flag-checkered text-red-500 text-xl"></i>
+          <h1 className="text-sm sm:text-lg font-bold tracking-wider text-white">F1™ POOLERS</h1>
         </div>
         <div className="flex items-center space-x-4">
              {/* Notification Bell */}
