@@ -809,6 +809,33 @@ export const dataService = {
         });
     }
 
+    // --- JACKPOT ROLLOVER: If nobody won the jackpot, carry the prize pool to the same event type in the next round ---
+    if (potWinners.length === 0 && event.poolPrize > 0) {
+        const currentRound = rounds.find(r => r.id === event.roundId);
+        if (currentRound) {
+            // Find the next round by number
+            const nextRound = rounds
+                .filter(r => r.number > currentRound.number)
+                .sort((a, b) => a.number - b.number)[0];
+
+            if (nextRound) {
+                // Find the same event type in the next round
+                const nextEvent = events.find(
+                    e => e.roundId === nextRound.id && e.type === event.type && e.status !== EventStatus.FINISHED
+                );
+
+                if (nextEvent) {
+                    nextEvent.poolPrize += event.poolPrize;
+                    console.log(`[JACKPOT ROLLOVER] No jackpot winner for ${event.type} in ${currentRound.name}. ${event.poolPrize} Fun-Coins rolled over to ${nextRound.name} ${event.type} (new pool: ${nextEvent.poolPrize}).`);
+                } else {
+                    console.log(`[JACKPOT ROLLOVER] No matching ${event.type} event found in ${nextRound.name}. Prize pool of ${event.poolPrize} remains unclaimed.`);
+                }
+            } else {
+                console.log(`[JACKPOT ROLLOVER] No next round found. Prize pool of ${event.poolPrize} remains unclaimed (season end).`);
+            }
+        }
+    }
+
     eventBets.forEach(bet => {
         const user = users.find(u => u.id === bet.userId);
         if (user) {
