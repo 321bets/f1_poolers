@@ -5,11 +5,12 @@ import { useData } from '../contexts/DataContext';
 import UserSettingsModal from './UserSettingsModal';
 
 interface HeaderProps {
-    currentView: 'dashboard' | 'admin';
+    currentView: 'dashboard' | 'admin' | 'statistics';
     onToggleView: () => void;
+    onNavigate: (view: 'dashboard' | 'statistics') => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ currentView, onToggleView }) => {
+const Header: React.FC<HeaderProps> = ({ currentView, onToggleView, onNavigate }) => {
   const { user, logout, isAdmin } = useAuth();
   const { markNotificationRead } = useData();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
@@ -82,6 +83,15 @@ const Header: React.FC<HeaderProps> = ({ currentView, onToggleView }) => {
                     </div>
                 )}
              </div>
+
+            {/* Statistics Tab */}
+            <button
+                onClick={() => onNavigate(currentView === 'statistics' ? 'dashboard' : 'statistics')}
+                className={`font-semibold py-2 px-4 rounded-full text-sm transition-colors ${currentView === 'statistics' ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'}`}
+            >
+                <i className="fas fa-chart-line mr-2"></i>
+                Stats
+            </button>
 
             {isAdmin && (
               <button

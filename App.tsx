@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
+import Statistics from './components/Statistics';
 import AdminPanel from './components/admin/AdminPanel';
 import AuthPage from './components/AuthPage';
 import { useAuth } from './contexts/AuthContext';
 import { DataProvider, useData } from './contexts/DataContext';
 
 const MainContent: React.FC = () => {
-  const [view, setView] = useState<'dashboard' | 'admin'>('dashboard');
+  const [view, setView] = useState<'dashboard' | 'admin' | 'statistics'>('dashboard');
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
   const { systemSettings } = useData();
 
@@ -88,9 +89,10 @@ const MainContent: React.FC = () => {
           <Header 
             currentView={view} 
             onToggleView={() => setView(v => v === 'dashboard' ? 'admin' : 'dashboard')} 
+            onNavigate={(v: 'dashboard' | 'statistics') => setView(v)}
           />
           <main className="container mx-auto p-4">
-            {view === 'admin' && isAdmin ? <AdminPanel /> : <Dashboard />}
+            {view === 'admin' && isAdmin ? <AdminPanel /> : view === 'statistics' ? <Statistics /> : <Dashboard />}
           </main>
         </>
       )}
