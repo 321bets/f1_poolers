@@ -7,7 +7,7 @@ interface HowToPlayModalProps {
 }
 
 const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
-    const [activeTab, setActiveTab] = useState<'scoring' | 'guide' | 'leagues'>('guide');
+    const [activeTab, setActiveTab] = useState<'welcome' | 'scoring' | 'guide' | 'leagues'>('welcome');
     const { t, language, setLanguage } = useLanguage();
 
     const shareMessage = "Check out F1 Poolers! 🏎️ The most competitive F1 strategy game with friends. Start each round with free Fun-Coins! 🏁";
@@ -58,20 +58,26 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                 {/* Sub-Tabs Navigation Bar - Fixed height */}
                 <div className="flex-none flex bg-[#1f1f27] border-b border-gray-800 overflow-x-auto no-scrollbar relative z-20">
                     <button 
+                        onClick={() => setActiveTab('welcome')}
+                        className={`flex-1 min-w-[80px] sm:min-w-[100px] py-3 sm:py-4 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border-b-4 relative z-30 ${activeTab === 'welcome' ? 'text-[#e10600] border-[#e10600] bg-[#15151e]' : 'text-gray-500 border-transparent hover:text-gray-300 hover:bg-[#15151e]/50'}`}
+                    >
+                        <i className="fas fa-rocket mr-1 sm:mr-2"></i> {t('welcomeTab')}
+                    </button>
+                    <button 
                         onClick={() => setActiveTab('guide')}
-                        className={`flex-1 min-w-[100px] sm:min-w-[120px] py-3 sm:py-4 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border-b-4 relative z-30 ${activeTab === 'guide' ? 'text-[#e10600] border-[#e10600] bg-[#15151e]' : 'text-gray-500 border-transparent hover:text-gray-300 hover:bg-[#15151e]/50'}`}
+                        className={`flex-1 min-w-[80px] sm:min-w-[100px] py-3 sm:py-4 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border-b-4 relative z-30 ${activeTab === 'guide' ? 'text-[#e10600] border-[#e10600] bg-[#15151e]' : 'text-gray-500 border-transparent hover:text-gray-300 hover:bg-[#15151e]/50'}`}
                     >
                         <i className="fas fa-flag mr-1 sm:mr-2"></i> {t('howToBet')}
                     </button>
                     <button 
                         onClick={() => setActiveTab('scoring')}
-                        className={`flex-1 min-w-[100px] sm:min-w-[120px] py-3 sm:py-4 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border-b-4 relative z-30 ${activeTab === 'scoring' ? 'text-[#e10600] border-[#e10600] bg-[#15151e]' : 'text-gray-500 border-transparent hover:text-gray-300 hover:bg-[#15151e]/50'}`}
+                        className={`flex-1 min-w-[80px] sm:min-w-[100px] py-3 sm:py-4 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border-b-4 relative z-30 ${activeTab === 'scoring' ? 'text-[#e10600] border-[#e10600] bg-[#15151e]' : 'text-gray-500 border-transparent hover:text-gray-300 hover:bg-[#15151e]/50'}`}
                     >
                         <i className="fas fa-calculator mr-1 sm:mr-2"></i> {t('detailedScoring')}
                     </button>
                     <button 
                         onClick={() => setActiveTab('leagues')}
-                        className={`flex-1 min-w-[100px] sm:min-w-[120px] py-3 sm:py-4 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border-b-4 relative z-30 ${activeTab === 'leagues' ? 'text-[#e10600] border-[#e10600] bg-[#15151e]' : 'text-gray-500 border-transparent hover:text-gray-300 hover:bg-[#15151e]/50'}`}
+                        className={`flex-1 min-w-[80px] sm:min-w-[100px] py-3 sm:py-4 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border-b-4 relative z-30 ${activeTab === 'leagues' ? 'text-[#e10600] border-[#e10600] bg-[#15151e]' : 'text-gray-500 border-transparent hover:text-gray-300 hover:bg-[#15151e]/50'}`}
                     >
                         <i className="fas fa-users mr-1 sm:mr-2"></i> {t('socialLeagues')}
                     </button>
@@ -79,6 +85,128 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
 
                 {/* Scrollable Content Area - Fills remaining space */}
                 <div className="flex-1 overflow-y-auto no-scrollbar bg-[#15151e] p-4 sm:p-6 relative z-10">
+                    {/* WELCOME TAB */}
+                    {activeTab === 'welcome' && (
+                        <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-300">
+                            {/* Hero */}
+                            <div className="bg-[#1f1f27] p-6 sm:p-8 rounded-lg border border-gray-800 text-center">
+                                <div className="text-4xl sm:text-5xl mb-4">🏁</div>
+                                <h3 className="text-white font-black uppercase italic text-lg sm:text-2xl tracking-tighter mb-3">{t('welcomeTitle')}</h3>
+                                <p className="text-gray-400 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">{t('welcomeSubtitle')}</p>
+                            </div>
+
+                            {/* How It Works - 3 Steps */}
+                            <div>
+                                <h3 className="text-white font-black uppercase italic mb-4 flex items-center gap-2 text-sm sm:text-base">
+                                    <span className="bg-[#e10600] w-1 h-5"></span>
+                                    {t('howItWorksTitle')}
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="bg-[#1f1f27] p-4 sm:p-5 rounded-lg border border-gray-800 relative">
+                                        <div className="absolute -top-3 left-4 bg-[#e10600] text-white font-black text-xs px-3 py-1 rounded-sm -skew-x-12"><span className="inline-block skew-x-12">01</span></div>
+                                        <div className="mt-3">
+                                            <i className="fas fa-calendar-alt text-2xl text-blue-500 mb-3"></i>
+                                            <h4 className="text-white font-black uppercase italic text-xs sm:text-sm mb-2">{t('howItWorksStep1Title')}</h4>
+                                            <p className="text-gray-400 text-[10px] sm:text-xs leading-relaxed">{t('howItWorksStep1Desc')}</p>
+                                        </div>
+                                    </div>
+                                    <div className="bg-[#1f1f27] p-4 sm:p-5 rounded-lg border border-gray-800 relative">
+                                        <div className="absolute -top-3 left-4 bg-[#e10600] text-white font-black text-xs px-3 py-1 rounded-sm -skew-x-12"><span className="inline-block skew-x-12">02</span></div>
+                                        <div className="mt-3">
+                                            <i className="fas fa-hand-pointer text-2xl text-green-500 mb-3"></i>
+                                            <h4 className="text-white font-black uppercase italic text-xs sm:text-sm mb-2">{t('howItWorksStep2Title')}</h4>
+                                            <p className="text-gray-400 text-[10px] sm:text-xs leading-relaxed">{t('howItWorksStep2Desc')}</p>
+                                        </div>
+                                    </div>
+                                    <div className="bg-[#1f1f27] p-4 sm:p-5 rounded-lg border border-gray-800 relative">
+                                        <div className="absolute -top-3 left-4 bg-[#e10600] text-white font-black text-xs px-3 py-1 rounded-sm -skew-x-12"><span className="inline-block skew-x-12">03</span></div>
+                                        <div className="mt-3">
+                                            <i className="fas fa-trophy text-2xl text-yellow-500 mb-3"></i>
+                                            <h4 className="text-white font-black uppercase italic text-xs sm:text-sm mb-2">{t('howItWorksStep3Title')}</h4>
+                                            <p className="text-gray-400 text-[10px] sm:text-xs leading-relaxed">{t('howItWorksStep3Desc')}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Fun-Coins & Points */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="bg-[#1f1f27] p-4 sm:p-5 rounded-lg border border-yellow-900/50">
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="bg-yellow-500/20 p-2 rounded-full">
+                                            <i className="fas fa-coins text-yellow-500 text-lg"></i>
+                                        </div>
+                                        <h4 className="text-yellow-500 font-black uppercase italic text-xs sm:text-sm">{t('whatAreFunCoinsTitle')}</h4>
+                                    </div>
+                                    <p className="text-gray-400 text-[10px] sm:text-xs leading-relaxed mb-2">{t('whatAreFunCoinsDesc')}</p>
+                                    <p className="text-[10px] text-yellow-500/80 italic bg-yellow-900/10 p-2 rounded border border-yellow-900/30">
+                                        <i className="fas fa-lightbulb mr-1"></i> {t('whatAreFunCoinsExtra')}
+                                    </p>
+                                </div>
+                                <div className="bg-[#1f1f27] p-4 sm:p-5 rounded-lg border border-blue-900/50">
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="bg-blue-500/20 p-2 rounded-full">
+                                            <i className="fas fa-star text-blue-500 text-lg"></i>
+                                        </div>
+                                        <h4 className="text-blue-500 font-black uppercase italic text-xs sm:text-sm">{t('whatArePointsTitle')}</h4>
+                                    </div>
+                                    <p className="text-gray-400 text-[10px] sm:text-xs leading-relaxed">{t('whatArePointsDesc')}</p>
+                                </div>
+                            </div>
+
+                            {/* Strategy Tips */}
+                            <div className="bg-[#1f1f27] p-4 sm:p-6 rounded-lg border border-gray-800">
+                                <h3 className="text-green-500 font-black uppercase italic mb-4 flex items-center gap-2 text-sm sm:text-base">
+                                    <i className="fas fa-chess"></i>
+                                    {t('bettingStrategyTitle')}
+                                </h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div className="flex gap-3 bg-black/30 p-3 rounded border border-gray-800">
+                                        <div className="flex-shrink-0 w-8 h-8 bg-blue-600/20 rounded-full flex items-center justify-center">
+                                            <i className="fas fa-clock text-blue-400 text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <h5 className="text-white font-black uppercase text-[10px] sm:text-xs mb-1">{t('strategyTip1Title')}</h5>
+                                            <p className="text-gray-400 text-[10px] leading-relaxed">{t('strategyTip1Desc')}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-3 bg-black/30 p-3 rounded border border-gray-800">
+                                        <div className="flex-shrink-0 w-8 h-8 bg-purple-600/20 rounded-full flex items-center justify-center">
+                                            <i className="fas fa-exchange-alt text-purple-400 text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <h5 className="text-white font-black uppercase text-[10px] sm:text-xs mb-1">{t('strategyTip2Title')}</h5>
+                                            <p className="text-gray-400 text-[10px] leading-relaxed">{t('strategyTip2Desc')}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-3 bg-black/30 p-3 rounded border border-gray-800">
+                                        <div className="flex-shrink-0 w-8 h-8 bg-green-600/20 rounded-full flex items-center justify-center">
+                                            <i className="fas fa-layer-group text-green-400 text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <h5 className="text-white font-black uppercase text-[10px] sm:text-xs mb-1">{t('strategyTip3Title')}</h5>
+                                            <p className="text-gray-400 text-[10px] leading-relaxed">{t('strategyTip3Desc')}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-3 bg-black/30 p-3 rounded border border-yellow-900/50">
+                                        <div className="flex-shrink-0 w-8 h-8 bg-yellow-600/20 rounded-full flex items-center justify-center">
+                                            <i className="fas fa-gem text-yellow-400 text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <h5 className="text-white font-black uppercase text-[10px] sm:text-xs mb-1">{t('strategyTip4Title')}</h5>
+                                            <p className="text-gray-400 text-[10px] leading-relaxed">{t('strategyTip4Desc')}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* CTA */}
+                            <div className="text-center p-4 bg-[#1f1f27] rounded-lg border border-gray-800">
+                                <p className="text-gray-500 text-[10px] sm:text-xs italic">{t('readyToRace')}</p>
+                            </div>
+                        </div>
+                    )}
+
                     {activeTab === 'guide' && (
                         <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-300">
                             {/* Multiplier Details Section */}
