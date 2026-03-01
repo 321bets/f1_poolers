@@ -148,7 +148,11 @@ const translations: Record<Language, Record<string, string>> = {
     inviteFriends: 'Invite your friends to compete with you',
     inviteShareVia: 'Share via',
     inviteCopied: 'Copied!',
-    inviteCopyUrl: 'Copy URL'
+    inviteCopyUrl: 'Copy URL',
+    inviteMessage: 'Think you can outscore me in F1 predictions? \u{1F3CE}\u{FE0F} Join me on F1 Poolers \u2014 pick your Top 5 drivers & teams, climb the leaderboard, and prove who\'s the real paddock champion! Free to play, pure bragging rights. Let\'s race! \u{1F3C1}',
+    inviteMessageShort: 'Think you can beat my F1 predictions? \u{1F3CE}\u{FE0F} Join me on F1 Poolers! Free, fun & competitive.',
+    inviteEmailSubject: 'Join me on F1 Poolers! \u{1F3CE}\u{FE0F}',
+    inviteInstagramHint: 'Message copied! Paste it on Instagram.'
   },
   pt: {
     signup: 'Cadastrar',
@@ -286,7 +290,11 @@ const translations: Record<Language, Record<string, string>> = {
     inviteFriends: 'Convide seus amigos para competir com você',
     inviteShareVia: 'Compartilhar via',
     inviteCopied: 'Copiado!',
-    inviteCopyUrl: 'Copiar URL'
+    inviteCopyUrl: 'Copiar URL',
+    inviteMessage: 'Acha que pode me superar nas previsões de F1? \u{1F3CE}\u{FE0F} Junte-se a mim no F1 Poolers \u2014 escolha seus Top 5 pilotos e equipes, suba no ranking e prove quem é o verdadeiro campeão do paddock! Grátis para jogar, pura diversão. Vamos correr! \u{1F3C1}',
+    inviteMessageShort: 'Acha que pode superar minhas previsões de F1? \u{1F3CE}\u{FE0F} Junte-se a mim no F1 Poolers! Grátis, divertido e competitivo.',
+    inviteEmailSubject: 'Junte-se a mim no F1 Poolers! \u{1F3CE}\u{FE0F}',
+    inviteInstagramHint: 'Mensagem copiada! Cole no Instagram.'
   },
   es: {
     welcome: 'Bienvenido al Paddock',
@@ -426,7 +434,11 @@ const translations: Record<Language, Record<string, string>> = {
     inviteFriends: 'Invita a tus amigos a competir contigo',
     inviteShareVia: 'Compartir vía',
     inviteCopied: '¡Copiado!',
-    inviteCopyUrl: 'Copiar URL'
+    inviteCopyUrl: 'Copiar URL',
+    inviteMessage: '¿Crees que puedes superarme en predicciones de F1? \u{1F3CE}\u{FE0F} Únete a mí en F1 Poolers \u2014 elige tus Top 5 pilotos y equipos, sube en el ranking y demuestra quién es el verdadero campeón del paddock. ¡Gratis, pura diversión! ¡Vamos a correr! \u{1F3C1}',
+    inviteMessageShort: '¿Crees que puedes superar mis predicciones de F1? \u{1F3CE}\u{FE0F} ¡Únete a mí en F1 Poolers! Gratis, divertido y competitivo.',
+    inviteEmailSubject: '¡Únete a mí en F1 Poolers! \u{1F3CE}\u{FE0F}',
+    inviteInstagramHint: '¡Mensaje copiado! Pégalo en Instagram.'
   }
 };
 

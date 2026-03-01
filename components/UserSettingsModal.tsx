@@ -32,8 +32,8 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
     const { t } = useLanguage();
 
     const inviteUrl = `https://adster.app/?ref=${user?.username || ''}`;
-    const inviteMsg = `Think you can outscore me in F1 predictions? \u{1F3CE}\u{FE0F} Join me on F1 Poolers \u2014 pick your Top 5 drivers & teams, climb the leaderboard, and prove who\'s the real paddock champion! Free to play, pure bragging rights. Let\'s race! \u{1F3C1} ${inviteUrl}`;
-    const inviteMsgShort = `Think you can beat my F1 predictions? \u{1F3CE}\u{FE0F} Join me on F1 Poolers! Free, fun & competitive. ${inviteUrl}`;
+    const inviteMsg = `${t('inviteMessage')} ${inviteUrl}`;
+    const inviteMsgShort = `${t('inviteMessageShort')} ${inviteUrl}`;
 
     const handleShare = (platform: string) => {
         const encoded = encodeURIComponent(inviteMsg);
@@ -49,21 +49,21 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
             case 'instagram':
                 navigator.clipboard.writeText(inviteMsg);
                 setCopySuccess(true);
-                setTimeout(() => setCopySuccess(false), 2000);
-                break;
+                setTimeout(() => setCopySuccess(false), 3000);
+                return;
             case 'sms':
                 window.open(`sms:?body=${encodedShort}`, '_blank');
                 break;
             case 'email':
-                window.open(`mailto:?subject=${encodeURIComponent('Join me on F1 Poolers! \u{1F3CE}\u{FE0F}')}&body=${encoded}`, '_blank');
+                window.open(`mailto:?subject=${encodeURIComponent(t('inviteEmailSubject'))}&body=${encoded}`, '_blank');
                 break;
             case 'copy':
                 navigator.clipboard.writeText(inviteMsg);
                 setCopySuccess(true);
                 setTimeout(() => setCopySuccess(false), 2000);
-                break;
+                return;
         }
-        if (platform !== 'copy' && platform !== 'instagram') setIsShareOpen(false);
+        setIsShareOpen(false);
     };
 
     const managedLeagues = leagues.filter(l => l.adminId === user?.id);
@@ -182,44 +182,60 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                             {/* Invite Friends */}
                             <div className="pt-2 border-t border-gray-700">
                                 <button
-                                    onClick={() => setIsShareOpen(!isShareOpen)}
-                                    className="w-full text-center text-xs text-gray-400 hover:text-white py-2 transition-colors flex items-center justify-center gap-2"
+                                    onClick={() => setIsShareOpen(true)}
+                                    className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-3 text-base shadow-lg"
                                 >
-                                    <i className="fas fa-share-alt text-red-500"></i>
+                                    <i className="fas fa-share-alt text-lg"></i>
                                     {t('inviteFriends')}
                                 </button>
-                                {isShareOpen && (
-                                    <div className="mt-2 bg-gray-900 rounded-lg p-3 border border-gray-700">
-                                        <p className="text-xs text-gray-500 mb-3 text-center">{t('inviteShareVia')}</p>
-                                        <div className="grid grid-cols-3 gap-2">
-                                            <button onClick={() => handleShare('whatsapp')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
-                                                <i className="fab fa-whatsapp text-green-500 text-xl"></i>
-                                                <span className="text-[10px] text-gray-400">WhatsApp</span>
+                            </div>
+
+                            {/* Share Sheet Modal */}
+                            {isShareOpen && (
+                                <div className="fixed inset-0 bg-black bg-opacity-70 flex items-end sm:items-center justify-center z-[60]" onClick={() => setIsShareOpen(false)}>
+                                    <div className="bg-gray-800 w-full sm:w-96 sm:rounded-2xl rounded-t-2xl p-5 pb-8 sm:pb-5 shadow-2xl animate-slide-up" onClick={(e) => e.stopPropagation()}>
+                                        <div className="flex justify-between items-center mb-4">
+                                            <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                                                <i className="fas fa-share-alt text-red-500"></i>
+                                                {t('inviteShareVia')}
+                                            </h3>
+                                            <button onClick={() => setIsShareOpen(false)} className="text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+                                        </div>
+                                        <div className="grid grid-cols-3 gap-3">
+                                            <button onClick={() => handleShare('whatsapp')} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-700 hover:bg-gray-600 active:scale-95 transition-all">
+                                                <i className="fab fa-whatsapp text-green-500 text-3xl"></i>
+                                                <span className="text-xs text-gray-300 font-medium">WhatsApp</span>
                                             </button>
-                                            <button onClick={() => handleShare('messenger')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
-                                                <i className="fab fa-facebook-messenger text-blue-500 text-xl"></i>
-                                                <span className="text-[10px] text-gray-400">Messenger</span>
+                                            <button onClick={() => handleShare('messenger')} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-700 hover:bg-gray-600 active:scale-95 transition-all">
+                                                <i className="fab fa-facebook-messenger text-blue-500 text-3xl"></i>
+                                                <span className="text-xs text-gray-300 font-medium">Messenger</span>
                                             </button>
-                                            <button onClick={() => handleShare('instagram')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
-                                                <i className="fab fa-instagram text-pink-500 text-xl"></i>
-                                                <span className="text-[10px] text-gray-400">Instagram</span>
+                                            <button onClick={() => handleShare('instagram')} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-700 hover:bg-gray-600 active:scale-95 transition-all relative">
+                                                <i className="fab fa-instagram text-pink-500 text-3xl"></i>
+                                                <span className="text-xs text-gray-300 font-medium">Instagram</span>
                                             </button>
-                                            <button onClick={() => handleShare('sms')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
-                                                <i className="fas fa-sms text-yellow-500 text-xl"></i>
-                                                <span className="text-[10px] text-gray-400">SMS</span>
+                                            <button onClick={() => handleShare('sms')} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-700 hover:bg-gray-600 active:scale-95 transition-all">
+                                                <i className="fas fa-sms text-yellow-500 text-3xl"></i>
+                                                <span className="text-xs text-gray-300 font-medium">SMS</span>
                                             </button>
-                                            <button onClick={() => handleShare('email')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
-                                                <i className="fas fa-envelope text-red-400 text-xl"></i>
-                                                <span className="text-[10px] text-gray-400">Email</span>
+                                            <button onClick={() => handleShare('email')} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-700 hover:bg-gray-600 active:scale-95 transition-all">
+                                                <i className="fas fa-envelope text-red-400 text-3xl"></i>
+                                                <span className="text-xs text-gray-300 font-medium">Email</span>
                                             </button>
-                                            <button onClick={() => handleShare('copy')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
-                                                <i className={`fas ${copySuccess ? 'fa-check text-green-400' : 'fa-link text-gray-400'} text-xl`}></i>
-                                                <span className="text-[10px] text-gray-400">{copySuccess ? t('inviteCopied') : t('inviteCopyUrl')}</span>
+                                            <button onClick={() => handleShare('copy')} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-700 hover:bg-gray-600 active:scale-95 transition-all">
+                                                <i className={`fas ${copySuccess ? 'fa-check text-green-400' : 'fa-link text-gray-400'} text-3xl`}></i>
+                                                <span className="text-xs text-gray-300 font-medium">{copySuccess ? t('inviteCopied') : t('inviteCopyUrl')}</span>
                                             </button>
                                         </div>
+                                        {copySuccess && (
+                                            <p className="text-center text-green-400 text-xs mt-3 font-medium">{t('inviteInstagramHint')}</p>
+                                        )}
+                                        <div className="mt-4 bg-gray-900 rounded-lg p-3">
+                                            <p className="text-[11px] text-gray-500 text-center break-all">{inviteUrl}</p>
+                                        </div>
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     )}
 
