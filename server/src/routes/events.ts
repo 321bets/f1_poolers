@@ -1,95 +1,76 @@
 import express, { Request, Response } from 'express';
-import { getDb, saveDatabase } from '../database.js';
-import { randomUUID } from 'crypto';
+import { query, execute } from '../database.js';
+import { RowDataPacket } from 'mysql2/promise';
 
 const router = express.Router();
 
-// GET /api/events - Lista todos os eventos
-router.get('/', (req: Request, res: Response) => {
-  const db = getDb();
-  const { roundId, status } = req.query;
-  
-  let query = 'SELECT * FROM events';
-  const params: any[] = [];
-  
-  if (roundId) {
-    query += ' WHERE round_id = ?';
-    params.push(roundId);
-  } else if (status) {
-    query += ' WHERE status = ?';
-    params.push(status);
-  }
-  
-  query += ' ORDER BY scheduled_time';
-  
-  const events = db.exec(query, params);
-  
-  if (events.length > 0) {
-    const result = events[0].values.map((row: any[]) => ({
-      id: row[0],
-      roundId: row[1],
-      type: row[2],
-      scheduledTime: row[3],
-      status: row[4],
-      poolPrize: row[5] || 0,
-      betValue: row[6] || 10
-    }));
-    res.json(result);
-  } else {
-    res.json([]);
+// GET /api/events
+router.get('/', async (_req: Request, res: Response) => {
+  try {
+    const rows = await query<RowDataPacket[]>(`SELECT * FROM events ORDER BY date`);
+    res.json(rows.map(r => ({
+      id: r.id,
+      roundId: r.round_id,
+      type: r.type,
+      date: new Date(r.date),
+      status: r.status,
+      betValue: r.bet_value,
+      poolPrize: r.pool_prize
+    })));
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// GET /api/events/:id - Busca evento por ID
-router.get('/:id', (req: Request, res: Response) => {
-  const db = getDb();
-  const result = db.exec('SELECT * FROM events WHERE id = ?', [req.params.id]);
-  
-  if (result.length > 0 && result[0].values.length > 0) {
-    const row = result[0].values[0];
-    res.json({
-      id: row[0],
-      roundId: row[1],
-      type: row[2],
-      scheduledTime: row[3],
-      status: row[4]
-    });
-  } else {
-    res.status(404).json({ error: 'Event not found' });
+// POST /api/events
+router.post('/', async (req: Request, res: Response) => {
+  try {
+    const { roundId, type, date, betValue } = req.body;
+    const countRows = await query<RowDataPacket[]>(`SELECT COUNT(*) as cnt FROM events`);
+    const id = `event${countRows[0].cnt + 1}`;
+    const bv = betValue || 10;
+
+    await execute(
+      `INSERT INTO events (id, round_id, type, date, status, bet_value, pool_prize) VALUES (?, ?, ?, ?, 'Upcoming', ?, 0)`,
+      [id, roundId, type, new Date(date), bv]
+    );
+
+    res.json({ id, roundId, type, date: new Date(date), status: 'Upcoming', betValue: bv, poolPrize: 0 });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// POST /api/events - Cria novo evento (admin)
-router.post('/', (req: Request, res: Response) => {
-  const { roundId, type, scheduledTime } = req.body;
-  const db = getDb();
-  
-  const id = `event-${Date.now()}-${randomUUID().slice(0, 8)}`;
-  
-  db.run(`INSERT INTO events (id, round_id, type, scheduled_time, status) 
-          VALUES (?, ?, ?, ?, 'upcoming')`,
-    [id, roundId, type, scheduledTime]);
-  
-  saveDatabase();
-  
-  res.json({
-    id,
-    roundId,
-    type,
-    scheduledTime,
-    status: 'upcoming'
-  });
+// PUT /api/events/:id
+router.put('/:id', async (req: Request, res: Response) => {
+  try {
+    const { roundId, type, date, status, betValue, poolPrize } = req.body;
+    await execute(
+      `UPDATE events SET round_id = ?, type = ?, date = ?, status = ?, bet_value = ?, pool_prize = ? WHERE id = ?`,
+      [roundId, type, new Date(date), status, betValue, poolPrize || 0, req.params.id]
+    );
+    res.json({ id: req.params.id, roundId, type, date: new Date(date), status, betValue, poolPrize: poolPrize || 0 });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-// PATCH /api/events/:id/status - Atualiza status do evento (admin)
-router.patch('/:id/status', (req: Request, res: Response) => {
-  const { status } = req.body;
-  const db = getDb();
-  
-  db.run('UPDATE events SET status = ? WHERE id = ?', [status, req.params.id]);
-  saveDatabase();
-  
-  res.json({ success: true, status });
+// DELETE /api/events/:id
+router.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const bets = await query<RowDataPacket[]>(`SELECT id FROM bets WHERE event_id = ?`, [req.params.id]);
+    if (bets.length > 0) {
+      return res.status(400).json({ error: 'Cannot delete event with existing bets.' });
+    }
+    const results = await query<RowDataPacket[]>(`SELECT event_id FROM results WHERE event_id = ?`, [req.params.id]);
+    if (results.length > 0) {
+      return res.status(400).json({ error: 'Cannot delete event with existing results.' });
+    }
+    await execute(`DELETE FROM events WHERE id = ?`, [req.params.id]);
+    res.json({ success: true });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 export default router;

@@ -1,87 +1,144 @@
 import express, { Request, Response } from 'express';
-import { getDb, saveDatabase } from '../database.js';
+import { query, execute } from '../database.js';
+import { RowDataPacket } from 'mysql2/promise';
+import { buildUser } from './auth.js';
 
 const router = express.Router();
 
-// GET /api/users - Lista todos os usuários
-router.get('/', (req: Request, res: Response) => {
-  const db = getDb();
-  const users = db.exec('SELECT id, username, avatar_url, balance, points, is_admin, age, country FROM users');
-  
-  if (users.length > 0) {
-    const result = users[0].values.map((row: any[]) => ({
-      id: row[0],
-      username: row[1],
-      avatarUrl: row[2],
-      balance: row[3],
-      points: row[4],
-      rank: 0,
-      isAdmin: row[5] === 1,
-      age: row[6],
-      country: row[7],
-      notifications: [],
-      joinedLeagues: []
-    }));
-    res.json(result);
-  } else {
-    res.json([]);
+// GET /api/users
+router.get('/', async (_req: Request, res: Response) => {
+  try {
+    const rows = await query<RowDataPacket[]>(`SELECT * FROM users`);
+    const users = await Promise.all(rows.map(r => buildUser(r)));
+    res.json(users);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// GET /api/users/:id - Busca usuário por ID
-router.get('/:id', (req: Request, res: Response) => {
-  const db = getDb();
-  const result = db.exec('SELECT id, username, avatar_url, balance, points, is_admin, age, country FROM users WHERE id = ?', [req.params.id]);
-  
-  if (result.length > 0 && result[0].values.length > 0) {
-    const row = result[0].values[0];
-    res.json({
-      id: row[0],
-      username: row[1],
-      avatarUrl: row[2],
-      balance: row[3],
-      points: row[4],
-      rank: 0,
-      isAdmin: row[5] === 1,
-      age: row[6],
-      country: row[7],
-      notifications: [],
-      joinedLeagues: []
-    });
-  } else {
-    res.status(404).json({ error: 'User not found' });
+// GET /api/users/:id
+router.get('/:id', async (req: Request, res: Response) => {
+  try {
+    const rows = await query<RowDataPacket[]>(`SELECT * FROM users WHERE id = ?`, [req.params.id]);
+    if (rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    const user = await buildUser(rows[0]);
+    res.json(user);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// PATCH /api/users/:id/balance - Atualiza saldo
-router.patch('/:id/balance', (req: Request, res: Response) => {
-  const { amount } = req.body;
-  const db = getDb();
-  
-  db.run('UPDATE users SET balance = balance + ? WHERE id = ?', [amount, req.params.id]);
-  saveDatabase();
-  
-  const result = db.exec('SELECT balance FROM users WHERE id = ?', [req.params.id]);
-  if (result.length > 0 && result[0].values.length > 0) {
-    res.json({ balance: result[0].values[0][0] });
-  } else {
-    res.status(404).json({ error: 'User not found' });
+// GET /api/users/by-username/:username
+router.get('/by-username/:username', async (req: Request, res: Response) => {
+  try {
+    const rows = await query<RowDataPacket[]>(`SELECT * FROM users WHERE username = ?`, [req.params.username]);
+    if (rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    const user = await buildUser(rows[0]);
+    res.json(user);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// PATCH /api/users/:id/points - Atualiza pontos
-router.patch('/:id/points', (req: Request, res: Response) => {
-  const { amount } = req.body;
-  const db = getDb();
-  
-  db.run('UPDATE users SET points = points + ? WHERE id = ?', [amount, req.params.id]);
-  saveDatabase();
-  
-  const result = db.exec('SELECT points FROM users WHERE id = ?', [req.params.id]);
-  if (result.length > 0 && result[0].values.length > 0) {
-    res.json({ points: result[0].values[0][0] });
-  } else {
-    res.status(404).json({ error: 'User not found' });
+// PATCH /api/users/:id
+router.patch('/:id', async (req: Request, res: Response) => {
+  try {
+    const updates = req.body;
+    const sets: string[] = [];
+    const params: any[] = [];
+
+    if (updates.username !== undefined) { sets.push('username = ?'); params.push(updates.username); }
+    if (updates.avatarUrl !== undefined) { sets.push('avatar_url = ?'); params.push(updates.avatarUrl); }
+    if (updates.balance !== undefined) { sets.push('balance = ?'); params.push(updates.balance); }
+    if (updates.points !== undefined) { sets.push('points = ?'); params.push(updates.points); }
+    if (updates.rank !== undefined) { sets.push('`rank` = ?'); params.push(updates.rank); }
+    if (updates.isAdmin !== undefined) { sets.push('is_admin = ?'); params.push(updates.isAdmin ? 1 : 0); }
+    if (updates.age !== undefined) { sets.push('age = ?'); params.push(updates.age); }
+    if (updates.country !== undefined) { sets.push('country = ?'); params.push(updates.country); }
+    if (updates.timezone !== undefined) { sets.push('timezone = ?'); params.push(updates.timezone); }
+    if (updates.termsAccepted !== undefined) { sets.push('terms_accepted = ?'); params.push(updates.termsAccepted ? 1 : 0); }
+    if (updates.email !== undefined) { sets.push('email = ?'); params.push(updates.email); }
+    if (updates.phone !== undefined) { sets.push('phone = ?'); params.push(updates.phone); }
+    if (updates.password !== undefined) { sets.push('password = ?'); params.push(updates.password); }
+    if (updates.location) {
+      sets.push('lat = ?'); params.push(updates.location.lat);
+      sets.push('lng = ?'); params.push(updates.location.lng);
+    }
+
+    if (sets.length > 0) {
+      params.push(req.params.id);
+      await execute(`UPDATE users SET ${sets.join(', ')} WHERE id = ?`, params);
+    }
+
+    const rows = await query<RowDataPacket[]>(`SELECT * FROM users WHERE id = ?`, [req.params.id]);
+    if (rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    const user = await buildUser(rows[0]);
+    res.json(user);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/users/:id/notifications
+router.post('/:id/notifications', async (req: Request, res: Response) => {
+  try {
+    const { message, sender, type, meta } = req.body;
+    const notifId = `notif-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
+    await execute(
+      `INSERT INTO notifications (id, user_id, message, timestamp, is_read, sender, type, meta_league_id, meta_league_name) VALUES (?, ?, ?, NOW(), 0, ?, ?, ?, ?)`,
+      [notifId, req.params.id, message, sender || 'System', type || 'general', meta?.leagueId || null, meta?.leagueName || null]
+    );
+    res.json({ success: true, id: notifId });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/users/notifications/send
+router.post('/notifications/send', async (req: Request, res: Response) => {
+  try {
+    const { target, message } = req.body;
+    let userIds: string[] = [];
+
+    if (target.type === 'all') {
+      const rows = await query<RowDataPacket[]>(`SELECT id FROM users`);
+      userIds = rows.map(r => r.id);
+    } else if (target.type === 'user' && target.userId) {
+      userIds = [target.userId];
+    } else if (target.type === 'filter' && target.criteria) {
+      let sql = 'SELECT id FROM users WHERE 1=1';
+      const params: any[] = [];
+      if (target.criteria.minAge) { sql += ' AND age >= ?'; params.push(target.criteria.minAge); }
+      if (target.criteria.maxAge) { sql += ' AND age <= ?'; params.push(target.criteria.maxAge); }
+      if (target.criteria.country) { sql += ' AND LOWER(country) = LOWER(?)'; params.push(target.criteria.country); }
+      const rows = await query<RowDataPacket[]>(sql, params);
+      userIds = rows.map(r => r.id);
+    }
+
+    for (const uid of userIds) {
+      const notifId = `notif-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
+      await execute(
+        `INSERT INTO notifications (id, user_id, message, timestamp, is_read, sender, type) VALUES (?, ?, ?, NOW(), 0, 'Admin', 'general')`,
+        [notifId, uid, message]
+      );
+    }
+
+    res.json({ success: true, count: userIds.length });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PATCH /api/users/:userId/notifications/:notifId/read
+router.patch('/:userId/notifications/:notifId/read', async (req: Request, res: Response) => {
+  try {
+    await execute(`UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?`, [req.params.notifId, req.params.userId]);
+    const rows = await query<RowDataPacket[]>(`SELECT * FROM users WHERE id = ?`, [req.params.userId]);
+    if (rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    const user = await buildUser(rows[0]);
+    res.json(user);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 });
 

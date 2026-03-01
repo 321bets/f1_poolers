@@ -1,106 +1,83 @@
 import express, { Request, Response } from 'express';
-import { getDb, saveDatabase } from '../database.js';
-import { randomUUID } from 'crypto';
+import { query, execute } from '../database.js';
+import { RowDataPacket } from 'mysql2/promise';
 
 const router = express.Router();
 
-// GET /api/rounds - Lista todas as rodadas
-router.get('/', (req: Request, res: Response) => {
-  const db = getDb();
-  const rounds = db.exec('SELECT * FROM rounds ORDER BY round_number');
-  
-  if (rounds.length > 0) {
-    const result = rounds[0].values.map((row: any[]) => ({
-      id: row[0],
-      name: row[1],
-      location: row[2],
-      country: row[3],
-      startDate: row[4],
-      endDate: row[5],
-      roundNumber: row[6]
-    }));
-    res.json(result);
-  } else {
-    res.json([]);
+// GET /api/rounds
+router.get('/', async (_req: Request, res: Response) => {
+  try {
+    const rows = await query<RowDataPacket[]>(`SELECT * FROM rounds ORDER BY number`);
+    res.json(rows.map(r => ({
+      id: r.id,
+      number: r.number,
+      name: r.name,
+      location: r.location,
+      circuit: r.circuit
+    })));
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// GET /api/rounds/:id - Busca rodada por ID
-router.get('/:id', (req: Request, res: Response) => {
-  const db = getDb();
-  const result = db.exec('SELECT * FROM rounds WHERE id = ?', [req.params.id]);
-  
-  if (result.length > 0 && result[0].values.length > 0) {
-    const row = result[0].values[0];
-    res.json({
-      id: row[0],
-      name: row[1],
-      location: row[2],
-      country: row[3],
-      startDate: row[4],
-      endDate: row[5],
-      roundNumber: row[6]
-    });
-  } else {
-    res.status(404).json({ error: 'Round not found' });
+// POST /api/rounds
+router.post('/', async (req: Request, res: Response) => {
+  try {
+    const { number, name, location, circuit } = req.body;
+    
+    // Count rounds for ID
+    const countRows = await query<RowDataPacket[]>(`SELECT COUNT(*) as cnt FROM rounds`);
+    const id = `round${countRows[0].cnt + 1}`;
+    
+    await execute(
+      `INSERT INTO rounds (id, number, name, location, circuit) VALUES (?, ?, ?, ?, ?)`,
+      [id, number, name, location, circuit]
+    );
+
+    // Give 50 coins to every user + notification
+    const users = await query<RowDataPacket[]>(`SELECT id FROM users`);
+    await execute(`UPDATE users SET balance = balance + 50`);
+    
+    for (const u of users) {
+      const nid = `notif-roundbonus-${id}-${u.id}`;
+      await execute(
+        `INSERT INTO notifications (id, user_id, message, timestamp, is_read, sender, type) VALUES (?, ?, ?, NOW(), 0, 'System', 'general')`,
+        [nid, u.id, `New Round Created: ${name}! You received 50 Fun-Coins.`]
+      );
+    }
+
+    res.json({ id, number, name, location, circuit });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// POST /api/rounds - Cria nova rodada (admin)
-router.post('/', (req: Request, res: Response) => {
-  const { name, location, country, startDate, endDate, roundNumber } = req.body;
-  const db = getDb();
-  
-  // Get next round number if not provided
-  let nextRoundNumber = roundNumber;
-  if (!nextRoundNumber) {
-    const countResult = db.exec('SELECT MAX(round_number) FROM rounds');
-    nextRoundNumber = (countResult.length > 0 && countResult[0].values[0][0]) 
-      ? (countResult[0].values[0][0] as number) + 1 
-      : 1;
+// PUT /api/rounds/:id
+router.put('/:id', async (req: Request, res: Response) => {
+  try {
+    const { number, name, location, circuit } = req.body;
+    await execute(
+      `UPDATE rounds SET number = ?, name = ?, location = ?, circuit = ? WHERE id = ?`,
+      [number, name, location, circuit, req.params.id]
+    );
+    res.json({ id: req.params.id, number, name, location, circuit });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
   }
-  
-  const id = `round-${nextRoundNumber}-${Date.now()}`;
-  
-  db.run(`INSERT INTO rounds (id, name, location, country, start_date, end_date, round_number) 
-          VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [id, name, location, country, startDate, endDate, nextRoundNumber]);
-  
-  saveDatabase();
-  
-  res.json({
-    id,
-    name,
-    location,
-    country,
-    startDate,
-    endDate,
-    roundNumber
-  });
 });
 
-// PUT /api/rounds/:id - Atualiza rodada (admin)
-router.put('/:id', (req: Request, res: Response) => {
-  const { name, location, country, startDate, endDate, roundNumber } = req.body;
-  const db = getDb();
-  
-  db.run(`UPDATE rounds SET name = ?, location = ?, country = ?, start_date = ?, end_date = ?, round_number = ? 
-          WHERE id = ?`,
-    [name, location, country, startDate, endDate, roundNumber, req.params.id]);
-  
-  saveDatabase();
-  
-  res.json({ success: true });
-});
-
-// DELETE /api/rounds/:id - Deleta rodada (admin)
-router.delete('/:id', (req: Request, res: Response) => {
-  const db = getDb();
-  
-  db.run('DELETE FROM rounds WHERE id = ?', [req.params.id]);
-  saveDatabase();
-  
-  res.json({ success: true });
+// DELETE /api/rounds/:id
+router.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const events = await query<RowDataPacket[]>(`SELECT id FROM events WHERE round_id = ?`, [req.params.id]);
+    if (events.length > 0) {
+      return res.status(400).json({ error: 'Cannot delete round with existing events. Delete events first.' });
+    }
+    await execute(`DELETE FROM rounds WHERE id = ?`, [req.params.id]);
+    res.json({ success: true });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 export default router;

@@ -35,6 +35,9 @@ COPY --from=builder /app/dist /var/www/html
 COPY --from=builder /app/server ./server
 COPY --from=builder /app/server/node_modules ./server/node_modules
 
+# Copy schema for DB init
+COPY --from=builder /app/schema.sql ./schema.sql
+
 # Expose ports
 EXPOSE 3000
 

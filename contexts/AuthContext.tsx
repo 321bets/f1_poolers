@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { User } from '../types';
-import * as authService from '../services/mockAuthService';
+import * as authService from '../services/apiAuthService';
 import { isBiometricAvailable, registerBiometric, authenticateBiometric, hasStoredCredentials } from '../services/biometricService';
 
 const AUTH_USER_STORAGE_KEY = 'f1poolers_auth_user';
