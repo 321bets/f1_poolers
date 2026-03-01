@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { League } from '../types';
 import LeagueDetailsModal from './LeagueDetailsModal';
 import GetCoinsModal from './GetCoinsModal';
@@ -26,6 +27,44 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
 
     // Store State
     const [isStoreOpen, setIsStoreOpen] = useState(false);
+    const [isShareOpen, setIsShareOpen] = useState(false);
+    const [copySuccess, setCopySuccess] = useState(false);
+    const { t } = useLanguage();
+
+    const inviteUrl = `https://adster.app/?ref=${user?.username || ''}`;
+    const inviteMsg = `Think you can outscore me in F1 predictions? \u{1F3CE}\u{FE0F} Join me on F1 Poolers \u2014 pick your Top 5 drivers & teams, climb the leaderboard, and prove who\'s the real paddock champion! Free to play, pure bragging rights. Let\'s race! \u{1F3C1} ${inviteUrl}`;
+    const inviteMsgShort = `Think you can beat my F1 predictions? \u{1F3CE}\u{FE0F} Join me on F1 Poolers! Free, fun & competitive. ${inviteUrl}`;
+
+    const handleShare = (platform: string) => {
+        const encoded = encodeURIComponent(inviteMsg);
+        const encodedShort = encodeURIComponent(inviteMsgShort);
+        const encodedUrl = encodeURIComponent(inviteUrl);
+        switch (platform) {
+            case 'whatsapp':
+                window.open(`https://wa.me/?text=${encoded}`, '_blank');
+                break;
+            case 'messenger':
+                window.open(`https://www.facebook.com/dialog/send?link=${encodedUrl}&app_id=0&redirect_uri=${encodedUrl}`, '_blank');
+                break;
+            case 'instagram':
+                navigator.clipboard.writeText(inviteMsg);
+                setCopySuccess(true);
+                setTimeout(() => setCopySuccess(false), 2000);
+                break;
+            case 'sms':
+                window.open(`sms:?body=${encodedShort}`, '_blank');
+                break;
+            case 'email':
+                window.open(`mailto:?subject=${encodeURIComponent('Join me on F1 Poolers! \u{1F3CE}\u{FE0F}')}&body=${encoded}`, '_blank');
+                break;
+            case 'copy':
+                navigator.clipboard.writeText(inviteMsg);
+                setCopySuccess(true);
+                setTimeout(() => setCopySuccess(false), 2000);
+                break;
+        }
+        if (platform !== 'copy' && platform !== 'instagram') setIsShareOpen(false);
+    };
 
     const managedLeagues = leagues.filter(l => l.adminId === user?.id);
 
@@ -139,6 +178,48 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                             >
                                 {isSaving ? 'Saving...' : 'Save Changes'}
                             </button>
+
+                            {/* Invite Friends */}
+                            <div className="pt-2 border-t border-gray-700">
+                                <button
+                                    onClick={() => setIsShareOpen(!isShareOpen)}
+                                    className="w-full text-center text-xs text-gray-400 hover:text-white py-2 transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <i className="fas fa-share-alt text-red-500"></i>
+                                    {t('inviteFriends')}
+                                </button>
+                                {isShareOpen && (
+                                    <div className="mt-2 bg-gray-900 rounded-lg p-3 border border-gray-700">
+                                        <p className="text-xs text-gray-500 mb-3 text-center">{t('inviteShareVia')}</p>
+                                        <div className="grid grid-cols-3 gap-2">
+                                            <button onClick={() => handleShare('whatsapp')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
+                                                <i className="fab fa-whatsapp text-green-500 text-xl"></i>
+                                                <span className="text-[10px] text-gray-400">WhatsApp</span>
+                                            </button>
+                                            <button onClick={() => handleShare('messenger')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
+                                                <i className="fab fa-facebook-messenger text-blue-500 text-xl"></i>
+                                                <span className="text-[10px] text-gray-400">Messenger</span>
+                                            </button>
+                                            <button onClick={() => handleShare('instagram')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
+                                                <i className="fab fa-instagram text-pink-500 text-xl"></i>
+                                                <span className="text-[10px] text-gray-400">Instagram</span>
+                                            </button>
+                                            <button onClick={() => handleShare('sms')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
+                                                <i className="fas fa-sms text-yellow-500 text-xl"></i>
+                                                <span className="text-[10px] text-gray-400">SMS</span>
+                                            </button>
+                                            <button onClick={() => handleShare('email')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
+                                                <i className="fas fa-envelope text-red-400 text-xl"></i>
+                                                <span className="text-[10px] text-gray-400">Email</span>
+                                            </button>
+                                            <button onClick={() => handleShare('copy')} className="flex flex-col items-center gap-1 p-2 rounded hover:bg-gray-800 transition-colors">
+                                                <i className={`fas ${copySuccess ? 'fa-check text-green-400' : 'fa-link text-gray-400'} text-xl`}></i>
+                                                <span className="text-[10px] text-gray-400">{copySuccess ? t('inviteCopied') : t('inviteCopyUrl')}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
 
