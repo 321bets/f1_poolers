@@ -34,6 +34,7 @@ COPY --from=builder /app/dist /var/www/html
 # Copy server
 COPY --from=builder /app/server ./server
 COPY --from=builder /app/server/node_modules ./server/node_modules
+RUN chmod -R +x ./server/node_modules/.bin/
 
 # Copy schema for DB init
 COPY --from=builder /app/schema.sql ./schema.sql
@@ -42,7 +43,7 @@ COPY --from=builder /app/schema.sql ./schema.sql
 EXPOSE 3000
 
 # Start script
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+COPY docker-entrypoint.sh /app-entrypoint.sh
+RUN sed -i 's/\r$//' /app-entrypoint.sh && chmod +x /app-entrypoint.sh
 
-CMD ["/docker-entrypoint.sh"]
+CMD ["/app-entrypoint.sh"]

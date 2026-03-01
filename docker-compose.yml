@@ -1,42 +1,18 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: f1poolers-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: f1pooler
-      MYSQL_DATABASE: f1pooler
-      MYSQL_USER: f1pooler
-      MYSQL_PASSWORD: f1pooler
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uf1pooler", "-pf1pooler"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   f1poolers:
     build: .
     container_name: f1poolers
     restart: unless-stopped
     ports:
       - "3080:3000"
-    depends_on:
-      mysql:
-        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - NODE_ENV=production
-      - MYSQL_HOST=mysql
+      - MYSQL_HOST=host.docker.internal
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=f1pooler
       - MYSQL_USER=f1pooler
       - MYSQL_PASSWORD=f1pooler
-
-volumes:
-  mysql_data:

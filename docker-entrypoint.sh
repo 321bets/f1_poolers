@@ -2,7 +2,7 @@
 
 # Start API server in background
 cd /app/server
-npx tsx src/index.ts &
+./node_modules/.bin/tsx src/index.ts &
 
 # Wait for API to start
 sleep 3
