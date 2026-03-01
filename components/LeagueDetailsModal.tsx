@@ -27,6 +27,7 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
     const [editPrize, setEditPrize] = useState(!!league.prize);
     const [prizeTitle, setPrizeTitle] = useState(league.prize?.title || '');
     const [prizeUrl, setPrizeUrl] = useState(league.prize?.imageUrl || '');
+    const prizeFileRef = React.useRef<HTMLInputElement>(null);
     const [prizeRules, setPrizeRules] = useState(league.prize?.rules || '');
 
     // Sort members by points (General League Scoreboard)
@@ -335,11 +336,16 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                                             </div>
                                             <div>
                                                 <label className="block text-[10px] text-gray-500 font-black uppercase mb-1">{t('visualEvidence')}</label>
-                                                <input 
-                                                    className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white text-xs font-bold focus:border-yellow-500 focus:outline-none" 
-                                                    placeholder="https://..."
-                                                    value={prizeUrl} onChange={e => setPrizeUrl(e.target.value)} required
-                                                />
+                                                <label className="w-full flex items-center gap-2 bg-gray-800 border border-gray-700 rounded px-3 py-2 text-xs cursor-pointer hover:border-yellow-500 transition-colors">
+                                                    <i className="fas fa-camera text-yellow-400"></i>
+                                                    <span className="text-gray-300 font-bold">{prizeUrl ? t('imageUploaded') : t('uploadPrizeImage')}</span>
+                                                    <input 
+                                                        ref={prizeFileRef}
+                                                        type="file" accept="image/*" className="hidden"
+                                                        onChange={e => { const f = e.target.files?.[0]; if (f) { const r = new FileReader(); r.onload = () => setPrizeUrl(r.result as string); r.readAsDataURL(f); } }}
+                                                    />
+                                                </label>
+                                                {prizeUrl && <img src={prizeUrl} alt="Preview" className="mt-2 w-16 h-16 rounded object-cover border border-yellow-500/50" />}
                                             </div>
                                             <div>
                                                 <label className="block text-[10px] text-gray-500 font-black uppercase mb-1">{t('sportingRegulations')}</label>

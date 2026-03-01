@@ -22,7 +22,7 @@ const LeagueLeaderboard: React.FC = () => {
     const [hasChat, setHasChat] = useState(false);
     const [addPrize, setAddPrize] = useState(false);
     const [prizeTitle, setPrizeTitle] = useState('');
-    const [prizeUrl, setPrizeUrl] = useState('');
+    const [prizeUrl, setPrizeUrl] = useState('');    const prizeFileRef = React.useRef<HTMLInputElement>(null);
     const [prizeRules, setPrizeRules] = useState('');
 
     // Sort leagues by member count (popularity)
@@ -42,6 +42,7 @@ const LeagueLeaderboard: React.FC = () => {
         setIsCreating(false);
         setNewName(''); setNewDesc(''); setIsPrivate(false);
         setHasChat(false); setAddPrize(false); setPrizeTitle(''); setPrizeUrl(''); setPrizeRules('');
+        if (prizeFileRef.current) prizeFileRef.current.value = '';
     };
 
     return (
@@ -101,11 +102,16 @@ const LeagueLeaderboard: React.FC = () => {
                                     />
                                     <div className="text-[9px] text-right text-gray-400">{40 - prizeTitle.length} {t('remaining')}</div>
                                 </div>
-                                <input 
-                                    className="w-full bg-gray-600 rounded px-2 py-1 text-white placeholder-gray-400 text-xs" 
-                                    placeholder={t('imageUrlPlaceholder')}
-                                    value={prizeUrl} onChange={e => setPrizeUrl(e.target.value)} required
-                                />
+                                <label className="w-full flex items-center gap-2 bg-gray-600 rounded px-2 py-1 text-xs cursor-pointer hover:bg-gray-500 transition-colors">
+                                    <i className="fas fa-camera text-yellow-400"></i>
+                                    <span className="text-gray-300">{prizeUrl ? t('imageUploaded') : t('uploadPrizeImage')}</span>
+                                    <input 
+                                        ref={prizeFileRef}
+                                        type="file" accept="image/*" className="hidden"
+                                        onChange={e => { const f = e.target.files?.[0]; if (f) { const r = new FileReader(); r.onload = () => setPrizeUrl(r.result as string); r.readAsDataURL(f); } }}
+                                    />
+                                </label>
+                                {prizeUrl && <img src={prizeUrl} alt="Preview" className="w-12 h-12 rounded object-cover border border-yellow-500/50" />}
                                 <div>
                                     <textarea 
                                         className="w-full bg-gray-600 rounded px-2 py-1 text-white placeholder-gray-400 text-xs" 
