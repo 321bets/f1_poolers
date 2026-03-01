@@ -106,6 +106,7 @@ export interface User {
   age?: number;
   country?: string;
   location?: { lat: number; lng: number };
+  timezone?: string;
   termsAccepted?: boolean;
   email?: string;
   phone?: string;

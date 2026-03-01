@@ -276,7 +276,7 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                                                 <div>
                                                     <span className="text-[9px] font-black text-red-600 uppercase tracking-widest block mb-1">{t('round')} {round?.number}</span>
                                                     <h4 className="text-sm font-black text-white uppercase italic group-hover:text-red-500 transition-colors">{round?.name} - {event.type}</h4>
-                                                    <p className="text-xs text-gray-500 font-bold mt-1 uppercase">{event.date.toLocaleDateString()}</p>
+                                                    <p className="text-xs text-gray-500 font-bold mt-1 uppercase">{event.date.toLocaleDateString(undefined, { timeZone: user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone })}</p>
                                                 </div>
                                                 <div className="text-right">
                                                     <span className="text-[9px] font-black text-gray-600 uppercase block mb-1">{t('leagueEntries')}</span>

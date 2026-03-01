@@ -264,7 +264,7 @@ export const dataService = {
   getSystemSettings: async (): Promise<SystemSettings> => Promise.resolve(systemSettings),
 
   // WRITE
-  createUser: async (username: string, password_raw: string, age: number, country: string, location?: {lat: number, lng: number}): Promise<User> => {
+  createUser: async (username: string, password_raw: string, age: number, country: string, location?: {lat: number, lng: number}, timezone?: string): Promise<User> => {
     if (users.some(u => u.username === username)) throw new Error('Username already exists');
     const newUser: User = {
       id: `user${users.length + 1}`,
@@ -278,6 +278,7 @@ export const dataService = {
       age,
       country,
       location,
+      timezone: timezone || 'America/New_York',
       termsAccepted: true,
       notifications: [{
         id: `notif-${Date.now()}`,

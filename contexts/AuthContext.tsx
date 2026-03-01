@@ -38,7 +38,7 @@ interface AuthContextType {
   isAdmin: boolean;
   isLoading: boolean;
   login: (username: string, password: string) => Promise<void>;
-  signup: (username: string, password: string, age: number, country: string, location?: {lat: number, lng: number}) => Promise<void>;
+  signup: (username: string, password: string, age: number, country: string, location?: {lat: number, lng: number}, timezone?: string) => Promise<void>;
   logout: () => void;
   updateUser: (updatedUser: User) => void;
   biometricAvailable: boolean;
@@ -75,8 +75,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     persistUser(loggedInUser);
   };
 
-  const signup = async (username: string, password: string, age: number, country: string, location?: {lat: number, lng: number}) => {
-    const newUser = await authService.signup(username, password, age, country, location);
+  const signup = async (username: string, password: string, age: number, country: string, location?: {lat: number, lng: number}, timezone?: string) => {
+    const newUser = await authService.signup(username, password, age, country, location, timezone);
     setUser(newUser);
     persistUser(newUser);
 

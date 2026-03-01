@@ -53,6 +53,9 @@ const AuthPage: React.FC = () => {
     const [country, setCountry] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [location, setLocation] = useState<{lat: number, lng: number} | undefined>(undefined);
+    const [timezone, setTimezone] = useState(() => {
+        try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return 'America/New_York'; }
+    });
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [locationStatus, setLocationStatus] = useState('');
 
@@ -101,7 +104,7 @@ const AuthPage: React.FC = () => {
                 if (password !== confirmPassword) throw new Error(t('passwordsDontMatch'));
                 if (!age || Number(age) < 18) throw new Error(t('minAge18'));
                 if (!termsAccepted) throw new Error(t('pleaseAcceptTerms'));
-                await signup(username, password, Number(age), country, location);
+                await signup(username, password, Number(age), country, location, timezone);
             }
         } catch (err: any) {
             console.error('Auth error:', err);

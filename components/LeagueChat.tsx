@@ -110,7 +110,7 @@ const LeagueChat: React.FC<LeagueChatProps> = ({ league }) => {
                                         {isAdmin && <i className="fas fa-crown ml-1 text-[10px]" title="League Admin"></i>}
                                         {isHighRoller && !isAdmin && <i className="fas fa-star ml-1 text-[10px]" title="High Roller"></i>}
                                     </span>
-                                    <span className="text-[10px] text-gray-500">{new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                    <span className="text-[10px] text-gray-500">{new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZone: user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone})}</span>
                                 </div>
                                 <div className={`p-2 rounded-lg text-sm relative group ${
                                     isMe ? 'bg-blue-600 text-white rounded-tr-none' : 

@@ -20,6 +20,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
     const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl || '');
     const [email, setEmail] = useState(user?.email || '');
     const [phone, setPhone] = useState(user?.phone || '');
+    const [timezone, setTimezone] = useState(user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York');
     const [isSaving, setIsSaving] = useState(false);
 
     // League State
@@ -72,7 +73,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
         if (!user) return;
         setIsSaving(true);
         try {
-            await updateUser({ id: user.id, avatarUrl, email: email || undefined, phone: phone || undefined });
+            await updateUser({ id: user.id, avatarUrl, email: email || undefined, phone: phone || undefined, timezone });
             alert(t('profileUpdated'));
         } catch (e) {
             alert(t('profileUpdateFailed'));
@@ -156,6 +157,13 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                                     <p className="text-xs text-gray-400">{t('age')}</p>
                                     <p className="font-bold">{user.age}</p>
                                 </div>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="block text-gray-400 text-xs font-bold uppercase tracking-wider"><i className="fas fa-globe text-red-500 mr-1"></i>{t('timezone')}</label>
+                                <select value={timezone} onChange={(e) => setTimezone(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm">
+                                    {Intl.supportedValuesOf('timeZone').map(tz => <option key={tz} value={tz}>{tz.replace(/_/g, ' ')}</option>)}
+                                </select>
+                                <p className="text-xs text-gray-500">{t('timezoneHint')}</p>
                             </div>
                             <div className="space-y-3">
                                 <h4 className="text-sm font-bold text-gray-300 uppercase tracking-wider"><i className="fas fa-shield-alt text-red-500 mr-2"></i>{t('recoveryContactLabel')}</h4>

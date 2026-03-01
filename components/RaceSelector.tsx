@@ -2,6 +2,7 @@ import React from 'react';
 import { Round, Event, EventType, EventStatus } from '../types';
 import { useData } from '../contexts/DataContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
 
 interface RoundSelectorProps {
   selectedRound: Round | null;
@@ -32,6 +33,8 @@ const getStatusClasses = (status: EventStatus) => {
 const RoundSelector: React.FC<RoundSelectorProps> = ({ selectedRound, onSelectRound, onPlaceBet }) => {
   const { rounds, events } = useData();
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const userTz = user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York';
 
   if (!selectedRound && rounds.length > 0) {
     onSelectRound(rounds[0]);
@@ -74,7 +77,7 @@ const RoundSelector: React.FC<RoundSelectorProps> = ({ selectedRound, onSelectRo
                     {event.status === EventStatus.LIVE && <span className="text-green-400 text-sm font-bold">{t('live')}</span>}
                     {event.status === EventStatus.FINISHED && <span className="text-gray-400 text-sm font-bold">{t('finished')}</span>}
                 </div>
-                <p className="text-xs text-gray-300 mb-2">{event.date.toLocaleString()}</p>
+                <p className="text-xs text-gray-300 mb-2">{event.date.toLocaleString(undefined, { timeZone: userTz })}</p>
                 <div className="bg-gray-600 p-3 rounded-md">
                     <div className="flex justify-between items-center">
                         <div>

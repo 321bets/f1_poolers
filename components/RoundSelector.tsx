@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Round, Event, EventType, EventStatus } from '../types';
 import { useData } from '../contexts/DataContext';
+import { useAuth } from '../contexts/AuthContext';
 import RaceResultsModal from './RaceResultsModal';
 
 interface RoundSelectorProps {
@@ -102,6 +103,8 @@ const PointsLegend: React.FC<{ type: EventType }> = ({ type }) => {
 }
 
 const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; onViewResults: (e: Event) => void }> = ({ event, onPlaceBet, onViewResults }) => {
+    const { user } = useAuth();
+    const userTz = user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York';
     const [multiplier, setMultiplier] = useState(1.0);
     const [countdown, setCountdown] = useState('--:--:--:---');
 
@@ -151,7 +154,7 @@ const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; onView
             
             <p className="text-xs text-gray-300 mb-3 flex items-center">
                 <i className="far fa-calendar-alt mr-1.5 opacity-70"></i>
-                {event.date.toLocaleString()}
+                {event.date.toLocaleString(undefined, { timeZone: userTz })}
             </p>
             
             {/* Stats Block */}
