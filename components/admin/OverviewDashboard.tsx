@@ -248,6 +248,18 @@ const OverviewDashboard: React.FC = () => {
     const retentionColors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#6366f1'];
     const retentionData = betsPerUserBuckets.filter(b => b.count > 0).map((b, i) => ({ label: b.label, value: b.count, color: retentionColors[i] }));
 
+    // --- PERFORMANCE BY COUNTRY ---
+    const countryPerf: Record<string, { users: number; totalPoints: number }> = {};
+    users.forEach(u => {
+      const c = u.country || 'Unknown';
+      if (!countryPerf[c]) countryPerf[c] = { users: 0, totalPoints: 0 };
+      countryPerf[c].users++;
+      countryPerf[c].totalPoints += u.points;
+    });
+    const countryPerformance = Object.entries(countryPerf)
+      .map(([country, d]) => ({ country, users: d.users, totalPoints: d.totalPoints, avgPoints: d.users ? Math.round((d.totalPoints / d.users) * 10) / 10 : 0 }))
+      .sort((a, b) => b.avgPoints - a.avgPoints);
+
     return {
       totalUsers, admins, avgAge, totalBalance, avgBalance, totalPoints,
       countryData, ageData,
@@ -261,6 +273,7 @@ const OverviewDashboard: React.FC = () => {
       engagementData, leagueEngagement,
       betsByEventTypeData, retentionData,
       driverOnlyBets, teamOnlyBets, comboBets, usersWithBets,
+      countryPerformance,
     };
   }, [users, allBets, events, results, leagues, rounds]);
 
@@ -362,6 +375,54 @@ const OverviewDashboard: React.FC = () => {
                   </td>
                 </tr>
               ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Performance by Country */}
+      <div className="bg-[#1a1a24] border border-gray-800 rounded-lg p-3">
+        <h4 className="text-[10px] text-gray-500 font-black uppercase mb-3 flex items-center gap-2">
+          <i className="fas fa-globe-americas text-red-500"></i> Performance by Country
+        </h4>
+        <p className="text-[9px] text-gray-600 mb-3">Ranked by average points per user — reflects strategy quality, not volume.</p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="text-gray-500 text-[9px] uppercase font-black border-b border-gray-800">
+                <th className="text-left pb-2 w-8">#</th>
+                <th className="text-left pb-2">Country</th>
+                <th className="text-right pb-2">Users</th>
+                <th className="text-right pb-2">Total Points</th>
+                <th className="text-right pb-2">Avg Points/User</th>
+                <th className="text-right pb-2 w-24">Performance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {stats.countryPerformance.map((row, i) => {
+                const topAvg = stats.countryPerformance[0]?.avgPoints || 1;
+                return (
+                  <tr key={row.country} className="border-b border-gray-800/50 text-gray-300 hover:bg-gray-800/30 transition-colors">
+                    <td className="py-1.5">
+                      <span className={`font-black ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-300' : i === 2 ? 'text-amber-600' : 'text-gray-500'}`}>
+                        {i + 1}
+                      </span>
+                    </td>
+                    <td className="py-1.5 font-bold">{row.country}</td>
+                    <td className="text-right">{row.users}</td>
+                    <td className="text-right">{row.totalPoints.toLocaleString()}</td>
+                    <td className="text-right font-black text-white">{row.avgPoints.toLocaleString()}</td>
+                    <td className="text-right">
+                      <div className="inline-block w-20 bg-gray-800 rounded-full h-2 overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${(row.avgPoints / topAvg) * 100}%`, backgroundColor: i === 0 ? '#f59e0b' : i === 1 ? '#9ca3af' : i === 2 ? '#b45309' : '#e10600' }}></div>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+              {stats.countryPerformance.length === 0 && (
+                <tr><td colSpan={6} className="text-center text-gray-600 py-4 italic">No user data available</td></tr>
+              )}
             </tbody>
           </table>
         </div>
