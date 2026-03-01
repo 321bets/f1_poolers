@@ -1,7 +1,7 @@
 
 import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import { Round, Event, Driver, User, Bet, Result, Team, Notification, League, CoinPack, AdSettings, LeaguePrize, MemberStatus, SystemSettings } from '../types';
-import { dataService } from '../services/dataService';
+import { dataService } from '../services/mockDataService';
 import { useAuth } from './AuthContext';
 
 interface DataContextType {
