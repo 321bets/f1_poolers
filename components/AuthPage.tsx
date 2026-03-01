@@ -96,6 +96,7 @@ const AuthPage: React.FC = () => {
                 await login(username, password);
                 console.log('Login successful!');
             } else {
+                if (username.length > 8 || /\s/.test(username)) throw new Error(t('usernameInvalid'));
                 if (!/^\d{5}$/.test(password)) throw new Error(t('passwordMustBe5Digits'));
                 if (password !== confirmPassword) throw new Error("Passwords don't match");
                 if (!age || Number(age) < 18) throw new Error("Min age 18");
@@ -150,7 +151,14 @@ const AuthPage: React.FC = () => {
                     
                     <div className="mb-4">
                         <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">{t('username')}</label>
-                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
+                        {isLoginView ? (
+                            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
+                        ) : (
+                            <>
+                                <input type="text" maxLength={8} value={username} onChange={(e) => { const v = e.target.value.replace(/\s/g, ''); if (v.length <= 8) setUsername(v); }} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
+                                <p className="text-gray-500 text-xs mt-1">{t('usernameHint')}</p>
+                            </>
+                        )}
                     </div>
                     
                     <div className="mb-4">

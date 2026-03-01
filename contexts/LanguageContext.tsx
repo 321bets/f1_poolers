@@ -139,11 +139,11 @@ const translations: Record<Language, Record<string, string>> = {
     statFilter_all: 'All',
     statFilter_race: 'Race',
     statFilter_qualifying: 'Qualifying',
-    statFilter_sprint: 'Sprint'
+    statFilter_sprint: 'Sprint',
+    usernameHint: 'Max 8 characters, no spaces',
+    usernameInvalid: 'Username must be max 8 characters with no spaces'
   },
   pt: {
-    welcome: 'Bem-vindo ao Paddock',
-    login: 'Entrar',
     signup: 'Cadastrar',
     howToPlay: 'Como Jogar e Pontuação',
     username: 'Usuário',
@@ -270,7 +270,9 @@ const translations: Record<Language, Record<string, string>> = {
     statFilter_all: 'Todos',
     statFilter_race: 'Corrida',
     statFilter_qualifying: 'Qualificação',
-    statFilter_sprint: 'Sprint'
+    statFilter_sprint: 'Sprint',
+    usernameHint: 'Máx 8 caracteres, sem espaços',
+    usernameInvalid: 'Usuário deve ter no máximo 8 caracteres sem espaços'
   },
   es: {
     welcome: 'Bienvenido al Paddock',
@@ -401,7 +403,9 @@ const translations: Record<Language, Record<string, string>> = {
     statFilter_all: 'Todos',
     statFilter_race: 'Carrera',
     statFilter_qualifying: 'Clasificación',
-    statFilter_sprint: 'Sprint'
+    statFilter_sprint: 'Sprint',
+    usernameHint: 'Máx 8 caracteres, sin espacios',
+    usernameInvalid: 'El usuario debe tener máximo 8 caracteres sin espacios'
   }
 };
 
