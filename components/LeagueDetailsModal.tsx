@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
 import LeagueChat from './LeagueChat';
 import RaceResultsModal from './RaceResultsModal';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface LeagueDetailsModalProps {
     league: League;
@@ -15,6 +16,7 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
     const { user } = useAuth();
     // Fix: Destructure 'allBets' from useData to resolve the reference error on line 280
     const { users, events, results, rounds, allBets, joinLeague, leaveLeague, inviteUserToLeague, updateLeagueSettings, moderateLeagueMember } = useData();
+    const { t } = useLanguage();
     const [inviteUsername, setInviteUsername] = useState('');
     const [isJoining, setIsJoining] = useState(false);
     const [viewMode, setViewMode] = useState<'standings' | 'chat' | 'history' | 'admin'>('standings');
@@ -42,7 +44,7 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
         setIsJoining(true);
         try {
             if (league.isPrivate) {
-                const code = prompt("Enter Invite Code:");
+                const code = prompt(t('enterInviteCode'));
                 if (!code) return;
                 await joinLeague(league.id, code);
             } else {
@@ -57,7 +59,7 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
 
     const handleLeave = async () => {
         if (!user) return;
-        if (confirm("Are you sure you want to leave this league?")) {
+        if (confirm(t('leaveConfirm'))) {
             await leaveLeague(league.id);
             onClose();
         }
@@ -66,14 +68,14 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
     const handleCopyLink = () => {
         const link = `${window.location.origin}/join/${league.inviteCode}`;
         navigator.clipboard.writeText(link);
-        alert(`Invite link copied!\nCode: ${league.inviteCode}`);
+        alert(`${t('inviteLinkCopied')}\nCode: ${league.inviteCode}`);
     };
 
     const handleInviteUser = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             await inviteUserToLeague(league.id, inviteUsername);
-            alert(`Invitation sent to ${inviteUsername}`);
+            alert(`${t('invitationSent')} ${inviteUsername}`);
             setInviteUsername('');
         } catch (e: any) {
             alert(e.message);
@@ -89,12 +91,12 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
         } : undefined;
 
         await updateLeagueSettings(league.id, { hasChat: editChat, prize: prizeData });
-        alert('League settings updated!');
+        alert(t('leagueSettingsUpdated'));
         setViewMode('standings');
     };
     
     const handleModerateUser = async (targetId: string, action: MemberStatus | 'unsuspend') => {
-        if (!confirm(`Confirm action: ${action}?`)) return;
+        if (!confirm(`${t('confirmAction')} ${action}?`)) return;
         await moderateLeagueMember(league.id, targetId, action);
     };
 
@@ -131,7 +133,7 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                         </div>
                         <div className="flex-1 min-w-0">
                              <h3 className="text-yellow-500 font-black text-sm uppercase italic flex items-center">
-                                <i className="fas fa-trophy mr-2"></i> Season Prize: {league.prize.title}
+                                <i className="fas fa-trophy mr-2"></i> {t('seasonPrizeLabel')} {league.prize.title}
                              </h3>
                              <p className="text-gray-400 text-[10px] font-bold uppercase truncate">{league.prize.rules}</p>
                         </div>
@@ -145,20 +147,20 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                             onClick={() => setViewMode('standings')} 
                             className={`px-4 py-3 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${viewMode === 'standings' ? 'text-red-600 border-red-600 bg-[#1f1f27]' : 'text-gray-500 border-transparent hover:text-gray-300'}`}
                          >
-                             General Scoreboard
+                             {t('generalScoreboard')}
                          </button>
                          <button 
                             onClick={() => setViewMode('history')} 
                             className={`px-4 py-3 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${viewMode === 'history' ? 'text-red-600 border-red-600 bg-[#1f1f27]' : 'text-gray-500 border-transparent hover:text-gray-300'}`}
                          >
-                             Event History
+                             {t('eventHistoryTab')}
                          </button>
                          {league.hasChat && isMember && (
                              <button 
                                 onClick={() => setViewMode('chat')} 
                                 className={`px-4 py-3 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all ${viewMode === 'chat' ? 'text-red-600 border-red-600 bg-[#1f1f27]' : 'text-gray-500 border-transparent hover:text-gray-300'}`}
                              >
-                                 Paddock Chat
+                                 {t('paddockChat')}
                              </button>
                          )}
                     </div>
@@ -170,17 +172,17 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                                 disabled={isJoining}
                                 className="bg-red-600 hover:bg-red-700 text-white font-black py-1 px-4 rounded-sm text-[10px] uppercase italic tracking-widest shadow-lg shadow-red-900/20"
                             >
-                                {isJoining ? 'Joining...' : 'Join Grid'}
+                                {isJoining ? t('joining') : t('joinGrid')}
                             </button>
                         )}
                         {isMember && !isAdmin && (
                             <button onClick={handleLeave} className="text-gray-500 hover:text-red-500 text-[10px] font-black uppercase tracking-widest transition-colors">
-                                Leave League
+                                {t('leaveLeague')}
                             </button>
                         )}
                         {isAdmin && (
                             <button onClick={handleCopyLink} className="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-black py-1 px-4 rounded-sm uppercase italic tracking-widest shadow-lg shadow-blue-900/20">
-                                <i className="fas fa-link mr-1"></i> Copy Invite
+                                <i className="fas fa-link mr-1"></i> {t('copyInviteBtn')}
                             </button>
                         )}
                     </div>
@@ -196,11 +198,11 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                                         type="text" 
                                         value={inviteUsername}
                                         onChange={e => setInviteUsername(e.target.value)}
-                                        placeholder="Invite member by username..."
+                                        placeholder={t('inviteMemberPlaceholder')}
                                         className="flex-1 bg-gray-800 text-white text-xs font-bold rounded px-3 py-1.5 focus:outline-none focus:border-red-600 border border-transparent transition-colors"
                                     />
                                     <button type="submit" className="bg-gray-700 hover:bg-gray-600 text-white text-[10px] font-black uppercase italic px-4 rounded transition-colors">
-                                        Send Invite
+                                        {t('sendInvite')}
                                     </button>
                                 </form>
                             )}
@@ -231,19 +233,19 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                                             <div className="flex items-center gap-4">
                                                 <div className="text-right">
                                                     <span className="block font-black italic text-blue-400 leading-none">{u.points.toLocaleString()}</span>
-                                                    <span className="text-[8px] text-gray-600 font-black uppercase">Season PTS</span>
+                                                    <span className="text-[8px] text-gray-600 font-black uppercase">{t('seasonPts')}</span>
                                                 </div>
                                                 {isAdmin && u.id !== user?.id && (
                                                     <div className="relative group">
                                                         <button className="text-gray-600 hover:text-white transition-colors p-1"><i className="fas fa-ellipsis-v"></i></button>
                                                         <div className="absolute right-0 mt-1 w-32 bg-[#15151e] border border-gray-700 rounded shadow-2xl hidden group-hover:block z-10 overflow-hidden">
                                                             {isSuspended ? (
-                                                                <button onClick={() => handleModerateUser(u.id, 'unsuspend')} className="block w-full text-left px-3 py-2 text-[10px] font-black uppercase text-green-500 hover:bg-gray-800">Unsuspend</button>
+                                                                <button onClick={() => handleModerateUser(u.id, 'unsuspend')} className="block w-full text-left px-3 py-2 text-[10px] font-black uppercase text-green-500 hover:bg-gray-800">{t('unsuspend')}</button>
                                                             ) : (
-                                                                <button onClick={() => handleModerateUser(u.id, 'suspended')} className="block w-full text-left px-3 py-2 text-[10px] font-black uppercase text-yellow-500 hover:bg-gray-800">Suspend</button>
+                                                                <button onClick={() => handleModerateUser(u.id, 'suspended')} className="block w-full text-left px-3 py-2 text-[10px] font-black uppercase text-yellow-500 hover:bg-gray-800">{t('suspend')}</button>
                                                             )}
                                                             {!isBanned && (
-                                                                <button onClick={() => handleModerateUser(u.id, 'banned')} className="block w-full text-left px-3 py-2 text-[10px] font-black uppercase text-red-600 hover:bg-gray-800 border-t border-gray-800">Ban User</button>
+                                                                <button onClick={() => handleModerateUser(u.id, 'banned')} className="block w-full text-left px-3 py-2 text-[10px] font-black uppercase text-red-600 hover:bg-gray-800 border-t border-gray-800">{t('banUser')}</button>
                                                             )}
                                                         </div>
                                                     </div>
@@ -259,7 +261,7 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                     {/* EVENT HISTORY VIEW */}
                     {viewMode === 'history' && (
                         <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
-                            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4">Past Sessions Scoreboards</h3>
+                            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4">{t('pastSessions')}</h3>
                             <div className="grid grid-cols-1 gap-3">
                                 {finishedEvents.map(event => {
                                     const round = rounds.find(r => r.id === event.roundId);
@@ -271,12 +273,12 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                                         >
                                             <div className="flex justify-between items-center">
                                                 <div>
-                                                    <span className="text-[9px] font-black text-red-600 uppercase tracking-widest block mb-1">Round {round?.number}</span>
+                                                    <span className="text-[9px] font-black text-red-600 uppercase tracking-widest block mb-1">{t('round')} {round?.number}</span>
                                                     <h4 className="text-sm font-black text-white uppercase italic group-hover:text-red-500 transition-colors">{round?.name} - {event.type}</h4>
                                                     <p className="text-xs text-gray-500 font-bold mt-1 uppercase">{event.date.toLocaleDateString()}</p>
                                                 </div>
                                                 <div className="text-right">
-                                                    <span className="text-[9px] font-black text-gray-600 uppercase block mb-1">League Entries</span>
+                                                    <span className="text-[9px] font-black text-gray-600 uppercase block mb-1">{t('leagueEntries')}</span>
                                                     <span className="text-lg font-black text-white italic">
                                                         {allBets.filter(b => b.eventId === event.id && league.members.includes(b.userId)).length}
                                                     </span>
@@ -284,7 +286,7 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                                             </div>
                                             <div className="mt-3 pt-3 border-t border-gray-800 flex justify-end">
                                                 <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest group-hover:translate-x-1 transition-transform">
-                                                    View Scoreboard <i className="fas fa-arrow-right ml-1"></i>
+                                                    {t('viewScoreboardLink')} <i className="fas fa-arrow-right ml-1"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -292,7 +294,7 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                                 })}
                                 {finishedEvents.length === 0 && (
                                     <div className="py-20 text-center text-gray-600 font-bold uppercase italic tracking-widest border-2 border-dashed border-gray-800 rounded-lg">
-                                        No events completed for this season yet.
+                                        {t('noEventsYet')}
                                     </div>
                                 )}
                             </div>
@@ -307,32 +309,32 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                     {/* ADMIN VIEW */}
                     {viewMode === 'admin' && isAdmin && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2">
-                            <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest">League Command Centre</h3>
+                            <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest">{t('leagueCommandCentre')}</h3>
                             <form onSubmit={handleSaveSettings} className="space-y-4">
                                 <label className="flex items-center cursor-pointer bg-[#15151e] p-4 rounded border border-gray-800 hover:border-blue-600/50 transition-colors">
                                     <input type="checkbox" checked={editChat} onChange={e => setEditChat(e.target.checked)} className="mr-3 h-5 w-5 text-red-600 rounded bg-gray-800 border-gray-700" />
-                                    <span className="text-white text-xs font-black uppercase italic tracking-widest">Enable Member Telemetry (Chat)</span>
+                                    <span className="text-white text-xs font-black uppercase italic tracking-widest">{t('enableTelemetry')}</span>
                                 </label>
 
                                 <div className="bg-[#15151e] p-4 rounded border border-gray-800 space-y-4">
                                     <label className="flex items-center cursor-pointer mb-2">
                                         <input type="checkbox" checked={editPrize} onChange={e => setEditPrize(e.target.checked)} className="mr-3 h-5 w-5 text-yellow-500 rounded bg-gray-800 border-gray-700" />
-                                        <span className="text-yellow-500 font-black text-xs uppercase italic tracking-widest"><i className="fas fa-trophy mr-2"></i> Custom Seasonal Prize</span>
+                                        <span className="text-yellow-500 font-black text-xs uppercase italic tracking-widest"><i className="fas fa-trophy mr-2"></i> {t('customSeasonalPrize')}</span>
                                     </label>
                                     
                                     {editPrize && (
                                         <div className="pl-4 border-l-2 border-yellow-500 space-y-4 mt-4 animate-in slide-in-from-left-2">
                                             <div>
-                                                <label className="block text-[10px] text-gray-500 font-black uppercase mb-1">Prize Designation</label>
+                                                <label className="block text-[10px] text-gray-500 font-black uppercase mb-1">{t('prizeDesignation')}</label>
                                                 <input 
                                                     className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white text-xs font-bold focus:border-yellow-500 focus:outline-none" 
-                                                    placeholder="e.g. Legendary Gold Helmet"
+                                                    placeholder={t('prizeDesignationPlaceholder')}
                                                     maxLength={40}
                                                     value={prizeTitle} onChange={e => setPrizeTitle(e.target.value)} required
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-[10px] text-gray-500 font-black uppercase mb-1">Visual Evidence (Image URL)</label>
+                                                <label className="block text-[10px] text-gray-500 font-black uppercase mb-1">{t('visualEvidence')}</label>
                                                 <input 
                                                     className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white text-xs font-bold focus:border-yellow-500 focus:outline-none" 
                                                     placeholder="https://..."
@@ -340,10 +342,10 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-[10px] text-gray-500 font-black uppercase mb-1">Sporting Regulations (Rules)</label>
+                                                <label className="block text-[10px] text-gray-500 font-black uppercase mb-1">{t('sportingRegulations')}</label>
                                                 <textarea 
                                                     className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white text-xs font-bold focus:border-yellow-500 focus:outline-none" 
-                                                    placeholder="Describe how members win this prize..."
+                                                    placeholder={t('describePrize')}
                                                     maxLength={500}
                                                     rows={4}
                                                     value={prizeRules} onChange={e => setPrizeRules(e.target.value)} required
@@ -354,7 +356,7 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ league, onClose
                                 </div>
 
                                 <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-sm text-xs uppercase italic tracking-widest shadow-lg shadow-green-900/20 transition-all active:scale-95">
-                                    Finalize Sporting Changes
+                                    {t('finalizeChanges')}
                                 </button>
                             </form>
                         </div>

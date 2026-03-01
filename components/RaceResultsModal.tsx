@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Event, Result, Bet } from '../types';
 import { useData } from '../contexts/DataContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface RaceResultsModalProps {
   event: Event;
@@ -11,6 +12,7 @@ interface RaceResultsModalProps {
 
 const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onClose }) => {
   const { rounds, allBets, users } = useData();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'podium' | 'scoreboard'>('podium');
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -45,10 +47,10 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
         <div className="p-5 border-b border-gray-700 bg-[#15151e] flex justify-between items-center">
             <div>
                 <h2 className="text-xl font-black text-white uppercase tracking-tighter italic">
-                    <span className="text-red-600 mr-2">Results:</span> {round?.name}
+                    <span className="text-red-600 mr-2">{t('resultsLabel')}</span> {round?.name}
                 </h2>
                 <p className="text-gray-400 text-xs font-bold uppercase tracking-widest mt-1">
-                    {event.type} • Official Classification
+                    {event.type} • {t('officialClassification')}
                 </p>
             </div>
             <button onClick={onClose} className="text-gray-500 hover:text-white text-3xl font-light transition-colors">&times;</button>
@@ -60,13 +62,13 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                 onClick={() => setActiveTab('podium')}
                 className={`flex-1 py-3 text-xs font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'podium' ? 'text-red-600 border-red-600 bg-[#1f1f27]' : 'text-gray-500 border-transparent hover:text-gray-300'}`}
             >
-                Podium & Payouts
+                {t('podiumPayouts')}
             </button>
             <button 
                 onClick={() => setActiveTab('scoreboard')}
                 className={`flex-1 py-3 text-xs font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'scoreboard' ? 'text-red-600 border-red-600 bg-[#1f1f27]' : 'text-gray-500 border-transparent hover:text-gray-300'}`}
             >
-                Full Scoreboard
+                {t('fullScoreboard')}
             </button>
         </div>
 
@@ -76,7 +78,7 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                     {/* Top 5 Podium */}
                     <div>
                         <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                            <span className="bg-red-600 w-1 h-4"></span> Official Top 5
+                            <span className="bg-red-600 w-1 h-4"></span> {t('officialTop5')}
                         </h3>
                         <div className="grid grid-cols-1 gap-2">
                             {result.positions.map((driver, index) => (
@@ -101,15 +103,15 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                     {/* Betting Pool Results */}
                     <div>
                         <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                            <span className="bg-green-600 w-1 h-4"></span> Prize Distribution
+                            <span className="bg-green-600 w-1 h-4"></span> {t('prizeDistribution')}
                         </h3>
                         <div className="grid grid-cols-2 gap-4 mb-4">
                             <div className="bg-[#15151e] p-4 rounded border border-gray-800 text-center">
-                                <p className="text-gray-500 text-[10px] font-black uppercase mb-1">Total Purse</p>
+                                <p className="text-gray-500 text-[10px] font-black uppercase mb-1">{t('totalPurse')}</p>
                                 <p className="text-xl font-black text-green-500 italic">{result.totalPrizePool.toLocaleString()} <i className="fas fa-coins text-sm ml-1"></i></p>
                             </div>
                             <div className="bg-[#15151e] p-4 rounded border border-gray-800 text-center">
-                                <p className="text-gray-500 text-[10px] font-black uppercase mb-1">Winners</p>
+                                <p className="text-gray-500 text-[10px] font-black uppercase mb-1">{t('winnersLabel')}</p>
                                 <p className="text-xl font-black text-white italic">{result.winners.filter(w => w.prizeAmount > 0).length}</p>
                             </div>
                         </div>
@@ -117,9 +119,9 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                         {result.winners.filter(w => w.pointsEarned > 0 || w.prizeAmount > 0).length > 0 ? (
                             <div className="bg-[#15151e] rounded border border-gray-800 overflow-hidden">
                                 <div className="px-4 py-2 bg-gray-900/50 font-black text-[10px] text-gray-500 uppercase grid grid-cols-3 border-b border-gray-800">
-                                    <span>Participant</span>
-                                    <span className="text-right">Points</span>
-                                    <span className="text-right">Prize</span>
+                                    <span>{t('participantLabel')}</span>
+                                    <span className="text-right">{t('pointsLabel')}</span>
+                                    <span className="text-right">{t('prizeLabel')}</span>
                                 </div>
                                 <ul className="divide-y divide-gray-800">
                                     {result.winners.slice(0, 10).map((winner, idx) => (
@@ -134,7 +136,7 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                                     {result.winners.length > 10 && (
                                         <li className="p-2 text-center">
                                             <button onClick={() => setActiveTab('scoreboard')} className="text-[10px] text-red-500 font-black uppercase hover:underline">
-                                                View all {result.winners.length} entries in Scoreboard
+                                                {t('viewAllEntries')} ({result.winners.length})
                                             </button>
                                         </li>
                                     )}
@@ -142,7 +144,7 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                             </div>
                         ) : (
                             <div className="p-8 bg-[#15151e] rounded border border-gray-800 text-center text-gray-500 italic text-sm">
-                                No participants earned points in this session.
+                                {t('noParticipantsEarned')}
                             </div>
                         )}
                     </div>
@@ -153,13 +155,13 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                 <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
                     <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
                         <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
-                            <span className="bg-blue-600 w-1 h-4"></span> Event Scoreboard
+                            <span className="bg-blue-600 w-1 h-4"></span> {t('eventScoreboard')}
                         </h3>
                         <div className="relative w-full sm:w-64">
                             <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
                             <input 
                                 type="text"
-                                placeholder="Search user..."
+                                placeholder={t('searchUser')}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="w-full bg-[#15151e] border border-gray-700 rounded px-8 py-1.5 text-xs text-white focus:outline-none focus:border-red-600 transition-colors"
@@ -171,12 +173,12 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                         <table className="w-full text-left border-collapse min-w-[600px]">
                             <thead>
                                 <tr className="bg-gray-900/50 border-b border-gray-800">
-                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase">Rank</th>
-                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase">User</th>
-                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase">P1-P5 Prediction</th>
-                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase text-center">Mult</th>
-                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase text-right">Points</th>
-                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase text-right">Prize</th>
+                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase">{t('rankLabel')}</th>
+                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase">{t('userLabel')}</th>
+                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase">{t('p15Prediction')}</th>
+                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase text-center">{t('mult')}</th>
+                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase text-right">{t('pointsLabel')}</th>
+                                    <th className="px-4 py-3 text-[10px] font-black text-gray-500 uppercase text-right">{t('prizeLabel')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-800/50">
@@ -215,7 +217,7 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                                                             </div>
                                                         </div>
                                                     ))
-                                                ) : <span className="text-gray-600 italic text-[10px]">No prediction</span>}
+                                                ) : <span className="text-gray-600 italic text-[10px]">{t('noPrediction')}</span>}
                                             </div>
                                         </td>
                                         <td className="px-4 py-3 text-center">
@@ -233,7 +235,7 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                                 ))}
                                 {filteredScoreboard.length === 0 && (
                                     <tr>
-                                        <td colSpan={6} className="px-4 py-8 text-center text-gray-600 italic text-xs">No entries found matching your search.</td>
+                                        <td colSpan={6} className="px-4 py-8 text-center text-gray-600 italic text-xs">{t('noEntriesFound')}</td>
                                     </tr>
                                 )}
                             </tbody>

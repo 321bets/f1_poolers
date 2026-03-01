@@ -73,9 +73,9 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
         setIsSaving(true);
         try {
             await updateUser({ id: user.id, avatarUrl, email: email || undefined, phone: phone || undefined });
-            alert('Profile updated!');
+            alert(t('profileUpdated'));
         } catch (e) {
-            alert('Failed to update profile.');
+            alert(t('profileUpdateFailed'));
         } finally {
             setIsSaving(false);
         }
@@ -85,7 +85,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
         const file = e.target.files?.[0];
         if (file) {
             if (file.size > 2 * 1024 * 1024) {
-                alert('Image must be less than 2MB');
+                alert(t('imageTooLarge'));
                 return;
             }
             const reader = new FileReader();
@@ -102,7 +102,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
             <div className="bg-gray-800 rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
                 <div className="p-5 border-b border-gray-700 flex justify-between items-center bg-gray-900 rounded-t-lg">
-                    <h2 className="text-xl font-bold text-white">User Settings</h2>
+                    <h2 className="text-xl font-bold text-white">{t('userSettings')}</h2>
                     <button onClick={onClose} className="text-gray-400 hover:text-white text-2xl">&times;</button>
                 </div>
 
@@ -111,13 +111,13 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                         onClick={() => setActiveTab('profile')}
                         className={`flex-1 py-3 font-bold transition-colors border-b-2 ${activeTab === 'profile' ? 'text-red-500 border-red-500 bg-gray-800' : 'text-gray-500 border-transparent hover:text-white'}`}
                     >
-                        Profile
+                        {t('profile')}
                     </button>
                     <button 
                         onClick={() => setActiveTab('leagues')}
                         className={`flex-1 py-3 font-bold transition-colors border-b-2 ${activeTab === 'leagues' ? 'text-blue-500 border-blue-500 bg-gray-800' : 'text-gray-500 border-transparent hover:text-white'}`}
                     >
-                        My Leagues ({managedLeagues.length})
+                        {t('myLeagues')} ({managedLeagues.length})
                     </button>
                 </div>
 
@@ -139,34 +139,34 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                                 </div>
                                 <div className="flex-1">
                                     <h3 className="text-xl font-bold text-white">{user.username}</h3>
-                                    <p className="text-gray-400">Member since {new Date().getFullYear()}</p>
+                                    <p className="text-gray-400">{t('memberSince')} {new Date().getFullYear()}</p>
                                     <div className="mt-2 text-yellow-400 font-bold text-lg mb-2">
                                         {user.balance.toLocaleString()} Fun-Coins
                                     </div>
                                     {/* Get Fun Coins button hidden for now */}
                                 </div>
                             </div>
-                            <p className="text-xs text-gray-500 mt-2">Click the camera icon to upload a new avatar (max 2MB)</p>
+                            <p className="text-xs text-gray-500 mt-2">{t('avatarHint')}</p>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="bg-gray-700 p-3 rounded">
-                                    <p className="text-xs text-gray-400">Country</p>
+                                    <p className="text-xs text-gray-400">{t('country')}</p>
                                     <p className="font-bold">{user.country}</p>
                                 </div>
                                 <div className="bg-gray-700 p-3 rounded">
-                                    <p className="text-xs text-gray-400">Age</p>
+                                    <p className="text-xs text-gray-400">{t('age')}</p>
                                     <p className="font-bold">{user.age}</p>
                                 </div>
                             </div>
                             <div className="space-y-3">
-                                <h4 className="text-sm font-bold text-gray-300 uppercase tracking-wider"><i className="fas fa-shield-alt text-red-500 mr-2"></i>Recovery Contact</h4>
-                                <p className="text-xs text-gray-500">Add an email or phone so you can recover your account if you forget your credentials. We will never send messages to these contacts.</p>
+                                <h4 className="text-sm font-bold text-gray-300 uppercase tracking-wider"><i className="fas fa-shield-alt text-red-500 mr-2"></i>{t('recoveryContactLabel')}</h4>
+                                <p className="text-xs text-gray-500">{t('recoveryContactHint')}</p>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <div>
-                                        <label className="block text-gray-400 text-xs font-bold mb-1">Email</label>
+                                        <label className="block text-gray-400 text-xs font-bold mb-1">{t('email')}</label>
                                         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm" />
                                     </div>
                                     <div>
-                                        <label className="block text-gray-400 text-xs font-bold mb-1">Phone</label>
+                                        <label className="block text-gray-400 text-xs font-bold mb-1">{t('phone')}</label>
                                         <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+1 234 567 8900" className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm" />
                                     </div>
                                 </div>
@@ -176,7 +176,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                                 disabled={isSaving}
                                 className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded transition-colors"
                             >
-                                {isSaving ? 'Saving...' : 'Save Changes'}
+                                {isSaving ? t('saving') : t('saveChanges')}
                             </button>
 
                             {/* Invite Friends */}
@@ -242,12 +242,12 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                     {activeTab === 'leagues' && (
                         <div>
                             <div className="mb-4">
-                                <h3 className="font-bold text-white mb-2">Leagues You Manage</h3>
-                                <p className="text-sm text-gray-400">Click a league to view details or invite friends.</p>
+                                <h3 className="font-bold text-white mb-2">{t('leaguesYouManage')}</h3>
+                                <p className="text-sm text-gray-400">{t('leaguesClickToView')}</p>
                             </div>
                             {managedLeagues.length === 0 ? (
                                 <div className="text-center py-10 border-2 border-dashed border-gray-700 rounded text-gray-500">
-                                    You haven't created any leagues yet.
+                                    {t('noLeaguesYet')}
                                 </div>
                             ) : (
                                 <div className="space-y-3">
@@ -259,7 +259,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                                         >
                                             <div>
                                                 <h4 className="font-bold text-white">{l.name}</h4>
-                                                <p className="text-xs text-gray-400">{l.isPrivate ? 'Private' : 'Public'} • {l.members.length} Members</p>
+                                                <p className="text-xs text-gray-400">{l.isPrivate ? t('privateLabel') : t('publicLabel')} • {l.members.length} {t('membersLabel')}</p>
                                             </div>
                                             <i className="fas fa-chevron-right text-gray-500"></i>
                                         </div>

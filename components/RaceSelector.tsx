@@ -1,6 +1,7 @@
 import React from 'react';
 import { Round, Event, EventType, EventStatus } from '../types';
 import { useData } from '../contexts/DataContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface RoundSelectorProps {
   selectedRound: Round | null;
@@ -30,6 +31,7 @@ const getStatusClasses = (status: EventStatus) => {
 
 const RoundSelector: React.FC<RoundSelectorProps> = ({ selectedRound, onSelectRound, onPlaceBet }) => {
   const { rounds, events } = useData();
+  const { t } = useLanguage();
 
   if (!selectedRound && rounds.length > 0) {
     onSelectRound(rounds[0]);
@@ -43,7 +45,7 @@ const RoundSelector: React.FC<RoundSelectorProps> = ({ selectedRound, onSelectRo
 
   return (
     <div className="bg-gray-800 rounded-lg shadow-xl p-6">
-      <h2 className="text-2xl font-bold mb-4 text-red-500">Upcoming Rounds</h2>
+      <h2 className="text-2xl font-bold mb-4 text-red-500">{t('upcomingRounds')}</h2>
       <div className="flex space-x-2 mb-6 border-b border-gray-700 pb-4 overflow-x-auto">
         {rounds.map(round => (
           <button
@@ -69,18 +71,18 @@ const RoundSelector: React.FC<RoundSelectorProps> = ({ selectedRound, onSelectRo
                     <div className={`text-white text-sm font-bold px-3 py-1 rounded-full inline-block mb-2 ${eventTypeColors[event.type]}`}>
                         {event.type}
                     </div>
-                    {event.status === EventStatus.LIVE && <span className="text-green-400 text-sm font-bold">LIVE</span>}
-                    {event.status === EventStatus.FINISHED && <span className="text-gray-400 text-sm font-bold">FINISHED</span>}
+                    {event.status === EventStatus.LIVE && <span className="text-green-400 text-sm font-bold">{t('live')}</span>}
+                    {event.status === EventStatus.FINISHED && <span className="text-gray-400 text-sm font-bold">{t('finished')}</span>}
                 </div>
                 <p className="text-xs text-gray-300 mb-2">{event.date.toLocaleString()}</p>
                 <div className="bg-gray-600 p-3 rounded-md">
                     <div className="flex justify-between items-center">
                         <div>
-                            <p className="text-xs text-gray-300">Entry Fee</p>
+                            <p className="text-xs text-gray-300">{t('entryFee')}</p>
                             <p className="font-bold text-yellow-400">{event.betValue} <i className="fas fa-coins text-xs"></i></p>
                         </div>
                         <div>
-                            <p className="text-xs text-gray-300">Prize Pool</p>
+                            <p className="text-xs text-gray-300">{t('prizePool')}</p>
                             <p className="font-bold text-green-400">{event.poolPrize.toLocaleString()} <i className="fas fa-coins text-xs"></i></p>
                         </div>
                     </div>
@@ -92,12 +94,12 @@ const RoundSelector: React.FC<RoundSelectorProps> = ({ selectedRound, onSelectRo
                         )}
                          {event.status === EventStatus.FINISHED && (
                             <button onClick={() => alert('Results view not implemented yet.')} className="w-full bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-3 text-sm rounded transition-colors">
-                                View Results
+                                {t('viewResults')}
                             </button>
                         )}
                          {event.status === EventStatus.LIVE && (
                             <button disabled className="w-full bg-gray-500 text-white font-bold py-2 px-3 text-sm rounded cursor-not-allowed">
-                                Betting Closed
+                                {t('bettingClosed')}
                             </button>
                         )}
                     </div>

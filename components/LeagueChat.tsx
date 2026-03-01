@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { League, LeagueChatMessage, MemberStatus } from '../types';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface LeagueChatProps {
     league: League;
@@ -11,6 +12,7 @@ interface LeagueChatProps {
 const LeagueChat: React.FC<LeagueChatProps> = ({ league }) => {
     const { user } = useAuth();
     const { sendLeagueMessage, reactToLeagueMessage, moderateLeagueMember } = useData();
+    const { t } = useLanguage();
     const [newMessage, setNewMessage] = useState('');
     const [contextMenu, setContextMenu] = useState<{ x: number, y: number, userId: string, msgId: string } | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -69,7 +71,7 @@ const LeagueChat: React.FC<LeagueChatProps> = ({ league }) => {
     if (isBanned) {
         return (
             <div className="flex items-center justify-center h-full bg-gray-900 rounded-lg text-red-500 font-bold p-4">
-                You have been banned from this league.
+                {t('bannedFromLeague')}
             </div>
         );
     }
@@ -78,8 +80,8 @@ const LeagueChat: React.FC<LeagueChatProps> = ({ league }) => {
         <div className="flex flex-col h-[500px] bg-gray-900 rounded-lg border border-gray-700 relative">
             {/* Header */}
             <div className="p-3 border-b border-gray-700 bg-gray-800 rounded-t-lg">
-                <h3 className="text-white font-bold"><i className="fas fa-comments mr-2"></i> League Chat</h3>
-                <p className="text-xs text-gray-500">Messages are removed after 10 days.</p>
+                <h3 className="text-white font-bold"><i className="fas fa-comments mr-2"></i> {t('leagueChatTitle')}</h3>
+                <p className="text-xs text-gray-500">{t('messagesRemovedNote')}</p>
             </div>
 
             {/* Messages Area */}
@@ -147,7 +149,7 @@ const LeagueChat: React.FC<LeagueChatProps> = ({ league }) => {
                     type="text" 
                     value={newMessage}
                     onChange={e => setNewMessage(e.target.value)}
-                    placeholder={isSuspended ? "You are suspended from chat" : "Type a message..."}
+                    placeholder={isSuspended ? t('suspendedFromChat') : t('typeMessage')}
                     disabled={isSuspended}
                     className="flex-1 bg-gray-700 text-white text-sm rounded-full px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 />
@@ -170,20 +172,20 @@ const LeagueChat: React.FC<LeagueChatProps> = ({ league }) => {
                         onClick={() => handleModerate('suspended')}
                         className="block w-full text-left px-4 py-2 text-xs text-yellow-400 hover:bg-gray-700"
                     >
-                        <i className="fas fa-comment-slash mr-2"></i> Suspend
+                        <i className="fas fa-comment-slash mr-2"></i> {t('suspend')}
                     </button>
                     <button 
                         onClick={() => handleModerate('unsuspend')}
                         className="block w-full text-left px-4 py-2 text-xs text-green-400 hover:bg-gray-700"
                     >
-                        <i className="fas fa-comment mr-2"></i> Unsuspend
+                        <i className="fas fa-comment mr-2"></i> {t('unsuspend')}
                     </button>
                     <div className="border-t border-gray-700 my-1"></div>
                     <button 
                         onClick={() => handleModerate('banned')}
                         className="block w-full text-left px-4 py-2 text-xs text-red-500 hover:bg-gray-700"
                     >
-                        <i className="fas fa-ban mr-2"></i> Ban User
+                        <i className="fas fa-ban mr-2"></i> {t('banUser')}
                     </button>
                 </div>
             )}

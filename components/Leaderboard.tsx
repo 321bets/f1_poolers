@@ -1,6 +1,7 @@
 import React from 'react';
 import { User } from '../types';
 import { useData } from '../contexts/DataContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const getRankColor = (rank: number) => {
   if (rank === 1) return 'border-yellow-400';
@@ -11,13 +12,14 @@ const getRankColor = (rank: number) => {
 
 const Leaderboard: React.FC = () => {
   const { users } = useData();
+  const { t } = useLanguage();
   const sortedUsers = [...users].filter(u => !u.isAdmin).sort((a, b) => b.points - a.points);
   
   return (
     <div className="bg-gray-800 rounded-lg shadow-xl p-4">
       <h2 className="text-xl font-bold mb-4 text-red-500 flex items-center">
         <i className="fas fa-trophy mr-2 text-yellow-400"></i>
-        Global Rankings
+        {t('globalRankings')}
       </h2>
       <div className="space-y-3">
         {sortedUsers.slice(0, 5).map((user: User, index) => (

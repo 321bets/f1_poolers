@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import UserSettingsModal from './UserSettingsModal';
 
 interface HeaderProps {
@@ -13,6 +14,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ currentView, onToggleView, onNavigate }) => {
   const { user, logout, isAdmin } = useAuth();
   const { markNotificationRead } = useData();
+  const { t } = useLanguage();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -54,11 +56,11 @@ const Header: React.FC<HeaderProps> = ({ currentView, onToggleView, onNavigate }
                 {isNotifOpen && (
                     <div className="absolute right-0 mt-2 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-2xl z-50 max-h-80 overflow-y-auto">
                         <div className="p-3 border-b border-gray-700 flex justify-between items-center sticky top-0 bg-gray-800">
-                            <h3 className="font-bold text-white">Notifications</h3>
+                            <h3 className="font-bold text-white">{t('notificationsTitle')}</h3>
                             <button onClick={() => setIsNotifOpen(false)} className="text-gray-400 hover:text-white">&times;</button>
                         </div>
                         {sortedNotifications.length === 0 ? (
-                            <div className="p-4 text-center text-gray-500 text-sm">No notifications</div>
+                            <div className="p-4 text-center text-gray-500 text-sm">{t('noNotifications')}</div>
                         ) : (
                             <div className="divide-y divide-gray-700">
                                 {sortedNotifications.map(n => (
@@ -73,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ currentView, onToggleView, onNavigate }
                                                 onClick={() => handleMarkRead(n.id)}
                                                 className="text-xs text-blue-400 hover:text-blue-300 underline"
                                             >
-                                                Mark as read
+                                                {t('markAsRead')}
                                             </button>
                                         )}
                                     </div>
@@ -100,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({ currentView, onToggleView, onNavigate }
                   aria-label={currentView === 'dashboard' ? 'Switch to Admin Panel' : 'Switch to User Dashboard'}
               >
                   <i className={`fas ${currentView === 'dashboard' ? 'fa-user-shield' : 'fa-tachometer-alt'} mr-2`}></i>
-                  {currentView === 'dashboard' ? 'Admin Panel' : 'User Dashboard'}
+                  {currentView === 'dashboard' ? t('adminPanel') : t('dashboard')}
               </button>
             )}
             

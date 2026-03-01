@@ -98,9 +98,9 @@ const AuthPage: React.FC = () => {
             } else {
                 if (username.length > 8 || /\s/.test(username)) throw new Error(t('usernameInvalid'));
                 if (!/^\d{5}$/.test(password)) throw new Error(t('passwordMustBe5Digits'));
-                if (password !== confirmPassword) throw new Error("Passwords don't match");
-                if (!age || Number(age) < 18) throw new Error("Min age 18");
-                if (!termsAccepted) throw new Error("Please accept terms and conditions");
+                if (password !== confirmPassword) throw new Error(t('passwordsDontMatch'));
+                if (!age || Number(age) < 18) throw new Error(t('minAge18'));
+                if (!termsAccepted) throw new Error(t('pleaseAcceptTerms'));
                 await signup(username, password, Number(age), country, location);
             }
         } catch (err: any) {
@@ -187,7 +187,7 @@ const AuthPage: React.FC = () => {
                                 <div>
                                     <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">{t('country')}</label>
                                     <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required>
-                                        <option value="">Select...</option>
+                                        <option value="">{t('selectCountry')}</option>
                                         {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
                                     </select>
                                 </div>

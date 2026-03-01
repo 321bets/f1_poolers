@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Event, Driver, Team, Bet, EventType } from '../types';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { getMultiplierStats } from './RoundSelector';
 
 const getLastName = (fullName: string) => {
@@ -96,6 +97,7 @@ interface BettingModalProps {
 const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced }) => {
   const { user } = useAuth();
   const { drivers, teams, placeBet, events, allBets } = useData();
+  const { t } = useLanguage();
   
   const liveEvent = events.find(e => e.id === event.id) || event;
   const [activeTab, setActiveTab] = useState<'drivers' | 'teams'>('drivers');
@@ -210,20 +212,20 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
     if (submitBoth) {
         // Submit both drivers and teams together
         if (!isDriversReady || !isTeamsReady) {
-            setError('Please fill all 5 slots for both Drivers and Teams.');
+            setError(t('fillAllSlotsBoth'));
             return;
         }
     } else {
         // Submit only current tab
         const currentPreds = activeTab === 'drivers' ? driverPredictions : teamPredictions;
         if (currentPreds.some(p => p === null)) {
-            setError('Please fill all 5 prediction slots.');
+            setError(t('fillAllSlots'));
             return;
         }
     }
 
     if (hasReachedLimit) {
-        setError(`You have already reached the limit of ${MAX_BETS} bets for this session.`);
+        setError(t('betLimitReached'));
         return;
     }
 
@@ -285,14 +287,14 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
                 </div>
                 {/* Bet Slot Tracker */}
                 <div className={`text-[8px] font-black uppercase mt-0.5 tracking-widest ${betsRemaining === 0 ? 'text-red-500' : 'text-gray-500'}`}>
-                    {userEventBets.length} of {MAX_BETS} Slots Used
+                    {userEventBets.length} {t('of')} {MAX_BETS} {t('slotsUsed')}
                 </div>
             </div>
           </div>
           
           <div className="flex items-center gap-2 sm:gap-3">
              <div className="flex flex-col items-end">
-                <span className="text-[8px] sm:text-[9px] text-gray-500 uppercase font-black">Mult</span>
+                <span className="text-[8px] sm:text-[9px] text-gray-500 uppercase font-black">{t('mult')}</span>
                 <span className="text-green-500 font-black text-xs sm:text-sm leading-none">{multiplier.toFixed(1)}x</span>
              </div>
              <button onClick={onClose} className="text-gray-500 hover:text-white text-2xl sm:text-3xl font-light ml-2 sm:ml-4 transition-colors">&times;</button>
@@ -304,19 +306,19 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
             hasReachedLimit ? 'bg-red-900/20 border-red-800/40 text-red-400' : 'bg-blue-900/10 border-blue-800/40 text-blue-300'
         }`}>
             {hasReachedLimit ? (
-                <span><i className="fas fa-lock mr-2"></i> Limit Reached for this session! Try other events in this Round.</span>
+                <span><i className="fas fa-lock mr-2"></i> {t('limitReachedMsg')}</span>
             ) : (
-                <span><i className="fas fa-info-circle mr-2"></i> You can still place {betsRemaining} more {betsRemaining === 1 ? 'bet' : 'bets'} for this session.</span>
+                <span><i className="fas fa-info-circle mr-2"></i> {t('betsRemainingMsg')}</span>
             )}
         </div>
 
         {/* Round Suggestions - Pro-Tip */}
         {otherEvents.length > 0 && (
             <div className="bg-gray-800/30 px-3 py-1.5 border-b border-gray-800/50 flex items-center justify-center gap-3 overflow-x-auto no-scrollbar">
-                <span className="text-[9px] text-gray-500 font-black uppercase shrink-0">Diversify Round {liveEvent.roundId}:</span>
+                <span className="text-[9px] text-gray-500 font-black uppercase shrink-0">{t('diversifyRound')}:</span>
                 {otherEvents.map(e => (
                     <button key={e.id} onClick={onClose} className="text-[9px] bg-gray-700 hover:bg-gray-600 text-white px-2 py-0.5 rounded transition-colors whitespace-nowrap">
-                        Predict {e.type}
+                        {t('predict')} {e.type}
                     </button>
                 ))}
             </div>
@@ -325,20 +327,20 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
         {/* Interaction Hint */}
         {!hasReachedLimit && (
             <div className="bg-[#15151e] border-b border-gray-800 px-3 py-1.5 text-[9px] text-gray-500 text-center flex-shrink-0">
-                <i className="fas fa-hand-pointer mr-1"></i> Tap a driver or team from the grid, then select an available prediction slot.
+                <i className="fas fa-hand-pointer mr-1"></i> {t('tapHint')}
             </div>
         )}
 
         {/* Selector Tabs with Progress */}
         <div className="flex bg-[#15151e] border-b border-gray-800 flex-shrink-0">
             <button onClick={() => { setActiveTab('drivers'); setFocusedSlot(null); }} className={`flex-1 py-2 sm:py-3 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'drivers' ? 'text-red-600 bg-[#1f1f27] border-b-2 border-red-600' : 'text-gray-500 hover:text-gray-300'}`}>
-                Drivers
+                {t('drivers')}
                 <span className={`text-[8px] px-1.5 py-0.5 rounded ${isDriversReady ? 'bg-green-600 text-white' : 'bg-gray-700 text-gray-400'}`}>
                     {driverPredictions.filter(p => p !== null).length}/5
                 </span>
             </button>
             <button onClick={() => { setActiveTab('teams'); setFocusedSlot(null); }} className={`flex-1 py-2 sm:py-3 text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === 'teams' ? 'text-blue-500 bg-[#1f1f27] border-b-2 border-blue-500' : 'text-gray-500 hover:text-gray-300'}`}>
-                Teams
+                {t('teams')}
                 <span className={`text-[8px] px-1.5 py-0.5 rounded ${isTeamsReady ? 'bg-green-600 text-white' : 'bg-gray-700 text-gray-400'}`}>
                     {teamPredictions.filter(p => p !== null).length}/5
                 </span>
@@ -353,7 +355,7 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
               <div className="flex justify-between items-center mb-2 sm:mb-4 flex-shrink-0">
                 <h3 className="text-[9px] sm:text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
                     <span className="bg-red-600 w-1 h-3"></span>
-                    Available
+                    {t('availableLabel')}
                 </h3>
               </div>
               <div className="grid grid-cols-4 sm:grid-cols-5 gap-1.5 overflow-y-auto pr-1 custom-scrollbar">
@@ -384,7 +386,7 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
           <div className="w-full md:w-2/5 p-3 sm:p-4 bg-[#1f1f27] flex flex-col h-1/2 md:h-full overflow-hidden">
             <h3 className="text-[9px] sm:text-xs font-black text-gray-400 uppercase tracking-widest mb-2 sm:mb-4 flex items-center gap-2 flex-shrink-0">
                 <span className="bg-green-600 w-1 h-3"></span>
-                Prediction
+                {t('predictionLabel')}
             </h3>
             <div className="flex flex-col gap-2 overflow-y-auto pr-1 custom-scrollbar">
                 {(activeTab === 'drivers' ? driverPredictions : teamPredictions).map((item, index) => (
@@ -419,12 +421,12 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
                                         {item.name}
                                     </p>
                                     <p className="text-[8px] sm:text-[10px] text-gray-500 uppercase font-bold tracking-tighter">
-                                        {activeTab === 'drivers' ? (item as Driver).teamName : 'Constructor Slot'}
+                                        {activeTab === 'drivers' ? (item as Driver).teamName : t('constructorSlot')}
                                     </p>
                                 </div>
                             ) : (
                                 <p className={`text-[8px] sm:text-[10px] uppercase font-black tracking-widest ${focusedSlot === index ? 'text-red-600 animate-pulse' : 'text-gray-600'}`}>
-                                    {focusedSlot === index ? 'Awaiting...' : `Select P${index + 1}`}
+                                    {focusedSlot === index ? t('awaiting') : `${t('selectP')}${index + 1}`}
                                 </p>
                             )}
                         </div>
@@ -447,17 +449,17 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
         <div className="p-3 sm:p-4 bg-[#15151e] border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 flex-shrink-0">
             <div className="flex flex-col w-full sm:w-auto">
                 <div className="flex items-center gap-4 justify-between sm:justify-start">
-                    <span className="text-[9px] text-gray-500 uppercase font-black">Entry Fee</span>
+                    <span className="text-[9px] text-gray-500 uppercase font-black">{t('entryFee')}</span>
                     <div className="flex items-center gap-2">
-                        <span className="text-yellow-500 font-black text-xs sm:text-sm tracking-tight">{liveEvent.betValue} <span className="text-[8px] text-gray-500">(Single)</span></span>
+                        <span className="text-yellow-500 font-black text-xs sm:text-sm tracking-tight">{liveEvent.betValue} <span className="text-[8px] text-gray-500">({t('singleLabel')})</span></span>
                         <span className="text-gray-600">|</span>
-                        <span className="text-green-500 font-black text-xs sm:text-sm tracking-tight">{liveEvent.betValue * 2} <span className="text-[8px] text-gray-500">(Combo)</span></span>
+                        <span className="text-green-500 font-black text-xs sm:text-sm tracking-tight">{liveEvent.betValue * 2} <span className="text-[8px] text-gray-500">({t('comboLabel')})</span></span>
                     </div>
                 </div>
                 {error && <p className="text-red-500 text-[8px] sm:text-[10px] font-bold uppercase mt-1">{error}</p>}
                 {hasReachedLimit && (
                     <p className="text-gray-400 text-[8px] sm:text-[10px] font-bold uppercase mt-1 italic">
-                        Try a different session in this Grand Prix!
+                        {t('tryDifferentSession')}
                     </p>
                 )}
             </div>
@@ -467,14 +469,14 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
                     onClick={onClose}
                     className="flex-1 sm:flex-none border border-gray-700 text-gray-400 font-bold py-2 px-4 rounded-sm uppercase text-[10px] sm:text-xs tracking-widest hover:bg-gray-800 transition-colors"
                 >
-                    {hasReachedLimit ? 'Back' : 'Cancel'}
+                    {hasReachedLimit ? t('back') : t('cancel')}
                 </button>
                 {hasReachedLimit ? (
                     <button 
                       onClick={onClose}
                       className="flex-[2] sm:flex-none bg-blue-600 text-white font-black py-2 px-6 sm:px-10 rounded-sm uppercase tracking-widest italic transition-all hover:bg-blue-700 transform -skew-x-12 shadow-lg shadow-blue-900/20"
                     >
-                      <span className="inline-block transform skew-x-12 text-[10px] sm:text-sm">Choose Other Event</span>
+                      <span className="inline-block transform skew-x-12 text-[10px] sm:text-sm">{t('chooseOtherEvent')}</span>
                     </button>
                 ) : (
                     <div className="flex gap-2 flex-[2]">
@@ -484,7 +486,7 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
                           className="flex-1 bg-red-600 text-white font-black py-2 px-3 sm:px-6 rounded-sm uppercase tracking-widest italic transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-red-700 transform -skew-x-12 shadow-lg shadow-red-900/20"
                         >
                           <span className="inline-block transform skew-x-12 text-[8px] sm:text-xs">
-                            {isLoading ? 'Wait...' : (activeTab === 'drivers' ? 'Drivers Only' : 'Teams Only')}
+                            {isLoading ? t('wait') : (activeTab === 'drivers' ? t('driversOnly') : t('teamsOnly'))}
                           </span>
                         </button>
                         <button 
@@ -493,7 +495,7 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
                           className="flex-1 bg-green-600 text-white font-black py-2 px-3 sm:px-6 rounded-sm uppercase tracking-widest italic transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-green-700 transform -skew-x-12 shadow-lg shadow-green-900/20"
                         >
                           <span className="inline-block transform skew-x-12 text-[8px] sm:text-xs">
-                            {isLoading ? 'Wait...' : 'Both (Combo)'}
+                            {isLoading ? t('wait') : t('bothCombo')}
                           </span>
                         </button>
                     </div>
