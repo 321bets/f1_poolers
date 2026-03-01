@@ -141,7 +141,10 @@ const translations: Record<Language, Record<string, string>> = {
     statFilter_qualifying: 'Qualifying',
     statFilter_sprint: 'Sprint',
     usernameHint: 'Max 8 characters, no spaces',
-    usernameInvalid: 'Username must be max 8 characters with no spaces'
+    usernameInvalid: 'Username must be max 8 characters with no spaces',
+    recoveryTitle: 'Add Recovery Contact',
+    recoveryMessage: 'We recommend adding an email or phone number to your profile. This is the only way to recover your credentials if you forget or lose them. F1 Poolers will never send messages to your contact information — it is used solely for account recovery.',
+    recoveryGoToProfile: 'Go to Profile'
   },
   pt: {
     signup: 'Cadastrar',
@@ -272,7 +275,10 @@ const translations: Record<Language, Record<string, string>> = {
     statFilter_qualifying: 'Qualificação',
     statFilter_sprint: 'Sprint',
     usernameHint: 'Máx 8 caracteres, sem espaços',
-    usernameInvalid: 'Usuário deve ter no máximo 8 caracteres sem espaços'
+    usernameInvalid: 'Usuário deve ter no máximo 8 caracteres sem espaços',
+    recoveryTitle: 'Adicionar Contato de Recuperação',
+    recoveryMessage: 'Recomendamos adicionar um email ou telefone ao seu perfil. Esta é a única forma de recuperar suas credenciais caso você esqueça ou perca. O F1 Poolers nunca enviará mensagens para seu contato — ele é usado apenas para recuperação de conta.',
+    recoveryGoToProfile: 'Ir para o Perfil'
   },
   es: {
     welcome: 'Bienvenido al Paddock',
@@ -405,7 +411,10 @@ const translations: Record<Language, Record<string, string>> = {
     statFilter_qualifying: 'Clasificación',
     statFilter_sprint: 'Sprint',
     usernameHint: 'Máx 8 caracteres, sin espacios',
-    usernameInvalid: 'El usuario debe tener máximo 8 caracteres sin espacios'
+    usernameInvalid: 'El usuario debe tener máximo 8 caracteres sin espacios',
+    recoveryTitle: 'Agregar Contacto de Recuperación',
+    recoveryMessage: 'Te recomendamos agregar un email o teléfono a tu perfil. Esta es la única forma de recuperar tus credenciales si las olvidas o pierdes. F1 Poolers nunca enviará mensajes a tu información de contacto — se usa únicamente para recuperar tu cuenta.',
+    recoveryGoToProfile: 'Ir al Perfil'
   }
 };
 

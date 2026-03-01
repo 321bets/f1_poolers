@@ -17,6 +17,8 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
     
     // Profile State
     const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl || '');
+    const [email, setEmail] = useState(user?.email || '');
+    const [phone, setPhone] = useState(user?.phone || '');
     const [isSaving, setIsSaving] = useState(false);
 
     // League State
@@ -31,7 +33,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
         if (!user) return;
         setIsSaving(true);
         try {
-            await updateUser({ id: user.id, avatarUrl });
+            await updateUser({ id: user.id, avatarUrl, email: email || undefined, phone: phone || undefined });
             alert('Profile updated!');
         } catch (e) {
             alert('Failed to update profile.');
@@ -114,6 +116,20 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                                 <div className="bg-gray-700 p-3 rounded">
                                     <p className="text-xs text-gray-400">Age</p>
                                     <p className="font-bold">{user.age}</p>
+                                </div>
+                            </div>
+                            <div className="space-y-3">
+                                <h4 className="text-sm font-bold text-gray-300 uppercase tracking-wider"><i className="fas fa-shield-alt text-red-500 mr-2"></i>Recovery Contact</h4>
+                                <p className="text-xs text-gray-500">Add an email or phone so you can recover your account if you forget your credentials. We will never send messages to these contacts.</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
+                                        <label className="block text-gray-400 text-xs font-bold mb-1">Email</label>
+                                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-400 text-xs font-bold mb-1">Phone</label>
+                                        <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+1 234 567 8900" className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm" />
+                                    </div>
                                 </div>
                             </div>
                             <button 

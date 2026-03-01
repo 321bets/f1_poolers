@@ -6,18 +6,25 @@ import LeagueLeaderboard from './LeagueLeaderboard';
 import BettingModal from './BettingModal';
 import BetConfirmationModal from './BetConfirmationModal';
 import HowToPlayModal from './HowToPlayModal';
+import UserSettingsModal from './UserSettingsModal';
 import { Event, Round, Bet } from '../types';
 import { useData } from '../contexts/DataContext';
+import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Dashboard: React.FC = () => {
   const { rounds } = useData();
+  const { user } = useAuth();
   const { t } = useLanguage();
   const [selectedRound, setSelectedRound] = useState<Round | null>(rounds.length > 0 ? rounds[0] : null);
   const [isBettingModalOpen, setIsBettingModalOpen] = useState(false);
   const [bettingEvent, setBettingEvent] = useState<Event | null>(null);
   const [confirmedBet, setConfirmedBet] = useState<Bet | null>(null);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
+  const [recoveryDismissed, setRecoveryDismissed] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  const hasRecoveryContact = !!(user?.email || user?.phone);
 
   const handlePlaceBetClick = (event: Event) => {
     setBettingEvent(event);
@@ -40,6 +47,30 @@ const Dashboard: React.FC = () => {
             {t('howToPlay')}
           </button>
       </div>
+
+      {/* Recovery Contact Reminder */}
+      {!hasRecoveryContact && !recoveryDismissed && (
+        <div className="bg-gray-800 border border-yellow-600/40 rounded-lg p-4 flex items-start gap-3">
+          <i className="fas fa-shield-alt text-yellow-500 text-xl mt-0.5 flex-shrink-0"></i>
+          <div className="flex-1">
+            <h3 className="text-white font-bold text-sm mb-1">{t('recoveryTitle')}</h3>
+            <p className="text-gray-400 text-xs leading-relaxed mb-2">{t('recoveryMessage')}</p>
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="text-red-500 hover:text-red-400 text-xs font-bold underline"
+            >
+              <i className="fas fa-user-cog mr-1"></i>{t('recoveryGoToProfile')}
+            </button>
+          </div>
+          <button
+            onClick={() => setRecoveryDismissed(true)}
+            className="text-gray-500 hover:text-white text-lg flex-shrink-0"
+            title={t('close')}
+          >
+            &times;
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Rounds & Betting */}
@@ -75,6 +106,10 @@ const Dashboard: React.FC = () => {
 
         {isHowToPlayOpen && (
           <HowToPlayModal onClose={() => setIsHowToPlayOpen(false)} />
+        )}
+
+        {isSettingsOpen && (
+          <UserSettingsModal onClose={() => setIsSettingsOpen(false)} />
         )}
       </div>
     </div>

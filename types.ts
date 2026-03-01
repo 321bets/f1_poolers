@@ -107,6 +107,8 @@ export interface User {
   country?: string;
   location?: { lat: number; lng: number };
   termsAccepted?: boolean;
+  email?: string;
+  phone?: string;
   notifications: Notification[];
   joinedLeagues: string[]; // IDs of leagues this user belongs to
 }
