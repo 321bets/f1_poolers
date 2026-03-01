@@ -9,14 +9,17 @@ import BetManagement from './BetManagement';
 import MessagingSystem from './MessagingSystem';
 import AdManagement from './AdManagement';
 import LayoutManagement from './LayoutManagement';
+import OverviewDashboard from './OverviewDashboard';
 
-type AdminTab = 'rounds' | 'events' | 'drivers' | 'teams' | 'users' | 'bets' | 'messaging' | 'ads' | 'layout';
+type AdminTab = 'overview' | 'rounds' | 'events' | 'drivers' | 'teams' | 'users' | 'bets' | 'messaging' | 'ads' | 'layout';
 
 const AdminPanel: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<AdminTab>('rounds');
+  const [activeTab, setActiveTab] = useState<AdminTab>('overview');
 
   const renderContent = () => {
     switch (activeTab) {
+      case 'overview':
+        return <OverviewDashboard />;
       case 'rounds':
         return <RoundManagement />;
       case 'events':
@@ -62,6 +65,7 @@ const AdminPanel: React.FC = () => {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-4">
       <aside className="lg:col-span-3 bg-gray-800 rounded-lg p-4 h-fit">
         <nav className="space-y-2" aria-label="Admin Navigation">
+          <TabButton tab="overview" label="Overview" icon="fa-chart-line" />
           <TabButton tab="rounds" label="Round Management" icon="fa-calendar-alt" />
           <TabButton tab="events" label="Event Management" icon="fa-flag-checkered" />
           <TabButton tab="drivers" label="Driver Management" icon="fa-user-astronaut" />
