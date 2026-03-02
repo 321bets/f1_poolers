@@ -101,18 +101,18 @@ router.post('/', async (req: Request, res: Response) => {
       await conn.beginTransaction();
 
       // Deduct balance
-      await conn.execute(`UPDATE users SET balance = balance - ? WHERE id = ?`, [event.bet_value, userId]);
+      await conn.query(`UPDATE users SET balance = balance - ? WHERE id = ?`, [event.bet_value, userId]);
       // Add to pool
-      await conn.execute(`UPDATE events SET pool_prize = pool_prize + ? WHERE id = ?`, [event.bet_value, eventId]);
+      await conn.query(`UPDATE events SET pool_prize = pool_prize + ? WHERE id = ?`, [event.bet_value, eventId]);
       // Create bet
-      await conn.execute(
+      await conn.query(
         `INSERT INTO bets (id, user_id, event_id, timestamp, status, locked_multiplier) VALUES (?, ?, ?, NOW(), 'Active', ?)`,
         [betId, userId, eventId, multiplier]
       );
       // Insert driver predictions
       if (predictions && predictions.length > 0) {
         for (let i = 0; i < predictions.length; i++) {
-          await conn.execute(
+          await conn.query(
             `INSERT INTO bet_predictions (bet_id, position, driver_id) VALUES (?, ?, ?)`,
             [betId, i, predictions[i].id]
           );
@@ -121,7 +121,7 @@ router.post('/', async (req: Request, res: Response) => {
       // Insert team predictions
       if (teamPredictions && teamPredictions.length > 0) {
         for (let i = 0; i < teamPredictions.length; i++) {
-          await conn.execute(
+          await conn.query(
             `INSERT INTO bet_team_predictions (bet_id, position, team_id) VALUES (?, ?, ?)`,
             [betId, i, teamPredictions[i].id]
           );
@@ -173,13 +173,13 @@ router.delete('/:id', async (req: Request, res: Response) => {
     const conn = await pool.getConnection();
     try {
       await conn.beginTransaction();
-      await conn.execute(`UPDATE users SET balance = balance + ? WHERE id = ?`, [event.bet_value, bet.user_id]);
-      await conn.execute(`UPDATE events SET pool_prize = pool_prize - ? WHERE id = ?`, [event.bet_value, bet.event_id]);
-      await conn.execute(`UPDATE bets SET status = 'Cancelled' WHERE id = ?`, [req.params.id]);
+      await conn.query(`UPDATE users SET balance = balance + ? WHERE id = ?`, [event.bet_value, bet.user_id]);
+      await conn.query(`UPDATE events SET pool_prize = pool_prize - ? WHERE id = ?`, [event.bet_value, bet.event_id]);
+      await conn.query(`UPDATE bets SET status = 'Cancelled' WHERE id = ?`, [req.params.id]);
       
       // Notification
       const notifId = `notif-${Date.now()}`;
-      await conn.execute(
+      await conn.query(
         `INSERT INTO notifications (id, user_id, message, timestamp, is_read, sender, type) VALUES (?, ?, ?, NOW(), 0, 'System', 'general')`,
         [notifId, bet.user_id, `Your bet for ${event.type} has been cancelled. ${event.bet_value} Fun-Coins have been refunded to your balance.`]
       );

@@ -61,6 +61,6 @@ export async function query<T extends RowDataPacket[]>(sql: string, params?: any
 }
 
 export async function execute(sql: string, params?: any[]): Promise<ResultSetHeader> {
-  const [result] = await pool.execute<ResultSetHeader>(sql, params);
+  const [result] = await pool.query<ResultSetHeader>(sql, params);
   return result;
 }

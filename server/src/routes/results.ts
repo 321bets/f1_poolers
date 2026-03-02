@@ -92,14 +92,14 @@ router.post('/', async (req: Request, res: Response) => {
       await conn.beginTransaction();
 
       // Create result record
-      await conn.execute(
+      await conn.query(
         `INSERT INTO results (event_id, total_prize_pool) VALUES (?, ?)`,
         [eventId, event.pool_prize]
       );
 
       // Insert result positions
       for (let i = 0; i < positions.length; i++) {
-        await conn.execute(
+        await conn.query(
           `INSERT INTO result_positions (event_id, position, driver_id) VALUES (?, ?, ?)`,
           [eventId, i, positions[i].id]
         );
@@ -154,11 +154,11 @@ router.post('/', async (req: Request, res: Response) => {
 
         // Update user points
         if (finalPoints > 0) {
-          await conn.execute(`UPDATE users SET points = points + ? WHERE id = ?`, [finalPoints, bet.user_id]);
+          await conn.query(`UPDATE users SET points = points + ? WHERE id = ?`, [finalPoints, bet.user_id]);
         }
 
         // Settle bet
-        await conn.execute(`UPDATE bets SET status = 'Settled' WHERE id = ?`, [bet.id]);
+        await conn.query(`UPDATE bets SET status = 'Settled' WHERE id = ?`, [bet.id]);
 
         if (isDriverPerfectMatch) {
           potWinnerBetIds.push(bet.id);
@@ -177,9 +177,9 @@ router.post('/', async (req: Request, res: Response) => {
         for (const betId of potWinnerBetIds) {
           const bet = betsWithPreds.find(b => b.id === betId);
           if (bet) {
-            await conn.execute(`UPDATE users SET balance = balance + ? WHERE id = ?`, [prizePerWinner, bet.user_id]);
+            await conn.query(`UPDATE users SET balance = balance + ? WHERE id = ?`, [prizePerWinner, bet.user_id]);
             const nid = `notif-${Date.now()}-${bet.user_id}`;
-            await conn.execute(
+            await conn.query(
               `INSERT INTO notifications (id, user_id, message, timestamp, is_read, sender, type) VALUES (?, ?, ?, NOW(), 0, 'System', 'general')`,
               [nid, bet.user_id, `🏆 JACKPOT! You NAILED the result for ${event.type}! You won ${prizePerWinner} Fun-Coins!`]
             );
@@ -202,7 +202,7 @@ router.post('/', async (req: Request, res: Response) => {
               [nextRound.id, event.type]
             );
             if (nextEventRows.length > 0) {
-              await conn.execute(
+              await conn.query(
                 `UPDATE events SET pool_prize = pool_prize + ? WHERE id = ?`,
                 [event.pool_prize, nextEventRows[0].id]
               );
@@ -215,14 +215,14 @@ router.post('/', async (req: Request, res: Response) => {
       // Insert winner records
       for (const w of winnersInfo) {
         const prize = potWinnerBetIds.includes(w.betId) ? Math.floor(event.pool_prize / potWinnerBetIds.length) : 0;
-        await conn.execute(
+        await conn.query(
           `INSERT INTO result_winners (event_id, user_id, username, prize_amount, points_earned) VALUES (?, ?, ?, ?, ?)`,
           [eventId, w.userId, w.username, prize, w.points]
         );
       }
 
       // Mark event finished
-      await conn.execute(`UPDATE events SET status = 'Finished' WHERE id = ?`, [eventId]);
+      await conn.query(`UPDATE events SET status = 'Finished' WHERE id = ?`, [eventId]);
 
       await conn.commit();
     } catch (err) {

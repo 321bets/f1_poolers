@@ -4,24 +4,7 @@ echo "=== F1 Poolers Deployment ==="
 
 cd /opt/f1poolers-src
 
-# Clean DB from old test data
-echo "Cleaning test data..."
-mysql -u f1pooler -pf1pooler f1pooler <<'EOF'
-DELETE FROM result_winners;
-DELETE FROM result_positions;
-DELETE FROM results;
-DELETE FROM bet_predictions;
-DELETE FROM bet_team_predictions;
-DELETE FROM bets;
-DELETE FROM events;
-DELETE FROM rounds;
-DELETE FROM notifications;
-DELETE FROM league_members WHERE user_id != 'admin';
-DELETE FROM users WHERE id != 'admin';
-EOF
-echo "DB cleaned."
-
-# Rebuild Docker
+# Deploy (preserves existing data in database)
 echo "Rebuilding Docker image..."
 docker compose down
 docker compose build --no-cache
