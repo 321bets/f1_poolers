@@ -25,27 +25,36 @@ router.post('/', async (req: Request, res: Response) => {
   try {
     const { number, name, location, circuit } = req.body;
     
+    if (!name || number === undefined || number === null) {
+      return res.status(400).json({ error: 'Missing required fields: number, name' });
+    }
+
     // Generate unique round ID using timestamp
     const id = `round-${Date.now()}`;
     
     await execute(
       `INSERT INTO rounds (id, number, name, location, circuit) VALUES (?, ?, ?, ?, ?)`,
-      [id, number, name, location, circuit]
+      [id, number, name, location || '', circuit || '']
     );
 
-    // Give 50 coins to every user + notification
-    const users = await query<RowDataPacket[]>(`SELECT id FROM users`);
-    await execute(`UPDATE users SET balance = balance + 50`);
-    
-    for (const u of users) {
-      const nid = `notif-roundbonus-${id}-${u.id}-${Date.now()}`;
-      await execute(
-        `INSERT INTO notifications (id, user_id, message, timestamp, is_read, sender, type) VALUES (?, ?, ?, NOW(), 0, 'System', 'general')`,
-        [nid, u.id, `New Round Created: ${name}! You received 50 Fun-Coins.`]
-      );
+    console.log(`Round created: ${id} - ${name}`);
+
+    // Give 50 coins to every user + notification (non-blocking: don't fail round creation)
+    try {
+      const users = await query<RowDataPacket[]>(`SELECT id FROM users`);
+      await execute(`UPDATE users SET balance = balance + 50`);
+      
+      for (const u of users) {
+        const nid = `notif-roundbonus-${id}-${u.id}-${Date.now()}`;
+        await execute(
+          `INSERT INTO notifications (id, user_id, message, timestamp, is_read, sender, type) VALUES (?, ?, ?, NOW(), 0, 'System', 'general')`,
+          [nid, u.id, `New Round Created: ${name}! You received 50 Fun-Coins.`]
+        );
+      }
+    } catch (bonusErr: any) {
+      console.error(`Round bonus/notification failed (round still saved):`, bonusErr.message);
     }
 
-    console.log(`Round created: ${id} - ${name}`);
     res.json({ id, number, name, location, circuit });
   } catch (err: any) {
     console.error(`Round creation failed:`, err.message);
