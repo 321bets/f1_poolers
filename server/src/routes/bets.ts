@@ -92,8 +92,8 @@ router.post('/', async (req: Request, res: Response) => {
     else if (secondsRemaining > 259200) multiplier = 3.0;
     else if (secondsRemaining > 86400) multiplier = 1.5;
 
-    const betCountRows = await query<RowDataPacket[]>(`SELECT COUNT(*) as cnt FROM bets`);
-    const betId = `bet${betCountRows[0].cnt + 1}`;
+    // Generate unique bet ID using timestamp
+    const betId = `bet-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
 
     const pool = getPool();
     const conn = await pool.getConnection();

@@ -38,7 +38,7 @@ CREATE TABLE teams (
   id VARCHAR(50) PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   nationality VARCHAR(50),
-  logo_url TEXT
+  logo_url MEDIUMTEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE drivers (
@@ -47,7 +47,7 @@ CREATE TABLE drivers (
   nationality VARCHAR(50),
   team_id VARCHAR(50) NOT NULL,
   number INT,
-  image_url TEXT,
+  image_url MEDIUMTEXT,
   FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -55,7 +55,7 @@ CREATE TABLE users (
   id VARCHAR(100) PRIMARY KEY,
   username VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(100) NOT NULL,
-  avatar_url TEXT,
+  avatar_url MEDIUMTEXT,
   balance INT NOT NULL DEFAULT 100,
   points INT NOT NULL DEFAULT 0,
   `rank` INT NOT NULL DEFAULT 0,
@@ -171,7 +171,7 @@ CREATE TABLE leagues (
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   has_chat TINYINT(1) NOT NULL DEFAULT 0,
   prize_title VARCHAR(200),
-  prize_image_url TEXT,
+  prize_image_url MEDIUMTEXT,
   prize_rules TEXT,
   FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -190,7 +190,7 @@ CREATE TABLE league_messages (
   league_id VARCHAR(100) NOT NULL,
   user_id VARCHAR(100) NOT NULL,
   username VARCHAR(50) NOT NULL,
-  avatar_url TEXT,
+  avatar_url MEDIUMTEXT,
   global_rank INT NOT NULL DEFAULT 0,
   message TEXT NOT NULL,
   timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

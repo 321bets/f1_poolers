@@ -25,9 +25,8 @@ router.post('/', async (req: Request, res: Response) => {
   try {
     const { number, name, location, circuit } = req.body;
     
-    // Count rounds for ID
-    const countRows = await query<RowDataPacket[]>(`SELECT COUNT(*) as cnt FROM rounds`);
-    const id = `round${countRows[0].cnt + 1}`;
+    // Generate unique round ID using timestamp
+    const id = `round-${Date.now()}`;
     
     await execute(
       `INSERT INTO rounds (id, number, name, location, circuit) VALUES (?, ?, ?, ?, ?)`,
@@ -39,7 +38,7 @@ router.post('/', async (req: Request, res: Response) => {
     await execute(`UPDATE users SET balance = balance + 50`);
     
     for (const u of users) {
-      const nid = `notif-roundbonus-${id}-${u.id}`;
+      const nid = `notif-roundbonus-${id}-${u.id}-${Date.now()}`;
       await execute(
         `INSERT INTO notifications (id, user_id, message, timestamp, is_read, sender, type) VALUES (?, ?, ?, NOW(), 0, 'System', 'general')`,
         [nid, u.id, `New Round Created: ${name}! You received 50 Fun-Coins.`]

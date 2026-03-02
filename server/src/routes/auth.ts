@@ -84,9 +84,8 @@ router.post('/signup', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Username already exists' });
     }
 
-    // Count users for ID
-    const countRows = await query<RowDataPacket[]>(`SELECT COUNT(*) as cnt FROM users`);
-    const userId = `user${countRows[0].cnt + 1}`;
+    // Generate unique user ID using timestamp
+    const userId = `user-${Date.now()}`;
     const avatarUrl = `https://picsum.photos/seed/${username}/100/100`;
     const lat = location?.lat || null;
     const lng = location?.lng || null;

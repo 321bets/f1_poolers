@@ -26,8 +26,8 @@ router.get('/', async (_req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
   try {
     const { roundId, type, date, betValue } = req.body;
-    const countRows = await query<RowDataPacket[]>(`SELECT COUNT(*) as cnt FROM events`);
-    const id = `event${countRows[0].cnt + 1}`;
+    // Generate unique event ID using timestamp + counter
+    const id = `event-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
     const bv = betValue || 10;
 
     await execute(
