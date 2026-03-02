@@ -74,17 +74,34 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const { user, updateUser: updateAuthUser } = useAuth();
 
   const fetchData = useCallback(async () => {
-    setRounds(await dataService.getRounds());
-    setEvents(await dataService.getEvents());
-    setDrivers(await dataService.getDrivers());
-    setTeams(await dataService.getTeams());
-    setUsers(await dataService.getUsers());
-    setAllBets(await dataService.getAllBets());
-    setResults(await dataService.getResults());
-    setLeagues(await dataService.getLeagues());
-    setCoinPacks(await dataService.getCoinPacks());
-    setAdSettings(await dataService.getAdSettings());
-    setSystemSettings(await dataService.getSystemSettings());
+    try {
+      const [rounds, events, drivers, teams, users, bets, results, leagues, coinPacks, adSettings, systemSettings] = await Promise.all([
+        dataService.getRounds(),
+        dataService.getEvents(),
+        dataService.getDrivers(),
+        dataService.getTeams(),
+        dataService.getUsers(),
+        dataService.getAllBets(),
+        dataService.getResults(),
+        dataService.getLeagues(),
+        dataService.getCoinPacks(),
+        dataService.getAdSettings(),
+        dataService.getSystemSettings()
+      ]);
+      setRounds(rounds);
+      setEvents(events);
+      setDrivers(drivers);
+      setTeams(teams);
+      setUsers(users);
+      setAllBets(bets);
+      setResults(results);
+      setLeagues(leagues);
+      setCoinPacks(coinPacks);
+      setAdSettings(adSettings);
+      setSystemSettings(systemSettings);
+    } catch (err) {
+      console.error('fetchData error:', err);
+    }
   }, []);
 
   useEffect(() => {

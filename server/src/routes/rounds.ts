@@ -45,8 +45,10 @@ router.post('/', async (req: Request, res: Response) => {
       );
     }
 
+    console.log(`Round created: ${id} - ${name}`);
     res.json({ id, number, name, location, circuit });
   } catch (err: any) {
+    console.error(`Round creation failed:`, err.message);
     res.status(500).json({ error: err.message });
   }
 });
