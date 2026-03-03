@@ -34,12 +34,16 @@ const RoundManagement: React.FC = () => {
             number: Number(roundData.number),
         };
 
-        if (editingRound) {
-            await updateRound({ ...payload, id: editingRound.id });
-        } else {
-            await createRound(payload);
+        try {
+            if (editingRound) {
+                await updateRound({ ...payload, id: editingRound.id });
+            } else {
+                await createRound(payload);
+            }
+            setIsModalOpen(false);
+        } catch (err: any) {
+            alert(`Error saving round: ${err.message || 'Unknown error'}`);
         }
-        setIsModalOpen(false);
     };
 
   return (
