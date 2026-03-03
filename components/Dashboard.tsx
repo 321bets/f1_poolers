@@ -54,21 +54,22 @@ const Dashboard: React.FC = () => {
           <i className="fas fa-shield-alt text-yellow-500 text-xl mt-0.5 flex-shrink-0"></i>
           <div className="flex-1">
             <h3 className="text-white font-bold text-sm mb-1">{t('recoveryTitle')}</h3>
-            <p className="text-gray-400 text-xs leading-relaxed mb-2">{t('recoveryMessage')}</p>
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="text-red-500 hover:text-red-400 text-xs font-bold underline"
-            >
-              <i className="fas fa-user-cog mr-1"></i>{t('recoveryGoToProfile')}
-            </button>
+            <p className="text-gray-400 text-xs leading-relaxed mb-3">{t('recoveryMessage')}</p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setIsSettingsOpen(true)}
+                className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded transition-all uppercase tracking-wider flex items-center gap-1"
+              >
+                <i className="fas fa-user-cog"></i>{t('recoveryGoToProfile')}
+              </button>
+              <button
+                onClick={() => setRecoveryDismissed(true)}
+                className="bg-gray-700 hover:bg-gray-600 text-gray-300 text-xs font-bold py-2 px-4 rounded transition-all tracking-wider"
+              >
+                {t('recoveryDismissBtn')}
+              </button>
+            </div>
           </div>
-          <button
-            onClick={() => setRecoveryDismissed(true)}
-            className="text-gray-500 hover:text-white text-lg flex-shrink-0"
-            title={t('close')}
-          >
-            &times;
-          </button>
         </div>
       )}
 
