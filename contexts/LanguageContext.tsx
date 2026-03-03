@@ -338,7 +338,11 @@ const translations: Record<Language, Record<string, string>> = {
     minAge18: 'Minimum age is 18',
     pleaseAcceptTerms: 'Please accept terms and conditions',
     selectCountry: 'Select...',
-    locationNotice: 'Your location will be automatically detected to set your country.'
+    locationNotice: 'Your location will be automatically detected to set your country.',
+    leaveSiteTitle: 'Leaving F1™ Poolers?',
+    leaveSiteMessage: 'Are you sure you want to leave the site?',
+    leaveSiteStay: 'No, stay on F1™ Poolers',
+    leaveSiteLeave: 'Yes, leave the site'
   },
   pt: {
     signup: 'Cadastrar',
@@ -653,7 +657,11 @@ const translations: Record<Language, Record<string, string>> = {
     minAge18: 'Idade mínima é 18 anos',
     pleaseAcceptTerms: 'Por favor, aceite os termos e condições',
     selectCountry: 'Selecionar...',
-    locationNotice: 'Sua localização será detectada automaticamente para definir seu país.'
+    locationNotice: 'Sua localização será detectada automaticamente para definir seu país.',
+    leaveSiteTitle: 'Sair do F1™ Poolers?',
+    leaveSiteMessage: 'Tem certeza que deseja sair do site?',
+    leaveSiteStay: 'Não, ficar no F1™ Poolers',
+    leaveSiteLeave: 'Sim, sair do site'
   },
   es: {
     welcome: 'Bienvenido al Paddock',
@@ -970,7 +978,11 @@ const translations: Record<Language, Record<string, string>> = {
     minAge18: 'La edad mínima es 18 años',
     pleaseAcceptTerms: 'Por favor, acepta los términos y condiciones',
     selectCountry: 'Seleccionar...',
-    locationNotice: 'Tu ubicación será detectada automáticamente para establecer tu país.'
+    locationNotice: 'Tu ubicación será detectada automáticamente para establecer tu país.',
+    leaveSiteTitle: '¿Salir de F1™ Poolers?',
+    leaveSiteMessage: '¿Estás seguro de que quieres salir del sitio?',
+    leaveSiteStay: 'No, quedarme en F1™ Poolers',
+    leaveSiteLeave: 'Sí, salir del sitio'
   }
 };
 
