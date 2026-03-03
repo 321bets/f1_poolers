@@ -1,40 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage, Language } from '../contexts/LanguageContext';
 import { useData } from '../contexts/DataContext';
 import HowToPlayModal from './HowToPlayModal';
-
-const COUNTRIES = [
-    'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan',
-    'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia',
-    'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi',
-    'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros',
-    'Congo', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic',
-    'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic',
-    'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia',
-    'Fiji', 'Finland', 'France',
-    'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana',
-    'Haiti', 'Honduras', 'Hungary',
-    'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Ivory Coast',
-    'Jamaica', 'Japan', 'Jordan',
-    'Kazakhstan', 'Kenya', 'Kiribati', 'Kuwait', 'Kyrgyzstan',
-    'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg',
-    'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico',
-    'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar',
-    'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Norway',
-    'Oman',
-    'Pakistan', 'Palau', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal',
-    'Qatar',
-    'Romania', 'Russia', 'Rwanda',
-    'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe',
-    'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands',
-    'Somalia', 'South Africa', 'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland', 'Syria',
-    'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu',
-    'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan',
-    'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam',
-    'Yemen',
-    'Zambia', 'Zimbabwe'
-];
 
 const AuthPage: React.FC = () => {
     const [isLoginView, setIsLoginView] = useState(true);
@@ -58,23 +26,47 @@ const AuthPage: React.FC = () => {
     });
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [locationStatus, setLocationStatus] = useState('');
+    const [geoDetecting, setGeoDetecting] = useState(false);
 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const handleGetLocation = () => {
-        if (!navigator.geolocation) {
-            setLocationStatus('Geolocation is not supported');
-        } else {
-            setLocationStatus('Locating...');
-            navigator.geolocation.getCurrentPosition((position) => {
-                setLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
-                setLocationStatus('Success!');
-            }, () => {
-                setLocationStatus('Denied');
-            });
+    // Auto-detect country via geolocation when switching to signup
+    useEffect(() => {
+        if (!isLoginView && !country && !geoDetecting) {
+            setGeoDetecting(true);
+            if (!navigator.geolocation) {
+                setLocationStatus('Geolocation not supported');
+                setGeoDetecting(false);
+                return;
+            }
+            setLocationStatus('Detecting location...');
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setLocation({ lat: latitude, lng: longitude });
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=en`);
+                        const data = await res.json();
+                        const detectedCountry = data?.address?.country || '';
+                        if (detectedCountry) {
+                            setCountry(detectedCountry);
+                            setLocationStatus(detectedCountry);
+                        } else {
+                            setLocationStatus('Could not detect country');
+                        }
+                    } catch {
+                        setLocationStatus('Could not detect country');
+                    }
+                    setGeoDetecting(false);
+                },
+                () => {
+                    setLocationStatus('Location access denied');
+                    setGeoDetecting(false);
+                }
+            );
         }
-    };
+    }, [isLoginView]);
 
     const handleBiometricLogin = async () => {
         setError('');
@@ -182,18 +174,26 @@ const AuthPage: React.FC = () => {
                                 <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">{t('confirmPassword')}</label>
                                 <input type="password" inputMode="numeric" maxLength={5} pattern="\d{5}" value={confirmPassword} onChange={(e) => { const v = e.target.value.replace(/\D/g, ''); if (v.length <= 5) setConfirmPassword(v); }} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
                             </div>
-                            <div className="grid grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">{t('age')}</label>
-                                    <input type="number" min="18" value={age} onChange={(e) => setAge(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
+                            <div className="mb-4">
+                                <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">{t('age')}</label>
+                                <input type="number" min="18" value={age} onChange={(e) => setAge(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
+                            </div>
+                            <div className="mb-4 bg-gray-700/50 rounded-lg p-3 border border-gray-600">
+                                <div className="flex items-center gap-2 text-xs text-gray-300">
+                                    <i className="fas fa-map-marker-alt text-red-500"></i>
+                                    <span>{t('locationNotice')}</span>
                                 </div>
-                                <div>
-                                    <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">{t('country')}</label>
-                                    <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required>
-                                        <option value="">{t('selectCountry')}</option>
-                                        {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
-                                    </select>
-                                </div>
+                                {locationStatus && (
+                                    <div className="mt-2 flex items-center gap-2 text-xs">
+                                        {geoDetecting ? (
+                                            <><i className="fas fa-spinner fa-spin text-yellow-400"></i><span className="text-yellow-400">{locationStatus}</span></>
+                                        ) : country ? (
+                                            <><i className="fas fa-check-circle text-green-400"></i><span className="text-green-400">{locationStatus}</span></>
+                                        ) : (
+                                            <><i className="fas fa-exclamation-triangle text-red-400"></i><span className="text-red-400">{locationStatus}</span></>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                             <div className="mb-6 flex items-center">
                                 <input id="terms" type="checkbox" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)} className="w-4 h-4 text-red-600 bg-gray-700 border-gray-500 rounded focus:ring-red-600" required />

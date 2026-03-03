@@ -336,7 +336,8 @@ const translations: Record<Language, Record<string, string>> = {
     passwordsDontMatch: "Passwords don't match",
     minAge18: 'Minimum age is 18',
     pleaseAcceptTerms: 'Please accept terms and conditions',
-    selectCountry: 'Select...'
+    selectCountry: 'Select...',
+    locationNotice: 'Your location will be automatically detected to set your country.'
   },
   pt: {
     signup: 'Cadastrar',
@@ -649,7 +650,8 @@ const translations: Record<Language, Record<string, string>> = {
     passwordsDontMatch: 'As senhas não coincidem',
     minAge18: 'Idade mínima é 18 anos',
     pleaseAcceptTerms: 'Por favor, aceite os termos e condições',
-    selectCountry: 'Selecionar...'
+    selectCountry: 'Selecionar...',
+    locationNotice: 'Sua localização será detectada automaticamente para definir seu país.'
   },
   es: {
     welcome: 'Bienvenido al Paddock',
@@ -964,7 +966,8 @@ const translations: Record<Language, Record<string, string>> = {
     passwordsDontMatch: 'Las contraseñas no coinciden',
     minAge18: 'La edad mínima es 18 años',
     pleaseAcceptTerms: 'Por favor, acepta los términos y condiciones',
-    selectCountry: 'Seleccionar...'
+    selectCountry: 'Seleccionar...',
+    locationNotice: 'Tu ubicación será detectada automáticamente para establecer tu país.'
   }
 };
 
