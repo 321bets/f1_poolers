@@ -74,34 +74,37 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const { user, updateUser: updateAuthUser } = useAuth();
 
   const fetchData = useCallback(async () => {
-    try {
-      const [rounds, events, drivers, teams, users, bets, results, leagues, coinPacks, adSettings, systemSettings] = await Promise.all([
-        dataService.getRounds(),
-        dataService.getEvents(),
-        dataService.getDrivers(),
-        dataService.getTeams(),
-        dataService.getUsers(),
-        dataService.getAllBets(),
-        dataService.getResults(),
-        dataService.getLeagues(),
-        dataService.getCoinPacks(),
-        dataService.getAdSettings(),
-        dataService.getSystemSettings()
-      ]);
-      setRounds(rounds);
-      setEvents(events);
-      setDrivers(drivers);
-      setTeams(teams);
-      setUsers(users);
-      setAllBets(bets);
-      setResults(results);
-      setLeagues(leagues);
-      setCoinPacks(coinPacks);
-      setAdSettings(adSettings);
-      setSystemSettings(systemSettings);
-    } catch (err) {
-      console.error('fetchData error:', err);
-    }
+    const results = await Promise.allSettled([
+      dataService.getRounds(),
+      dataService.getEvents(),
+      dataService.getDrivers(),
+      dataService.getTeams(),
+      dataService.getUsers(),
+      dataService.getAllBets(),
+      dataService.getResults(),
+      dataService.getLeagues(),
+      dataService.getCoinPacks(),
+      dataService.getAdSettings(),
+      dataService.getSystemSettings()
+    ]);
+
+    const getValue = <T,>(r: PromiseSettledResult<T>, fallback: T, label: string): T => {
+      if (r.status === 'fulfilled') return r.value;
+      console.error(`fetchData: ${label} failed:`, r.reason);
+      return fallback;
+    };
+
+    setRounds(getValue(results[0], [], 'rounds'));
+    setEvents(getValue(results[1], [], 'events'));
+    setDrivers(getValue(results[2], [], 'drivers'));
+    setTeams(getValue(results[3], [], 'teams'));
+    setUsers(getValue(results[4], [], 'users'));
+    setAllBets(getValue(results[5], [], 'bets'));
+    setResults(getValue(results[6], [], 'results'));
+    setLeagues(getValue(results[7], [], 'leagues'));
+    setCoinPacks(getValue(results[8], [], 'coinPacks'));
+    setAdSettings(getValue(results[9], { googleAdClientId: '', rewardAmount: 0, isEnabled: false }, 'adSettings'));
+    setSystemSettings(getValue(results[10], { theme: 'original' }, 'systemSettings'));
   }, []);
 
   useEffect(() => {
