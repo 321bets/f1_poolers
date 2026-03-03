@@ -17,7 +17,6 @@ const AuthPage: React.FC = () => {
     const [password, setPassword] = useState('');
     
     // Signup State
-    const [age, setAge] = useState('');
     const [country, setCountry] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [location, setLocation] = useState<{lat: number, lng: number} | undefined>(undefined);
@@ -94,9 +93,8 @@ const AuthPage: React.FC = () => {
                 if (username.length > 8 || /\s/.test(username)) throw new Error(t('usernameInvalid'));
                 if (!/^\d{5}$/.test(password)) throw new Error(t('passwordMustBe5Digits'));
                 if (password !== confirmPassword) throw new Error(t('passwordsDontMatch'));
-                if (!age || Number(age) < 18) throw new Error(t('minAge18'));
                 if (!termsAccepted) throw new Error(t('pleaseAcceptTerms'));
-                await signup(username, password, Number(age), country, location, timezone);
+                await signup(username, password, country, location, timezone);
             }
         } catch (err: any) {
             console.error('Auth error:', err);
@@ -173,10 +171,6 @@ const AuthPage: React.FC = () => {
                             <div className="mb-4">
                                 <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">{t('confirmPassword')}</label>
                                 <input type="password" inputMode="numeric" maxLength={5} pattern="\d{5}" value={confirmPassword} onChange={(e) => { const v = e.target.value.replace(/\D/g, ''); if (v.length <= 5) setConfirmPassword(v); }} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-400 text-xs font-bold mb-2 uppercase">{t('age')}</label>
-                                <input type="number" min="18" value={age} onChange={(e) => setAge(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600" required />
                             </div>
                             <div className="mb-4 bg-gray-700/50 rounded-lg p-3 border border-gray-600">
                                 <div className="flex items-center gap-2 text-xs text-gray-300">

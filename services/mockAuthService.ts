@@ -16,11 +16,11 @@ export const login = (username: string, password_raw: string): Promise<User> => 
   });
 };
 
-export const signup = (username: string, password_raw: string, age: number, country: string, location?: {lat: number, lng: number}, timezone?: string): Promise<User> => {
+export const signup = (username: string, password_raw: string, country: string, location?: {lat: number, lng: number}, timezone?: string): Promise<User> => {
     return new Promise((resolve, reject) => {
         setTimeout(async () => {
             try {
-                const newUser = await dataService.createUser(username, password_raw, age, country, location, timezone);
+                const newUser = await dataService.createUser(username, password_raw, 0, country, location, timezone);
                 resolve(newUser);
             } catch (error: any) {
                 reject(error);

@@ -23,11 +23,11 @@ export const login = async (username: string, password_raw: string): Promise<Use
   return user;
 };
 
-export const signup = async (username: string, password_raw: string, age: number, country: string, location?: {lat: number, lng: number}, timezone?: string): Promise<User> => {
+export const signup = async (username: string, password_raw: string, country: string, location?: {lat: number, lng: number}, timezone?: string): Promise<User> => {
   const res = await fetch(`${API_BASE}/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password: password_raw, age, country, location, timezone })
+    body: JSON.stringify({ username, password: password_raw, country, location, timezone })
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: 'Signup failed' }));

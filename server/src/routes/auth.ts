@@ -77,7 +77,7 @@ router.post('/login', async (req: Request, res: Response) => {
 // POST /api/auth/signup
 router.post('/signup', async (req: Request, res: Response) => {
   try {
-    const { username, password, age, country, location, timezone } = req.body;
+    const { username, password, country, location, timezone } = req.body;
     
     const existing = await query<RowDataPacket[]>(`SELECT id FROM users WHERE username = ?`, [username]);
     if (existing.length > 0) {
@@ -92,8 +92,8 @@ router.post('/signup', async (req: Request, res: Response) => {
     const tz = timezone || 'America/New_York';
 
     await execute(
-      `INSERT INTO users (id, username, password, avatar_url, balance, points, \`rank\`, is_admin, age, country, lat, lng, timezone, terms_accepted) VALUES (?, ?, ?, ?, 100, 0, 0, 0, ?, ?, ?, ?, ?, 1)`,
-      [userId, username, password, avatarUrl, age, country, lat, lng, tz]
+      `INSERT INTO users (id, username, password, avatar_url, balance, points, \`rank\`, is_admin, age, country, lat, lng, timezone, terms_accepted) VALUES (?, ?, ?, ?, 100, 0, 0, 0, 0, ?, ?, ?, ?, 1)`,
+      [userId, username, password, avatarUrl, country, lat, lng, tz]
     );
 
     // Welcome notification
