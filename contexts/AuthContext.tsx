@@ -55,16 +55,47 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [biometricRegistered, setBiometricRegistered] = useState(hasStoredCredentials());
   const initialized = useRef(false);
 
-  // Restore session from localStorage on mount
+  // Restore session from localStorage on mount, validating against the API
   useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
     
     const storedUser = getStoredUser();
     if (storedUser) {
-      setUser(storedUser);
+      // Validate the stored user exists in the database
+      fetch(`/api/users/${storedUser.id}`)
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          // User not found in DB — clear stale session
+          console.warn('Stored user not found in database, clearing session');
+          persistUser(null);
+          setUser(null);
+          return null;
+        })
+        .then(freshUser => {
+          if (freshUser) {
+            // Fix notification dates
+            if (freshUser.notifications) {
+              freshUser.notifications = freshUser.notifications.map((n: any) => ({
+                ...n,
+                timestamp: new Date(n.timestamp)
+              }));
+            }
+            setUser(freshUser);
+            persistUser(freshUser);
+          }
+          setIsLoading(false);
+        })
+        .catch(() => {
+          // Network error — use stored user as fallback
+          setUser(storedUser);
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
     }
-    setIsLoading(false);
 
     isBiometricAvailable().then(setBiometricAvailable);
   }, []);
