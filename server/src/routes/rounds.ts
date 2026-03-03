@@ -8,14 +8,17 @@ const router = express.Router();
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const rows = await query<RowDataPacket[]>(`SELECT * FROM rounds ORDER BY number`);
-    res.json(rows.map(r => ({
+    const mapped = rows.map(r => ({
       id: r.id,
       number: r.number,
       name: r.name,
       location: r.location,
       circuit: r.circuit
-    })));
+    }));
+    console.log(`GET /api/rounds returning ${mapped.length} rounds`);
+    res.json(mapped);
   } catch (err: any) {
+    console.error(`GET /api/rounds ERROR:`, err.message);
     res.status(500).json({ error: err.message });
   }
 });
