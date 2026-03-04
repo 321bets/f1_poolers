@@ -112,9 +112,9 @@ const AuthPage: React.FC = () => {
                     <button
                         key={lang}
                         onClick={() => setLanguage(lang)}
-                        className={`w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center text-xl ${language === lang ? 'border-red-600 bg-red-600/20 shadow-lg shadow-red-900/40' : 'border-gray-600 bg-gray-700 hover:border-gray-500'}`}
+                        className={`w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center overflow-hidden ${language === lang ? 'border-red-600 bg-red-600/20 shadow-lg shadow-red-900/40' : 'border-gray-600 bg-gray-700 hover:border-gray-500'}`}
                     >
-                        {lang === 'en' ? '🇬🇧' : lang === 'pt' ? '🇧🇷' : '🇪🇸'}
+                        <img src={lang === 'en' ? 'https://flagcdn.com/w40/gb.png' : lang === 'pt' ? 'https://flagcdn.com/w40/br.png' : 'https://flagcdn.com/w40/es.png'} alt={lang} className="w-6 h-6 object-cover rounded-sm" />
                     </button>
                 ))}
             </div>
