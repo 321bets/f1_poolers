@@ -261,7 +261,7 @@ INSERT INTO drivers (id, name, nationality, team_id, number, image_url) VALUES
 ('russell', 'George Russell', 'British', 'mercedes', 63, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/russell.jpg.img.1024.medium.jpg'),
 ('sainz', 'Carlos Sainz', 'Spanish', 'williams', 55, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/sainz.jpg.img.1024.medium.jpg'),
 ('stroll', 'Lance Stroll', 'Canadian', 'astonmartin', 18, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/stroll.jpg.img.1024.medium.jpg'),
-('tsunoda', 'Yuki Tsunoda', 'Japanese', 'redbull', 22, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/tsunoda.jpg.img.1024.medium.jpg'),
+('isackhadjar', 'Isack Hadjar', 'French', 'redbull', 6, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/hadjar.jpg.img.1024.medium.jpg'),
 ('verstappen', 'Max Verstappen', 'Dutch', 'redbull', 3, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/verstappen.jpg.img.1024.medium.jpg');
 
 INSERT INTO users (id, username, password, avatar_url, balance, points, `rank`, is_admin, age, country) VALUES
