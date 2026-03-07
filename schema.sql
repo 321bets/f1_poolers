@@ -228,16 +228,16 @@ CREATE TABLE ad_settings (
 INSERT INTO system_settings (theme, terms_content_en, terms_content_pt, terms_content_es) VALUES ('original', 'F1 POOLERS - TERMS AND CONDITIONS...', 'F1 POOLERS - TERMOS E CONDICOES...', 'F1 POOLERS - TERMINOS Y CONDICIONES...');
 
 INSERT INTO teams (id, name, nationality, logo_url) VALUES
-('alpine', 'BWT Alpine Formula One Team', 'French', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/alpine/2026alpinelogowhite.webp'),
-('astonmartin', 'Aston Martin Aramco Formula One Team', 'British', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/astonmartin/2026astonmartinlogowhite.webp'),
-('audi', 'Audi Revolut F1 Team', 'German', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/audi/2026audilogowhite.webp'),
-('cadillac', 'Cadillac Formula 1 Team', 'American', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/cadillac/2026cadillaclogowhite.webp'),
-('ferrari', 'Scuderia Ferrari HP', 'Italian', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/ferrari/2026ferrarilogowhite.webp'),
-('haas', 'TGR Haas F1 Team', 'American', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/haas/2026haaslogowhite.webp'),
-('mclaren', 'McLaren Mastercard F1 Team', 'British', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/mclaren/2026mclarenlogowhite.webp'),
-('mercedes', 'Mercedes-AMG PETRONAS Formula One Team', 'German', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/mercedes/2026mercedeslogowhite.webp'),
-('redbull', 'Oracle Red Bull Racing', 'Austrian', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/redbullracing/2026redbullracinglogowhite.webp'),
-('williams', 'Atlassian Williams F1 Team', 'British', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/williams/2026williamslogowhite.webp');
+('alpine', 'BWT Alpine Formula One Team', 'French', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/alpine/2026alpinelogo.webp'),
+('astonmartin', 'Aston Martin Aramco Formula One Team', 'British', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/astonmartin/2026astonmartinlogo.webp'),
+('audi', 'Audi Revolut F1 Team', 'German', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/audi/2026audilogo.webp'),
+('cadillac', 'Cadillac Formula 1 Team', 'American', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/cadillac/2026cadillaclogo.webp'),
+('ferrari', 'Scuderia Ferrari HP', 'Italian', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/ferrari/2026ferrarilogo.webp'),
+('haas', 'TGR Haas F1 Team', 'American', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/haas/2026haaslogo.webp'),
+('mclaren', 'McLaren Mastercard F1 Team', 'British', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/mclaren/2026mclarenlogo.webp'),
+('mercedes', 'Mercedes-AMG PETRONAS Formula One Team', 'German', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/mercedes/2026mercedeslogo.webp'),
+('redbull', 'Oracle Red Bull Racing', 'Austrian', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/redbullracing/2026redbullracinglogo.webp'),
+('williams', 'Atlassian Williams F1 Team', 'British', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/williams/2026williamslogo.webp');
 
 INSERT INTO drivers (id, name, nationality, team_id, number, image_url) VALUES
 ('albon', 'Alexander Albon', 'Thai', 'williams', 23, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/albon.jpg.img.1024.medium.jpg'),
