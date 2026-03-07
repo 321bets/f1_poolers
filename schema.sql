@@ -236,6 +236,7 @@ INSERT INTO teams (id, name, nationality, logo_url) VALUES
 ('haas', 'TGR Haas F1 Team', 'American', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/haas/2026haaslogo.webp'),
 ('mclaren', 'McLaren Mastercard F1 Team', 'British', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/mclaren/2026mclarenlogo.webp'),
 ('mercedes', 'Mercedes-AMG PETRONAS Formula One Team', 'German', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/mercedes/2026mercedeslogo.webp'),
+('racingbulls', 'Visa Cash App Racing Bulls Formula One Team', 'Italian', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/racingbulls/2026racingbullslogo.webp'),
 ('redbull', 'Oracle Red Bull Racing', 'Austrian', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/redbullracing/2026redbullracinglogo.webp'),
 ('williams', 'Atlassian Williams F1 Team', 'British', 'https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/williams/2026williamslogo.webp');
 
@@ -250,7 +251,9 @@ INSERT INTO drivers (id, name, nationality, team_id, number, image_url) VALUES
 ('gasly', 'Pierre Gasly', 'French', 'alpine', 10, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/gasly.jpg.img.1024.medium.jpg'),
 ('hamilton', 'Lewis Hamilton', 'British', 'ferrari', 44, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/hamilton.jpg.img.1024.medium.jpg'),
 ('hulkenberg', 'Nico Hulkenberg', 'German', 'audi', 27, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/hulkenberg.jpg.img.1024.medium.jpg'),
+('lawson', 'Liam Lawson', 'New Zealander', 'racingbulls', 30, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/lawson.jpg.img.1024.medium.jpg'),
 ('leclerc', 'Charles Leclerc', 'Monegasque', 'ferrari', 16, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/leclerc.jpg.img.1024.medium.jpg'),
+('lindblad', 'Arvid Lindblad', 'British', 'racingbulls', 41, 'https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/2026Drivers/lindblad.jpg.img.1024.medium.jpg'),
 ('norris', 'Lando Norris', 'British', 'mclaren', 1, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/norris.jpg.img.1024.medium.jpg'),
 ('ocon', 'Esteban Ocon', 'French', 'haas', 31, 'https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/ocon.jpg.img.1024.medium.jpg'),
 ('perez', 'Sergio Perez', 'Mexican', 'cadillac', 11, 'https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/perez.jpg.img.1024.medium.jpg'),
