@@ -108,7 +108,7 @@ const KPI: React.FC<{ icon: string; label: string; value: string | number; sub?:
 );
 
 const OverviewDashboard: React.FC = () => {
-  const { users, allBets, events, results, leagues, rounds } = useData();
+  const { users, allBets, events, results, leagues, rounds, drivers, teams } = useData();
 
   const stats = useMemo(() => {
     // --- USER STATS ---
@@ -260,6 +260,21 @@ const OverviewDashboard: React.FC = () => {
       .map(([country, d]) => ({ country, users: d.users, totalPoints: d.totalPoints, avgPoints: d.users ? Math.round((d.totalPoints / d.users) * 10) / 10 : 0 }))
       .sort((a, b) => b.avgPoints - a.avgPoints);
 
+    // --- SUPPORTER / FAN DATA ---
+    const driverFanMap: Record<string, number> = {};
+    const teamFanMap: Record<string, number> = {};
+    users.forEach(u => {
+      if (u.supportedDriverId) driverFanMap[u.supportedDriverId] = (driverFanMap[u.supportedDriverId] || 0) + 1;
+      if (u.supportedTeamId) teamFanMap[u.supportedTeamId] = (teamFanMap[u.supportedTeamId] || 0) + 1;
+    });
+    const driverFansData = Object.entries(driverFanMap)
+      .map(([id, value]) => { const d = drivers.find(dr => dr.id === id); return { label: d ? d.name : id, value }; })
+      .sort((a, b) => b.value - a.value);
+    const teamFansData = Object.entries(teamFanMap)
+      .map(([id, value]) => { const tm = teams.find(t => t.id === id); return { label: tm ? tm.name : id, value }; })
+      .sort((a, b) => b.value - a.value);
+    const totalFans = users.filter(u => u.supportedDriverId || u.supportedTeamId).length;
+
     return {
       totalUsers, admins, avgAge, totalBalance, avgBalance, totalPoints,
       countryData, ageData,
@@ -274,8 +289,9 @@ const OverviewDashboard: React.FC = () => {
       betsByEventTypeData, retentionData,
       driverOnlyBets, teamOnlyBets, comboBets, usersWithBets,
       countryPerformance,
+      driverFansData, teamFansData, totalFans,
     };
-  }, [users, allBets, events, results, leagues, rounds]);
+  }, [users, allBets, events, results, leagues, rounds, drivers, teams]);
 
   return (
     <div className="space-y-4">
@@ -346,6 +362,17 @@ const OverviewDashboard: React.FC = () => {
         </div>
         <div className="bg-[#1a1a24] border border-gray-800 rounded-lg p-3">
           <DonutChart data={stats.eventTypeData} title="Events by Type" size={100} />
+        </div>
+      </div>
+
+      {/* Fan Support */}
+      <div className="bg-[#1a1a24] border border-gray-800 rounded-lg p-3">
+        <h4 className="text-[10px] text-gray-500 font-black uppercase mb-3 flex items-center gap-2">
+          <i className="fas fa-heart text-red-500"></i> Fan Support ({stats.totalFans} users have declared support)
+        </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <BarChart data={stats.driverFansData} title="Most Supported Drivers" maxBars={10} />
+          <BarChart data={stats.teamFansData} title="Most Supported Teams" maxBars={10} />
         </div>
       </div>
 

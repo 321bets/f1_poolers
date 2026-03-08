@@ -48,7 +48,7 @@ const SPRINT_POINTS: Record<number, number> = {
 };
 
 const Statistics: React.FC = () => {
-  const { results, events, rounds, drivers, teams } = useData();
+  const { results, events, rounds, drivers, teams, users } = useData();
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<StatTab>('drivers');
   const [eventFilter, setEventFilter] = useState<EventFilter>('all');
@@ -71,6 +71,19 @@ const Statistics: React.FC = () => {
     teams.forEach(t => { map[t.id] = t; });
     return map;
   }, [teams]);
+
+  // Supporter counts
+  const driverSupporters = useMemo(() => {
+    const map: Record<string, number> = {};
+    users.forEach(u => { if (u.supportedDriverId) map[u.supportedDriverId] = (map[u.supportedDriverId] || 0) + 1; });
+    return map;
+  }, [users]);
+
+  const teamSupporters = useMemo(() => {
+    const map: Record<string, number> = {};
+    users.forEach(u => { if (u.supportedTeamId) map[u.supportedTeamId] = (map[u.supportedTeamId] || 0) + 1; });
+    return map;
+  }, [users]);
 
   // Filter results by event type
   const filteredResults = useMemo(() => {
@@ -320,6 +333,7 @@ const Statistics: React.FC = () => {
                 <th className="py-3 px-3 text-center">{t('statEntries')}</th>
                 <th className="py-3 px-3 text-center">{t('statAvgPos')}</th>
                 <th className="py-3 px-3 text-center">{t('statBestPos')}</th>
+                <th className="py-3 px-3 text-center"><i className="fas fa-heart text-red-500 mr-1"></i>{t('statFans')}</th>
                 {Array.from({ length: Math.min(maxPositions, 5) }, (_, i) => (
                   <th key={i} className="py-3 px-2 text-center text-xs">P{i + 1}</th>
                 ))}
@@ -361,6 +375,7 @@ const Statistics: React.FC = () => {
                       <td className="py-3 px-3 text-center text-gray-400">{stat.raceEntries}</td>
                       <td className="py-3 px-3 text-center text-gray-300">{stat.avgPosition}</td>
                       <td className="py-3 px-3 text-center">{renderPositionBadge(stat.bestPosition)}</td>
+                      <td className="py-3 px-3 text-center text-red-400 font-bold">{(isDriver ? driverSupporters[ds.driverId] : teamSupporters[ts.teamId]) || 0}</td>
                       {Array.from({ length: Math.min(maxPositions, 5) }, (_, i) => (
                         <td key={i} className="py-3 px-2 text-center text-gray-400 text-xs">{stat.positions[i + 1] || 0}</td>
                       ))}
@@ -368,7 +383,7 @@ const Statistics: React.FC = () => {
                     {/* Expanded row: event-by-event breakdown */}
                     {isExpanded && (
                       <tr>
-                        <td colSpan={9 + Math.min(maxPositions, 5)} className="bg-gray-900 p-0">
+                        <td colSpan={10 + Math.min(maxPositions, 5)} className="bg-gray-900 p-0">
                           <div className="p-4 max-h-60 overflow-y-auto custom-scrollbar">
                             <h4 className="text-xs font-bold text-gray-400 uppercase mb-3 tracking-wider">
                               <i className="fas fa-history mr-1"></i> {t('statEventBreakdown')}
@@ -438,7 +453,7 @@ const Statistics: React.FC = () => {
                     <p className="text-gray-500 text-xs">{t('statPts')}</p>
                   </div>
                 </div>
-                <div className="grid grid-cols-4 gap-2 mt-2 text-center text-xs">
+                <div className="grid grid-cols-5 gap-2 mt-2 text-center text-xs">
                   <div>
                     <p className="text-yellow-400 font-bold">{stat.wins}</p>
                     <p className="text-gray-500">{t('statWins')}</p>
@@ -454,6 +469,10 @@ const Statistics: React.FC = () => {
                   <div>
                     <p>{renderPositionBadge(stat.bestPosition)}</p>
                     <p className="text-gray-500">{t('statBestPos')}</p>
+                  </div>
+                  <div>
+                    <p className="text-red-400 font-bold"><i className="fas fa-heart text-[10px] mr-0.5"></i>{(isDriver ? driverSupporters[ds.driverId] : teamSupporters[ts.teamId]) || 0}</p>
+                    <p className="text-gray-500">{t('statFans')}</p>
                   </div>
                 </div>
                 {isExpanded && (

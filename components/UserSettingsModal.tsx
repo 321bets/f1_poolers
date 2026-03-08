@@ -13,7 +13,7 @@ interface UserSettingsModalProps {
 
 const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
     const { user } = useAuth();
-    const { updateUser, leagues } = useData();
+    const { updateUser, leagues, drivers, teams } = useData();
     const [activeTab, setActiveTab] = useState<'profile' | 'leagues'>('profile');
     
     // Profile State
@@ -22,6 +22,8 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
     const [phone, setPhone] = useState(user?.phone || '');
     const [country, setCountry] = useState(user?.country || '');
     const [timezone, setTimezone] = useState(user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York');
+    const [supportedDriverId, setSupportedDriverId] = useState(user?.supportedDriverId || '');
+    const [supportedTeamId, setSupportedTeamId] = useState(user?.supportedTeamId || '');
     const [isSaving, setIsSaving] = useState(false);
 
     // League State
@@ -74,7 +76,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
         if (!user) return;
         setIsSaving(true);
         try {
-            await updateUser({ id: user.id, avatarUrl, email: email || undefined, phone: phone || undefined, country: country || undefined, timezone });
+            await updateUser({ id: user.id, avatarUrl, email: email || undefined, phone: phone || undefined, country: country || undefined, timezone, supportedDriverId: supportedDriverId || undefined, supportedTeamId: supportedTeamId || undefined });
             alert(t('profileUpdated'));
         } catch (e) {
             alert(t('profileUpdateFailed'));
@@ -189,6 +191,21 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                                     {Intl.supportedValuesOf('timeZone').map(tz => <option key={tz} value={tz}>{tz.replace(/_/g, ' ')}</option>)}
                                 </select>
                                 <p className="text-xs text-gray-500">{t('timezoneHint')}</p>
+                            </div>
+                            {/* Supported Driver & Team */}
+                            <div className="space-y-2">
+                                <label className="block text-gray-400 text-xs font-bold uppercase tracking-wider"><i className="fas fa-heart text-red-500 mr-1"></i>{t('supportedDriver')}</label>
+                                <select value={supportedDriverId} onChange={(e) => setSupportedDriverId(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm">
+                                    <option value="">{t('selectYourDriver')}</option>
+                                    {drivers.map(d => <option key={d.id} value={d.id}>{d.name} #{d.number} — {d.teamName}</option>)}
+                                </select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="block text-gray-400 text-xs font-bold uppercase tracking-wider"><i className="fas fa-heart text-red-500 mr-1"></i>{t('supportedTeam')}</label>
+                                <select value={supportedTeamId} onChange={(e) => setSupportedTeamId(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm">
+                                    <option value="">{t('selectYourTeam')}</option>
+                                    {teams.map(tm => <option key={tm.id} value={tm.id}>{tm.name}</option>)}
+                                </select>
                             </div>
                             <div className="space-y-3">
                                 <h4 className="text-sm font-bold text-gray-300 uppercase tracking-wider"><i className="fas fa-shield-alt text-red-500 mr-2"></i>{t('recoveryContactLabel')}</h4>

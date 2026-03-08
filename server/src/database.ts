@@ -63,6 +63,18 @@ export async function initDatabase() {
   } catch (err: any) {
     console.warn('Migration warning:', err.message.substring(0, 100));
   }
+
+  // Migration: add supported driver/team columns
+  try {
+    await pool.query(`ALTER TABLE users ADD COLUMN supported_driver_id VARCHAR(100) DEFAULT NULL`);
+  } catch (err: any) {
+    if (!err.message.includes('Duplicate column')) console.warn('Migration warning:', err.message.substring(0, 100));
+  }
+  try {
+    await pool.query(`ALTER TABLE users ADD COLUMN supported_team_id VARCHAR(100) DEFAULT NULL`);
+  } catch (err: any) {
+    if (!err.message.includes('Duplicate column')) console.warn('Migration warning:', err.message.substring(0, 100));
+  }
 }
 
 export function getPool(): Pool {

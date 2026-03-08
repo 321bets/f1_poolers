@@ -1,0 +1,223 @@
+F1 POOLERS — 20-SECOND PROMO VIDEO GENERATION PROMPT
+=====================================================
+
+OBJECTIVE:
+Generate a fast-paced, cinematic 20-second promotional video for "F1 Poolers" — a free-to-play Formula 1 prediction strategy game. The video must feel like a high-energy F1 broadcast opener: dark backgrounds, neon accents, bold typography, rapid transitions, and adrenaline-pumping pacing.
+
+VISUAL STYLE & BRANDING:
+- Color palette: Deep black/dark gray (#15151e, #1f1f27) backgrounds, F1 Red (#e10600) as primary accent, yellow/gold for Fun-Coins and Jackpot, blue for multipliers, green for points
+- Typography: Bold, uppercase, italic, racing-style fonts with skewed angles (like official F1 graphics)
+- Animations: Quick zoom-ins, card flips, slot-machine style reveals, glowing neon pulses, motion blur transitions
+- No real F1 footage or copyrighted content — use stylized CGI racing elements, abstract speed lines, circuit silhouettes
+- Mobile-first framing (portrait 9:16 for social, with a 16:9 landscape alternative)
+
+AUDIO:
+- High-energy electronic/synthwave music with engine rev sound effects
+- Quick whoosh transitions between scenes
+- Dramatic bass drop at the Jackpot reveal
+
+=== SCENE-BY-SCENE BREAKDOWN (20 seconds total) ===
+
+SCENE 1 — THE HOOK (0:00–0:03)
+Visual: Black screen. A glowing F1 Poolers logo slams into frame with a light burst. Tagline zooms in underneath:
+Text: "F1™ POOLERS — OUTSMART. PREDICT. WIN."
+Subtext: "The Ultimate Free F1 Strategy Game"
+SFX: Engine ignition rev + bass hit
+
+SCENE 2 — THE CONCEPT (0:03–0:06)
+Visual: A stylized race weekend calendar appears (Qualifying → Sprint Qualifying → Sprint Race → Main Race). Each session card lights up sequentially. A hand taps one, and a prediction grid (5 driver slots, P1-P5) slides in from the right.
+Text overlay: "PREDICT THE TOP 5 FOR EVERY SESSION"
+Text: "Drivers OR Teams — Your Strategy, Your Call"
+
+SCENE 3 — THE MULTIPLIER STRATEGY (0:06–0:10)
+Visual: A glowing countdown clock appears. As the timer counts backwards (5 days → 3 days → 1 day → race start), multiplier badges animate upward: 5.0x (blue glow) → 3.0x → 1.5x → 1.0x. The 5.0x badge pulses with a fire icon and orange-to-red gradient.
+Text: "BET EARLY = UP TO 5× POINTS"
+Subtext: "Your multiplier locks the moment you confirm. The earlier you predict, the bigger your score."
+Quick visual: A score counter spinning from 25 pts → 125 pts (showing P1 exact match × 5.0x multiplier)
+
+SCENE 4 — SCORING & STRATEGIES (0:10–0:14)
+Visual: Split screen showing two strategy paths side by side:
+
+LEFT SIDE — "HIGH RISK, HIGH REWARD" (Driver Predictions):
+- Main Race P1 exact = 25 pts, P2 = 18, P3 = 15, P4 = 12, P5 = 10
+- Qualifying P1 = 18 pts
+- Sprint Race/Sprint Qualifying P1 = 8 pts
+- Any Top 5 (partial) bonus = +5/+3/+2 per event type
+- Text: "NAIL THE EXACT POSITION = MAX POINTS"
+
+RIGHT SIDE — "SAFE PLAY" (Team/Constructor Predictions):
+- 50% of driver points (Main Race P1 = 12.5 pts)
+- Double car coverage (either driver from team counts)
+- Text: "TEAMS = 2× COVERAGE AT HALF POINTS"
+
+BOTTOM: Quick flash — "COMBO BET: Submit BOTH Driver + Team on the same session. Costs 2× Fun-Coins but you score from BOTH slips!"
+
+SCENE 5 — BET LIMITS & FUN-COIN ECONOMY (0:14–0:17)
+Visual: Fun-Coins (gold coins with ₣ symbol) rain down. A "+50 FREE" badge pulses every time a new race weekend card appears.
+Text: "50 FREE FUN-COINS EVERY RACE WEEKEND"
+Quick info cards fly in:
+- "UP TO 4 BETS PER EVENT" (icon: 4 prediction slips stacking up)
+- "SPREAD ACROSS QUALIFYING, SPRINT & RACE"
+- "MORE COINS = MORE BETS = MORE CHANCES TO SCORE"
+Strategy tip flash: "PRO MOVE: Spread your coins across multiple sessions — Qualifying, Sprint Qualifying, Sprint Race & Main Race — to maximize total points per round!"
+
+SCENE 6 — THE JACKPOT (0:17–0:19)
+Visual: Dramatic zoom into a golden vault with glowing edges. The text "JACKPOT PROTOCOL" explodes on screen with particle effects.
+Text: "PREDICT THE EXACT P1-P5 IN ORDER → WIN THE ENTIRE PRIZE POOL"
+Subtext: "No winner? The pool ROLLS OVER to the next round — growing bigger and bigger!"
+Visual: Prize pool counter animating upward (42 → 102 → 162 → ???) to show the rollover snowball effect.
+Note: Only individual driver bets are eligible for Jackpot — team bets are NOT.
+
+SCENE 7 — THE CTA (0:19–0:20)
+Visual: F1 Poolers logo center screen with racing stripes converging. URL and call-to-action appear:
+Text: "PLAY FREE NOW"
+URL: "adster.app"
+Subtext: "Create Leagues. Challenge Friends. Climb the Global Leaderboard."
+Final flash: Quick montage of league chat, leaderboard rankings, and invite-a-friend sharing
+
+=== KEY FEATURES TO HIGHLIGHT ===
+
+1. FREE TO PLAY — No real money. Fun-Coins are the in-game currency.
+2. PREDICT TOP 5 — For each race session (Qualifying, Sprint Qualifying, Sprint Race, Main Race).
+3. DRIVER vs TEAM BETS — Drivers earn full points; Teams earn 50% but cover 2 cars.
+4. COMBO BETS — Submit both Driver AND Team predictions on the same event for double scoring.
+5. TIMING MULTIPLIER — Bet 5+ days early = 5.0x, 3+ days = 3.0x, 1+ day = 1.5x, under 24h = 1.0x.
+6. BET LIMIT — Max 4 bets per event (mix of driver/team/combo). Forces strategic allocation.
+7. JACKPOT PROTOCOL — Exact P1-P5 order = win entire prize pool. No winner = pool rolls over.
+8. 50 FREE FUN-COINS — Automatically given each new race weekend.
+9. PRIVATE LEAGUES — Create or join leagues, set custom trophies, invite friends.
+10. GLOBAL LEADERBOARD — Season-long points race.
+11. SHAREABLE BET SLIPS — Share your predictions as images on WhatsApp, Instagram, etc.
+12. MULTILINGUAL — English, Portuguese, Spanish.
+
+=== STRATEGIC DEPTH TO CONVEY ===
+
+STRATEGY 1: "THE EARLY BIRD"
+- Place predictions 5+ days before the session to lock in the 5.0x multiplier.
+- Even a partial match (driver in Top 5 but wrong slot) at 5.0x is worth more than an exact match at 1.0x for lower positions.
+- Example: P5 exact (10 pts) × 5.0x = 50 pts vs. P1 exact (25 pts) × 1.0x = 25 pts.
+
+STRATEGY 2: "THE HEDGER"
+- Use Team bets for chaotic/unpredictable sessions (wet weather, street circuits).
+- You get 50% points but DOUBLE the chance of hitting since either team driver counts.
+- Pair with a risky Driver bet via Combo for maximum coverage.
+
+STRATEGY 3: "THE SPREADER"
+- Don't blow all Fun-Coins on one event. With 4 bet slots per event and multiple sessions per weekend (Qualifying, Sprint Qualifying, Sprint Race, Main Race), spread predictions to accumulate more total points.
+- 50 coins/weekend × strategic distribution = optimal point harvesting.
+
+STRATEGY 4: "THE JACKPOT HUNTER"
+- Go for the exact P1-P5 driver order on the Main Race for the Jackpot.
+- If nobody wins, the pool rolls over — meaning later rounds have MASSIVE jackpots.
+- Only driver bets qualify (not team bets), so you MUST use a driver prediction.
+
+STRATEGY 5: "THE COMBO MAXIMIZER"
+- Submit a Combo bet (Driver + Team) on the same event. Costs 2× the entry fee but earns points from BOTH slips.
+- Use your Driver slip for the risky exact order prediction (Jackpot eligible).
+- Use your Team slip as a safety net to guarantee some points.
+
+STRATEGY 6: "THE MULTIPLIER + BET LIMIT OPTIMIZER"
+- With only 4 bets allowed per event, place your confident predictions early (5.0x multiplier), then use remaining slots closer to race time when more information is available (practice results, weather updates) at a lower multiplier.
+- Balance between conviction (high multiplier) and information (low multiplier, better predictions).
+
+=== TONE & ENERGY ===
+- Competitive, bold, adrenaline-fueled
+- Like an F1 pre-race hype reel
+- Target audience: F1 fans aged 18-40 who love strategy games and fantasy sports
+- Make it feel like a sport within the sport
+- End with urgency: "The season is LIVE. Every round matters."
+
+=== OUTPUT FORMATS NEEDED ===
+- 9:16 vertical (TikTok, Instagram Reels, YouTube Shorts) — PRIMARY
+- 16:9 horizontal (YouTube, Website embed) — SECONDARY
+- 1:1 square (Instagram Feed, Facebook) — BONUS
+
+=== REAL ASSET URLS FROM THE APP (use these in the video) ===
+
+APP URL: https://adster.app
+
+DRIVER IMAGES (headshots — use for driver grid/prediction scenes):
+- Max Verstappen:    https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/verstappen.jpg.img.1024.medium.jpg
+- Liam Lawson:       https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/lawson.jpg.img.1024.medium.jpg
+- Charles Leclerc:   https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/leclerc.jpg.img.1024.medium.jpg
+- Lewis Hamilton:    https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/hamilton.jpg.img.1024.medium.jpg
+- Lando Norris:      https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/norris.jpg.img.1024.medium.jpg
+- Oscar Piastri:     https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/piastri.jpg.img.1024.medium.jpg
+- George Russell:    https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/russell.jpg.img.1024.medium.jpg
+- Kimi Antonelli:    https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/antonelli.jpg.img.1024.medium.jpg
+- Fernando Alonso:   https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/alonso.jpg.img.1024.medium.jpg
+- Lance Stroll:      https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/stroll.jpg.img.1024.medium.jpg
+- Pierre Gasly:      https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/gasly.jpg.img.1024.medium.jpg
+- Jack Doohan:       https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/doohan.jpg.img.1024.medium.jpg
+- Alexander Albon:   https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/albon.jpg.img.1024.medium.jpg
+- Carlos Sainz:      https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/sainz.jpg.img.1024.medium.jpg
+- Esteban Ocon:      https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/ocon.jpg.img.1024.medium.jpg
+- Oliver Bearman:    https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/bearman.jpg.img.1024.medium.jpg
+- Yuki Tsunoda:      https://media.formula1.com/content/dam/fom-website/drivers/2025Drivers/tsunoda.jpg.img.1024.medium.jpg
+- Isack Hadjar:      https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/hadjar.jpg.img.1024.medium.jpg
+- Nico Hulkenberg:   https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/hulkenberg.jpg.img.1024.medium.jpg
+- Gabriel Bortoleto: https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/bortoleto.jpg.img.1024.medium.jpg
+- Valtteri Bottas:   https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/bottas.jpg.img.1024.medium.jpg
+- Sergio Perez:      https://media.formula1.com/content/dam/fom-website/drivers/2024Drivers/perez.jpg.img.1024.medium.jpg
+
+DRIVER SIDE PORTRAITS (helmet/suit — use for dynamic animations):
+- Hamilton:    https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/ferrari/lewham01/2026ferrarilewham01right.webp
+- Verstappen:  https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/redbullracing/maxver01/2026redbullracingmaxver01right.webp
+- Leclerc:     https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/ferrari/chalec01/2026ferrarichalec01right.webp
+- Norris:      https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/mclaren/lannor01/2026mclarenlannor01right.webp
+- Piastri:     https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/mclaren/oscpia01/2026mclarenoscpia01right.webp
+- Russell:     https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/mercedes/georus01/2026mercedesgeorus01right.webp
+- Antonelli:   https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/mercedes/andant01/2026mercedesandant01right.webp
+- Alonso:      https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/astonmartin/feralo01/2026astonmartinferalo01right.webp
+- Gasly:       https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/alpine/piegas01/2026alpinepiegas01right.webp
+- Bottas:      https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/cadillac/valbot01/2026cadillacvalbot01right.webp
+- Perez:       https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/cadillac/serper01/2026cadillacserper01right.webp
+- Hadjar:      https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/redbullracing/isahad01/2026redbullracingisahad01right.webp
+- Albon:       https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/williams/alealb01/2026williamsalealb01right.webp
+- Sainz:       https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/williams/carsai01/2026williamscarsai01right.webp
+- Lawson:      https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/racingbulls/lialaw01/2026racingbullslialaw01right.webp
+- Ocon:        https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/haasf1team/estoco01/2026haasf1teamestoco01right.webp
+- Bearman:     https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/haasf1team/olibea01/2026haasf1teamolibea01right.webp
+- Hulkenberg:  https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/audi/nichul01/2026audinichul01right.webp
+- Bortoleto:   https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/audi/gabbor01/2026audigabbor01right.webp
+- Stroll:      https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/astonmartin/lanstr01/2026astonmartinlanstr01right.webp
+- Colapinto:   https://media.formula1.com/image/upload/c_fill,w_80,h_80,g_north/d_driver_fallback_image.webp/q_auto/v1740000000/common/f1/2026/alpine/fracol01/2026alpinefracol01right.webp
+
+TEAM LOGOS (2026 official white logos):
+- Alpine:       https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/alpine/2026alpinelogo.webp
+- Aston Martin: https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/astonmartin/2026astonmartinlogo.webp
+- Audi:         https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/audi/2026audilogo.webp
+- Cadillac:     https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/cadillac/2026cadillaclogo.webp
+- Ferrari:      https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/ferrari/2026ferrarilogo.webp
+- Haas:         https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/haas/2026haaslogo.webp
+- McLaren:      https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/mclaren/2026mclarenlogo.webp
+- Mercedes:     https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/mercedes/2026mercedeslogo.webp
+- Red Bull:     https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/redbullracing/2026redbullracinglogowhite.webp
+- Williams:     https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/williams/2026williamslogo.webp
+- Racing Bulls: https://media.formula1.com/image/upload/c_fit,h_64/q_auto/v1740000000/common/f1/2026/racingbulls/2026racingbullslogowhite.webp
+
+FLAG IMAGES (language selector icons):
+- English (UK): https://flagcdn.com/w40/gb.png
+- Portuguese (BR): https://flagcdn.com/w40/br.png
+- Spanish (ES): https://flagcdn.com/w40/es.png
+
+APP BRANDING:
+- App name: "F1™ POOLERS"
+- Header icon: Font Awesome checkered flag (fas fa-flag-checkered) in red (#e10600)
+- Primary color: #e10600 (F1 Red)
+- Background: #15151e (dark navy), #1f1f27 (dark card bg)
+- Fun-Coins color: yellow/gold (#eab308)
+- Points color: blue (#3b82f6)
+- Multiplier fire: orange-to-red gradient
+- App font style: Bold, uppercase, italic, tracking-wider
+
+APP SCREENSHOT URL (live app — can be screen-captured):
+- Login/Signup page: https://adster.app
+- In-app (requires login): https://adster.app (after auth)
+
+=== TECHNICAL SPECS ===
+- Duration: 20 seconds maximum (hard limit)
+- Resolution: 1080×1920 (vertical) / 1920×1080 (horizontal)
+- Frame rate: 30fps or 60fps
+- Use the real driver images and team logos listed above
+- All animations should be stylized with the app's dark theme

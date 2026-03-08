@@ -49,6 +49,8 @@ async function buildUser(row: any, includePassword = false) {
     termsAccepted: !!row.terms_accepted,
     email: row.email || undefined,
     phone: row.phone || undefined,
+    supportedDriverId: row.supported_driver_id || undefined,
+    supportedTeamId: row.supported_team_id || undefined,
     notifications: notifs,
     joinedLeagues: leagues
   };

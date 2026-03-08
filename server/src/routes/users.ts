@@ -60,6 +60,8 @@ router.patch('/:id', async (req: Request, res: Response) => {
     if (updates.email !== undefined) { sets.push('email = ?'); params.push(updates.email); }
     if (updates.phone !== undefined) { sets.push('phone = ?'); params.push(updates.phone); }
     if (updates.password !== undefined) { sets.push('password = ?'); params.push(updates.password); }
+    if (updates.supportedDriverId !== undefined) { sets.push('supported_driver_id = ?'); params.push(updates.supportedDriverId || null); }
+    if (updates.supportedTeamId !== undefined) { sets.push('supported_team_id = ?'); params.push(updates.supportedTeamId || null); }
     if (updates.location) {
       sets.push('lat = ?'); params.push(updates.location.lat);
       sets.push('lng = ?'); params.push(updates.location.lng);

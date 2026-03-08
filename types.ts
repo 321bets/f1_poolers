@@ -111,6 +111,8 @@ export interface User {
   termsAccepted?: boolean;
   email?: string;
   phone?: string;
+  supportedDriverId?: string;
+  supportedTeamId?: string;
   notifications: Notification[];
   joinedLeagues: string[]; // IDs of leagues this user belongs to
 }
