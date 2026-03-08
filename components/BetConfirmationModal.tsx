@@ -1,7 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Bet, Event } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useData } from '../contexts/DataContext';
+import { useAuth } from '../contexts/AuthContext';
+import { shareBetSlip, downloadBetSlipImage } from '../services/shareService';
 
 interface BetConfirmationModalProps {
   bet: Bet;
@@ -11,6 +14,33 @@ interface BetConfirmationModalProps {
 
 const BetConfirmationModal: React.FC<BetConfirmationModalProps> = ({ bet, event, onClose }) => {
   const { t } = useLanguage();
+  const { rounds } = useData();
+  const { user } = useAuth();
+  const [shareStatus, setShareStatus] = useState<'idle' | 'sharing' | 'shared' | 'copied' | 'downloaded' | 'error'>('idle');
+
+  const round = rounds.find(r => r.id === event.roundId);
+
+  const handleShare = async () => {
+    if (!round || !user) return;
+    setShareStatus('sharing');
+    try {
+      const result = await shareBetSlip(bet, event, round, user.username);
+      setShareStatus(result);
+      setTimeout(() => setShareStatus('idle'), 3000);
+    } catch {
+      setShareStatus('error');
+      setTimeout(() => setShareStatus('idle'), 3000);
+    }
+  };
+
+  const handleDownload = async () => {
+    if (!round || !user) return;
+    try {
+      await downloadBetSlipImage(bet, event, round, user.username);
+    } catch {
+      // silently fail
+    }
+  };
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
       <div className="bg-gray-800 rounded-lg shadow-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto">
@@ -59,7 +89,32 @@ const BetConfirmationModal: React.FC<BetConfirmationModalProps> = ({ bet, event,
             </div>
         </div>
 
-        <div className="p-4 border-t border-gray-700 sticky bottom-0 bg-gray-800">
+        <div className="p-4 border-t border-gray-700 sticky bottom-0 bg-gray-800 space-y-2">
+            {/* Share & Download row */}
+            <div className="flex gap-2">
+              <button 
+                onClick={handleShare}
+                disabled={shareStatus === 'sharing'}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                {shareStatus === 'sharing' ? (
+                  <><i className="fas fa-spinner fa-spin"></i> {t('sharing')}</>
+                ) : shareStatus === 'shared' ? (
+                  <><i className="fas fa-check"></i> {t('shared')}</>
+                ) : shareStatus === 'copied' ? (
+                  <><i className="fas fa-check"></i> {t('copiedToClipboard')}</>
+                ) : (
+                  <><i className="fas fa-share-alt"></i> {t('sharePrediction')}</>
+                )}
+              </button>
+              <button 
+                onClick={handleDownload}
+                className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center"
+                title={t('downloadImage')}
+              >
+                <i className="fas fa-download"></i>
+              </button>
+            </div>
             <button 
               onClick={onClose}
               className="w-full bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors hover:bg-red-700"

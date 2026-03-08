@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Round, Event, EventType, EventStatus } from '../types';
+import { Round, Event, EventType, EventStatus, Bet } from '../types';
 import { useData } from '../contexts/DataContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
+import { shareBetSlip, downloadBetSlipImage } from '../services/shareService';
 
 interface RoundSelectorProps {
   selectedRound: Round | null;
@@ -31,10 +32,16 @@ const getStatusClasses = (status: EventStatus) => {
 }
 
 const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; userTz: string; t: (key: string) => string }> = ({ event, onPlaceBet, userTz, t }) => {
+  const { allBets, rounds } = useData();
+  const { user } = useAuth();
   const [eventStarted, setEventStarted] = useState(Date.now() >= event.date.getTime());
+  const [expandedBet, setExpandedBet] = useState<string | null>(null);
+  const [shareStatus, setShareStatus] = useState<Record<string, string>>({});
+
+  const userBets = allBets.filter(b => b.userId === user?.id && b.eventId === event.id && b.status === 'Active');
+  const round = rounds.find(r => r.id === event.roundId);
 
   useEffect(() => {
-    // No need for a timer if the event already started
     if (eventStarted) return;
     const interval = setInterval(() => {
       if (Date.now() >= event.date.getTime()) {
@@ -43,6 +50,26 @@ const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; userTz
     }, 1000);
     return () => clearInterval(interval);
   }, [event.date, eventStarted]);
+
+  const handleShare = async (bet: Bet) => {
+    if (!round || !user) return;
+    setShareStatus(s => ({ ...s, [bet.id]: 'sharing' }));
+    try {
+      const result = await shareBetSlip(bet, event, round, user.username);
+      setShareStatus(s => ({ ...s, [bet.id]: result }));
+      setTimeout(() => setShareStatus(s => ({ ...s, [bet.id]: '' })), 3000);
+    } catch {
+      setShareStatus(s => ({ ...s, [bet.id]: 'error' }));
+      setTimeout(() => setShareStatus(s => ({ ...s, [bet.id]: '' })), 3000);
+    }
+  };
+
+  const handleDownload = async (bet: Bet) => {
+    if (!round || !user) return;
+    try {
+      await downloadBetSlipImage(bet, event, round, user.username);
+    } catch { /* silent */ }
+  };
 
   return (
     <div className={`bg-gray-700 p-4 rounded-lg ${getStatusClasses(event.status)}`}>
@@ -87,6 +114,100 @@ const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; userTz
             </button>
           )}
         </div>
+
+        {/* User's Predictions with Share */}
+        {userBets.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-gray-500">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs text-gray-300 font-semibold flex items-center gap-1">
+                <i className="fas fa-check-circle text-green-500 text-[10px]"></i>
+                {userBets.length} {t('predictionsPlaced')}
+              </span>
+            </div>
+            {userBets.map((bet, idx) => {
+              const isExpanded = expandedBet === bet.id;
+              const status = shareStatus[bet.id] || '';
+              const hasDrivers = bet.predictions && bet.predictions.length > 0;
+              const hasTeams = bet.teamPredictions && bet.teamPredictions.length > 0;
+              const label = hasDrivers && hasTeams ? t('combo') 
+                : hasDrivers ? t('drivers') : t('teams');
+
+              return (
+                <div key={bet.id} className="bg-gray-700 rounded mb-1.5 overflow-hidden">
+                  {/* Bet header - clickable to expand */}
+                  <button 
+                    onClick={() => setExpandedBet(isExpanded ? null : bet.id)}
+                    className="w-full flex items-center justify-between px-2.5 py-2 hover:bg-gray-650 transition-colors text-left"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded font-bold">#{idx + 1}</span>
+                      <span className="text-xs text-white font-semibold">{label}</span>
+                      <span className="text-[10px] text-green-400 font-bold">{bet.lockedMultiplier.toFixed(1)}x</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <i className={`fas fa-chevron-${isExpanded ? 'up' : 'down'} text-[9px] text-gray-400`}></i>
+                    </div>
+                  </button>
+
+                  {/* Expanded content */}
+                  {isExpanded && (
+                    <div className="px-2.5 pb-2.5 border-t border-gray-600">
+                      {hasDrivers && (
+                        <div className="mt-2">
+                          <p className="text-[9px] text-gray-400 uppercase font-bold mb-1">{t('drivers')}</p>
+                          {bet.predictions.map((d, i) => (
+                            <div key={d.id} className="flex items-center gap-2 py-0.5">
+                              <span className="text-[9px] font-bold text-yellow-500 w-5">P{i + 1}</span>
+                              <img src={d.imageUrl} alt={d.name} className="w-5 h-5 rounded-full object-cover" />
+                              <span className="text-xs text-white">{d.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {hasTeams && (
+                        <div className="mt-2">
+                          <p className="text-[9px] text-gray-400 uppercase font-bold mb-1">{t('teams')}</p>
+                          {bet.teamPredictions.map((tm, i) => (
+                            <div key={`${tm.id}-${i}`} className="flex items-center gap-2 py-0.5">
+                              <span className="text-[9px] font-bold text-blue-400 w-5">P{i + 1}</span>
+                              <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center p-0.5">
+                                <img src={tm.logoUrl} alt={tm.name} className="max-w-full max-h-full" />
+                              </div>
+                              <span className="text-xs text-white">{tm.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {/* Share + Download buttons */}
+                      <div className="flex gap-1.5 mt-2 pt-2 border-t border-gray-600">
+                        <button
+                          onClick={() => handleShare(bet)}
+                          disabled={status === 'sharing'}
+                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold py-1.5 px-2 rounded transition-colors flex items-center justify-center gap-1 disabled:opacity-50"
+                        >
+                          {status === 'sharing' ? (
+                            <><i className="fas fa-spinner fa-spin"></i></>
+                          ) : status === 'shared' || status === 'copied' ? (
+                            <><i className="fas fa-check"></i> {status === 'copied' ? t('copied') : t('shared')}</>
+                          ) : (
+                            <><i className="fas fa-share-alt"></i> {t('share')}</>
+                          )}
+                        </button>
+                        <button
+                          onClick={() => handleDownload(bet)}
+                          className="bg-gray-600 hover:bg-gray-500 text-white text-[10px] font-bold py-1.5 px-2 rounded transition-colors flex items-center justify-center"
+                          title={t('downloadImage')}
+                        >
+                          <i className="fas fa-download"></i>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
