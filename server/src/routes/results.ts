@@ -197,6 +197,7 @@ router.post('/', async (req: Request, res: Response) => {
           const nextRoundRows = await query<RowDataPacket[]>(
             `SELECT * FROM rounds WHERE number > ? ORDER BY number LIMIT 1`, [currentRound.number]
           );
+          let rolledOver = false;
           if (nextRoundRows.length > 0) {
             const nextRound = nextRoundRows[0];
             const nextEventRows = await query<RowDataPacket[]>(
@@ -209,7 +210,17 @@ router.post('/', async (req: Request, res: Response) => {
                 [event.pool_prize, nextEventRows[0].id]
               );
               console.log(`[JACKPOT ROLLOVER] ${event.pool_prize} Fun-Coins rolled over to ${nextRound.name} ${event.type}`);
+              rolledOver = true;
             }
+          }
+          // If no target event found, store as pending rollover
+          if (!rolledOver) {
+            const prId = `rollover-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+            await conn.query(
+              `INSERT INTO pending_rollovers (id, event_type, amount, source_event_id, source_round_number) VALUES (?, ?, ?, ?, ?)`,
+              [prId, event.type, event.pool_prize, eventId, currentRound.number]
+            );
+            console.log(`[JACKPOT PENDING] ${event.pool_prize} Fun-Coins stored as pending rollover for ${event.type} (no target event yet)`);
           }
         }
       }

@@ -223,6 +223,15 @@ CREATE TABLE ad_settings (
   is_enabled TINYINT(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS pending_rollovers (
+  id VARCHAR(100) PRIMARY KEY,
+  event_type VARCHAR(50) NOT NULL,
+  amount INT NOT NULL DEFAULT 0,
+  source_event_id VARCHAR(100) NOT NULL,
+  source_round_number INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- SEED DATA
 
 INSERT INTO system_settings (theme, terms_content_en, terms_content_pt, terms_content_es) VALUES ('original', 'F1 POOLERS - TERMS AND CONDITIONS...', 'F1 POOLERS - TERMOS E CONDICOES...', 'F1 POOLERS - TERMINOS Y CONDICIONES...');

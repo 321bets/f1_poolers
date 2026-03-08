@@ -49,6 +49,20 @@ export async function initDatabase() {
     }
     console.log('✅ Schema initialized with seed data');
   }
+
+  // Migrations: ensure new tables exist
+  try {
+    await pool.query(`CREATE TABLE IF NOT EXISTS pending_rollovers (
+      id VARCHAR(100) PRIMARY KEY,
+      event_type VARCHAR(50) NOT NULL,
+      amount INT NOT NULL DEFAULT 0,
+      source_event_id VARCHAR(100) NOT NULL,
+      source_round_number INT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`);
+  } catch (err: any) {
+    console.warn('Migration warning:', err.message.substring(0, 100));
+  }
 }
 
 export function getPool(): Pool {

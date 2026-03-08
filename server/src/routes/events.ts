@@ -35,7 +35,30 @@ router.post('/', async (req: Request, res: Response) => {
       [id, roundId, type, new Date(date), bv]
     );
 
-    res.json({ id, roundId, type, date: new Date(date), status: 'Upcoming', betValue: bv, poolPrize: 0 });
+    // Check for pending rollovers of the same event type
+    let poolPrize = 0;
+    try {
+      const pendingRows = await query<RowDataPacket[]>(
+        `SELECT * FROM pending_rollovers WHERE event_type = ?`, [type]
+      );
+      if (pendingRows.length > 0) {
+        const totalRollover = pendingRows.reduce((sum: number, r: any) => sum + r.amount, 0);
+        if (totalRollover > 0) {
+          await execute(`UPDATE events SET pool_prize = pool_prize + ? WHERE id = ?`, [totalRollover, id]);
+          poolPrize = totalRollover;
+          // Delete applied rollovers
+          for (const pr of pendingRows) {
+            await execute(`DELETE FROM pending_rollovers WHERE id = ?`, [pr.id]);
+          }
+          console.log(`[ROLLOVER APPLIED] ${totalRollover} Fun-Coins applied to new ${type} event from pending rollovers`);
+        }
+      }
+    } catch (rolloverErr) {
+      // pending_rollovers table might not exist yet, silently continue
+      console.log('[ROLLOVER] pending_rollovers table not available yet');
+    }
+
+    res.json({ id, roundId, type, date: new Date(date), status: 'Upcoming', betValue: bv, poolPrize });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
