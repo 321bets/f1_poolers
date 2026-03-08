@@ -293,7 +293,7 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                                     {t('driverPredictionsDesc')}
                                 </p>
                                 
-                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                     <div className="space-y-3">
                                         <div className="bg-[#e10600] text-white text-[9px] sm:text-[10px] font-black uppercase py-1 px-3 skew-btn inline-block mb-2">
                                             <span className="skew-content">{t('mainRace')}</span>
@@ -357,6 +357,27 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div className="space-y-3">
+                                        <div className="bg-cyan-600 text-white text-[9px] sm:text-[10px] font-black uppercase py-1 px-3 skew-btn inline-block mb-2">
+                                            <span className="skew-content">{t('sprintQualifying')}</span>
+                                        </div>
+                                        <table className="w-full text-[10px] sm:text-xs text-gray-300">
+                                            <thead>
+                                                <tr className="text-gray-500 border-b border-gray-800">
+                                                    <th className="text-left pb-1">{t('pos')}</th>
+                                                    <th className="text-right pb-1">{t('exact')}</th>
+                                                    <th className="text-right pb-1">{t('anyT5')}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-800/50">
+                                                <tr><td className="py-1 font-bold text-white">P1</td><td className="text-right text-white font-black">8</td><td className="text-right text-blue-400">2</td></tr>
+                                                <tr><td className="py-1">P2</td><td className="text-right text-white font-bold">7</td><td className="text-right text-blue-400">2</td></tr>
+                                                <tr><td className="py-1">P3</td><td className="text-right text-white font-bold">6</td><td className="text-right text-blue-400">2</td></tr>
+                                                <tr><td className="py-1">P4</td><td className="text-right text-white font-bold">5</td><td className="text-right text-blue-400">2</td></tr>
+                                                <tr><td className="py-1">P5</td><td className="text-right text-white font-bold">4</td><td className="text-right text-blue-400">2</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
 
@@ -368,25 +389,61 @@ const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ onClose }) => {
                                 <p className="text-gray-400 text-xs mb-6 leading-relaxed">
                                     {t('teamPredictionsDesc')}
                                 </p>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div className="bg-blue-900/10 p-4 rounded border border-blue-900/30">
-                                        <p className="text-white font-black uppercase text-[9px] sm:text-[10px] mb-2">{t('teamMainRacePoints')}</p>
+                                <p className="text-yellow-400 text-[10px] sm:text-xs font-bold mb-4 bg-yellow-900/20 border border-yellow-800/40 rounded p-2 flex items-center gap-1.5">
+                                    <i className="fas fa-calculator"></i> {t('teamPointsNote')}
+                                </p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div className="bg-red-900/10 p-3 rounded border border-red-900/30">
+                                        <p className="text-red-400 font-black uppercase text-[9px] sm:text-[10px] mb-2">{t('mainRace')}</p>
                                         <div className="text-[9px] sm:text-[10px] font-bold text-gray-500 grid grid-cols-5 gap-1">
-                                            <div className="flex flex-col items-center"><span>P1</span><span className="text-white text-xs sm:text-sm">12.5</span></div>
-                                            <div className="flex flex-col items-center"><span>P2</span><span className="text-white text-xs sm:text-sm">9</span></div>
-                                            <div className="flex flex-col items-center"><span>P3</span><span className="text-white text-xs sm:text-sm">7.5</span></div>
-                                            <div className="flex flex-col items-center"><span>P4</span><span className="text-white text-xs sm:text-sm">6</span></div>
-                                            <div className="flex flex-col items-center"><span>P5</span><span className="text-white text-xs sm:text-sm">5</span></div>
+                                            <div className="flex flex-col items-center"><span>P1</span><span className="text-white text-xs">12.5</span></div>
+                                            <div className="flex flex-col items-center"><span>P2</span><span className="text-white text-xs">9</span></div>
+                                            <div className="flex flex-col items-center"><span>P3</span><span className="text-white text-xs">7.5</span></div>
+                                            <div className="flex flex-col items-center"><span>P4</span><span className="text-white text-xs">6</span></div>
+                                            <div className="flex flex-col items-center"><span>P5</span><span className="text-white text-xs">5</span></div>
                                         </div>
+                                        <p className="text-[8px] text-gray-500 mt-1 text-center">{t('anyT5')}: 2.5</p>
                                     </div>
-                                    <div className="bg-blue-900/10 p-4 rounded border border-blue-900/30">
-                                        <p className="text-white font-black uppercase text-[9px] sm:text-[10px] mb-2">{t('teamStrategyAdvantages')}</p>
-                                        <ul className="text-gray-400 text-[10px] space-y-2">
-                                            <li className="flex justify-between"><span>{t('doubleCarCoverage')}</span> <span className="text-green-400 font-bold">YES</span></li>
-                                            <li className="flex justify-between"><span>{t('safetyPartialPoints')}</span> <span className="text-blue-400 font-bold">2.5 pts</span></li>
-                                            <li className="flex justify-between"><span>{t('jackpotEligibility')}</span> <span className="text-red-500 font-bold">NO</span></li>
-                                        </ul>
+                                    <div className="bg-purple-900/10 p-3 rounded border border-purple-900/30">
+                                        <p className="text-purple-400 font-black uppercase text-[9px] sm:text-[10px] mb-2">{t('qualifying')}</p>
+                                        <div className="text-[9px] sm:text-[10px] font-bold text-gray-500 grid grid-cols-5 gap-1">
+                                            <div className="flex flex-col items-center"><span>P1</span><span className="text-white text-xs">9</span></div>
+                                            <div className="flex flex-col items-center"><span>P2</span><span className="text-white text-xs">7.5</span></div>
+                                            <div className="flex flex-col items-center"><span>P3</span><span className="text-white text-xs">6</span></div>
+                                            <div className="flex flex-col items-center"><span>P4</span><span className="text-white text-xs">4.5</span></div>
+                                            <div className="flex flex-col items-center"><span>P5</span><span className="text-white text-xs">3</span></div>
+                                        </div>
+                                        <p className="text-[8px] text-gray-500 mt-1 text-center">{t('anyT5')}: 1.5</p>
                                     </div>
+                                    <div className="bg-blue-900/10 p-3 rounded border border-blue-900/30">
+                                        <p className="text-blue-400 font-black uppercase text-[9px] sm:text-[10px] mb-2">{t('sprintRace')}</p>
+                                        <div className="text-[9px] sm:text-[10px] font-bold text-gray-500 grid grid-cols-5 gap-1">
+                                            <div className="flex flex-col items-center"><span>P1</span><span className="text-white text-xs">4</span></div>
+                                            <div className="flex flex-col items-center"><span>P2</span><span className="text-white text-xs">3.5</span></div>
+                                            <div className="flex flex-col items-center"><span>P3</span><span className="text-white text-xs">3</span></div>
+                                            <div className="flex flex-col items-center"><span>P4</span><span className="text-white text-xs">2.5</span></div>
+                                            <div className="flex flex-col items-center"><span>P5</span><span className="text-white text-xs">2</span></div>
+                                        </div>
+                                        <p className="text-[8px] text-gray-500 mt-1 text-center">{t('anyT5')}: 1</p>
+                                    </div>
+                                    <div className="bg-cyan-900/10 p-3 rounded border border-cyan-900/30">
+                                        <p className="text-cyan-400 font-black uppercase text-[9px] sm:text-[10px] mb-2">{t('sprintQualifying')}</p>
+                                        <div className="text-[9px] sm:text-[10px] font-bold text-gray-500 grid grid-cols-5 gap-1">
+                                            <div className="flex flex-col items-center"><span>P1</span><span className="text-white text-xs">4</span></div>
+                                            <div className="flex flex-col items-center"><span>P2</span><span className="text-white text-xs">3.5</span></div>
+                                            <div className="flex flex-col items-center"><span>P3</span><span className="text-white text-xs">3</span></div>
+                                            <div className="flex flex-col items-center"><span>P4</span><span className="text-white text-xs">2.5</span></div>
+                                            <div className="flex flex-col items-center"><span>P5</span><span className="text-white text-xs">2</span></div>
+                                        </div>
+                                        <p className="text-[8px] text-gray-500 mt-1 text-center">{t('anyT5')}: 1</p>
+                                    </div>
+                                </div>
+                                <div className="mt-4 bg-blue-900/10 p-4 rounded border border-blue-900/30">
+                                    <p className="text-white font-black uppercase text-[9px] sm:text-[10px] mb-2">{t('teamStrategyAdvantages')}</p>
+                                    <ul className="text-gray-400 text-[10px] space-y-2">
+                                        <li className="flex justify-between"><span>{t('doubleCarCoverage')}</span> <span className="text-green-400 font-bold">YES</span></li>
+                                        <li className="flex justify-between"><span>{t('jackpotEligibility')}</span> <span className="text-red-500 font-bold">NO</span></li>
+                                    </ul>
                                 </div>
                             </div>
 
