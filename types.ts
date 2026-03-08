@@ -17,6 +17,7 @@ export interface Team {
 
 export enum EventType {
   QUALIFYING = 'Qualifying',
+  SPRINT_QUALIFYING = 'Sprint Qualifying',
   SPRINT_RACE = 'Sprint Race',
   MAIN_RACE = 'Main Race',
   PRACTICE_1 = 'Practice 1',

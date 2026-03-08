@@ -7,6 +7,7 @@ function mapEventType(apiType: string): EventType {
   const typeMap: { [key: string]: EventType } = {
     'practice': EventType.PRACTICE_1,
     'qualifying': EventType.QUALIFYING,
+    'sprint qualifying': EventType.SPRINT_QUALIFYING,
     'race': EventType.MAIN_RACE,
     'sprint': EventType.SPRINT_RACE
   };

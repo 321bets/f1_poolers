@@ -91,7 +91,8 @@ export async function generateBetSlipImage(
   ctx.stroke();
 
   // Event type badge
-  const typeColor = event.type === 'Qualifying' ? '#7C3AED' 
+  const typeColor = event.type === 'Qualifying' ? '#7C3AED'
+    : event.type === 'Sprint Qualifying' ? '#0891B2'
     : event.type === 'Sprint Race' ? '#2563EB' : '#DC2626';
   ctx.fillStyle = typeColor;
   roundRect(ctx, 32, y + 12, ctx.measureText(event.type).width + 24, 24, 4);

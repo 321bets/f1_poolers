@@ -13,6 +13,7 @@ interface RoundSelectorProps {
 
 const eventTypeColors: { [key in EventType]: string } = {
   [EventType.QUALIFYING]: 'bg-purple-600',
+  [EventType.SPRINT_QUALIFYING]: 'bg-cyan-600',
   [EventType.SPRINT_RACE]: 'bg-blue-600',
   [EventType.MAIN_RACE]: 'bg-red-600',
   [EventType.PRACTICE_1]: 'bg-gray-500',

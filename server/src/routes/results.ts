@@ -64,6 +64,8 @@ router.post('/', async (req: Request, res: Response) => {
       pointConfig = { exact: [8, 7, 6, 5, 4], partial: 2 };
     } else if (event.type === 'Qualifying') {
       pointConfig = { exact: [18, 15, 12, 9, 6], partial: 3 };
+    } else if (event.type === 'Sprint Qualifying') {
+      pointConfig = { exact: [12, 10, 8, 6, 4], partial: 2 };
     } else {
       pointConfig = { exact: [5, 4, 3, 2, 1], partial: 1 };
     }
