@@ -221,7 +221,13 @@ const RaceResultsModal: React.FC<RaceResultsModalProps> = ({ event, result, onCl
                                             </div>
                                         </td>
                                         <td className="px-4 py-3 text-center">
-                                            <span className="text-[10px] font-black text-gray-400">{entry.multiplier.toFixed(1)}x</span>
+                                            {entry.multiplier > 1.0 ? (
+                                              <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30">
+                                                <i className="fas fa-fire mr-0.5 text-[8px]"></i>{entry.multiplier.toFixed(1)}x
+                                              </span>
+                                            ) : (
+                                              <span className="text-[10px] font-black text-gray-400">{entry.multiplier.toFixed(1)}x</span>
+                                            )}
                                         </td>
                                         <td className="px-4 py-3 text-right">
                                             <span className="text-blue-400 font-black italic text-xs">+{entry.pointsEarned}</span>

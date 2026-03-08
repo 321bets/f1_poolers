@@ -301,7 +301,13 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
           <div className="flex items-center gap-2 sm:gap-3">
              <div className="flex flex-col items-end">
                 <span className="text-[8px] sm:text-[9px] text-gray-500 uppercase font-black">{t('mult')}</span>
-                <span className="text-green-500 font-black text-xs sm:text-sm leading-none">{multiplier.toFixed(1)}x</span>
+                {multiplier > 1.0 ? (
+                  <span className="font-black text-xs sm:text-sm leading-none px-2 py-0.5 rounded bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30 animate-pulse">
+                    <i className="fas fa-fire mr-0.5 text-[9px]"></i>{multiplier.toFixed(1)}x
+                  </span>
+                ) : (
+                  <span className="text-green-500 font-black text-xs sm:text-sm leading-none">{multiplier.toFixed(1)}x</span>
+                )}
              </div>
              <button onClick={onClose} className="text-gray-500 hover:text-white text-2xl sm:text-3xl font-light ml-2 sm:ml-4 transition-colors">&times;</button>
           </div>

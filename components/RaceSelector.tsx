@@ -212,7 +212,13 @@ const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; userTz
                     <div className="flex items-center gap-2">
                       <span className="text-[10px] bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded font-bold">#{idx + 1}</span>
                       <span className="text-xs text-white font-semibold">{label}</span>
-                      <span className="text-[10px] text-green-400 font-bold">{bet.lockedMultiplier.toFixed(1)}x</span>
+                      {bet.lockedMultiplier > 1.0 ? (
+                        <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30 animate-pulse">
+                          <i className="fas fa-fire mr-0.5 text-[8px]"></i>{bet.lockedMultiplier.toFixed(1)}x
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-green-400 font-bold">{bet.lockedMultiplier.toFixed(1)}x</span>
+                      )}
                     </div>
                     <div className="flex items-center gap-1.5">
                       <i className={`fas fa-chevron-${isExpanded ? 'up' : 'down'} text-[9px] text-gray-400`}></i>
