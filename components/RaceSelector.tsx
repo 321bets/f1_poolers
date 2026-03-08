@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Round, Event, EventType, EventStatus } from '../types';
 import { useData } from '../contexts/DataContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -29,6 +29,68 @@ const getStatusClasses = (status: EventStatus) => {
             return 'border-l-4 border-transparent';
     }
 }
+
+const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; userTz: string; t: (key: string) => string }> = ({ event, onPlaceBet, userTz, t }) => {
+  const [eventStarted, setEventStarted] = useState(Date.now() >= event.date.getTime());
+
+  useEffect(() => {
+    // No need for a timer if the event already started
+    if (eventStarted) return;
+    const interval = setInterval(() => {
+      if (Date.now() >= event.date.getTime()) {
+        setEventStarted(true);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [event.date, eventStarted]);
+
+  return (
+    <div className={`bg-gray-700 p-4 rounded-lg ${getStatusClasses(event.status)}`}>
+      <div className="flex justify-between items-start">
+        <div className={`text-white text-sm font-bold px-3 py-1 rounded-full inline-block mb-2 ${eventTypeColors[event.type]}`}>
+          {event.type}
+        </div>
+        {event.status === EventStatus.LIVE && <span className="text-green-400 text-sm font-bold">{t('live')}</span>}
+        {event.status === EventStatus.FINISHED && <span className="text-gray-400 text-sm font-bold">{t('finished')}</span>}
+      </div>
+      <p className="text-xs text-gray-300 mb-2">{event.date.toLocaleString(undefined, { timeZone: userTz })}</p>
+      <div className="bg-gray-600 p-3 rounded-md">
+        <div className="flex justify-between items-center">
+          <div>
+            <p className="text-xs text-gray-300">{t('entryFee')}</p>
+            <p className="font-bold text-yellow-400">{event.betValue} <i className="fas fa-coins text-xs"></i></p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-300">{t('prizePool')}</p>
+            <p className="font-bold text-green-400">{event.poolPrize.toLocaleString()} <i className="fas fa-coins text-xs"></i></p>
+          </div>
+        </div>
+        <div className="mt-3">
+          {event.status === EventStatus.UPCOMING && !eventStarted && (
+            <button onClick={() => onPlaceBet(event)} className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-3 text-sm rounded transition-colors">
+              Place Bet
+            </button>
+          )}
+          {event.status === EventStatus.UPCOMING && eventStarted && (
+            <button disabled className="w-full bg-yellow-700 text-yellow-200 font-bold py-2 px-3 text-sm rounded cursor-not-allowed border border-yellow-600">
+              <i className="fas fa-lock mr-1"></i> {t('bettingClosed')}
+            </button>
+          )}
+          {event.status === EventStatus.FINISHED && (
+            <button onClick={() => alert('Results view not implemented yet.')} className="w-full bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-3 text-sm rounded transition-colors">
+              {t('viewResults')}
+            </button>
+          )}
+          {event.status === EventStatus.LIVE && (
+            <button disabled className="w-full bg-gray-500 text-white font-bold py-2 px-3 text-sm rounded cursor-not-allowed">
+              {t('bettingClosed')}
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const RoundSelector: React.FC<RoundSelectorProps> = ({ selectedRound, onSelectRound, onPlaceBet }) => {
   const { rounds, events } = useData();
@@ -69,45 +131,7 @@ const RoundSelector: React.FC<RoundSelectorProps> = ({ selectedRound, onSelectRo
           <p className="text-gray-400 mb-4">{selectedRound.circuit}, {selectedRound.location}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eventsForSelectedRound.map(event => (
-              <div key={event.id} className={`bg-gray-700 p-4 rounded-lg ${getStatusClasses(event.status)}`}>
-                <div className="flex justify-between items-start">
-                    <div className={`text-white text-sm font-bold px-3 py-1 rounded-full inline-block mb-2 ${eventTypeColors[event.type]}`}>
-                        {event.type}
-                    </div>
-                    {event.status === EventStatus.LIVE && <span className="text-green-400 text-sm font-bold">{t('live')}</span>}
-                    {event.status === EventStatus.FINISHED && <span className="text-gray-400 text-sm font-bold">{t('finished')}</span>}
-                </div>
-                <p className="text-xs text-gray-300 mb-2">{event.date.toLocaleString(undefined, { timeZone: userTz })}</p>
-                <div className="bg-gray-600 p-3 rounded-md">
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <p className="text-xs text-gray-300">{t('entryFee')}</p>
-                            <p className="font-bold text-yellow-400">{event.betValue} <i className="fas fa-coins text-xs"></i></p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-gray-300">{t('prizePool')}</p>
-                            <p className="font-bold text-green-400">{event.poolPrize.toLocaleString()} <i className="fas fa-coins text-xs"></i></p>
-                        </div>
-                    </div>
-                     <div className="mt-3">
-                        {event.status === EventStatus.UPCOMING && (
-                            <button onClick={() => onPlaceBet(event)} className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-3 text-sm rounded transition-colors">
-                                Place Bet
-                            </button>
-                        )}
-                         {event.status === EventStatus.FINISHED && (
-                            <button onClick={() => alert('Results view not implemented yet.')} className="w-full bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-3 text-sm rounded transition-colors">
-                                {t('viewResults')}
-                            </button>
-                        )}
-                         {event.status === EventStatus.LIVE && (
-                            <button disabled className="w-full bg-gray-500 text-white font-bold py-2 px-3 text-sm rounded cursor-not-allowed">
-                                {t('bettingClosed')}
-                            </button>
-                        )}
-                    </div>
-                </div>
-              </div>
+              <EventCard key={event.id} event={event} onPlaceBet={onPlaceBet} userTz={userTz} t={t} />
             ))}
           </div>
         </div>

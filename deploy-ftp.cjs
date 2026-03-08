@@ -19,31 +19,31 @@ async function deploy() {
 
     // Upload frontend
     console.log('Uploading frontend...');
-    await client.ensureDir('/');
-    await client.uploadFrom(path.join(distDir, 'index.html'), '/index.html');
+    await client.ensureDir('/httpdocs');
+    await client.uploadFrom(path.join(distDir, 'index.html'), '/httpdocs/index.html');
     console.log('  index.html');
 
     const assetsDir = path.join(distDir, 'assets');
     const assets = fs.readdirSync(assetsDir);
-    await client.ensureDir('/assets');
+    await client.ensureDir('/httpdocs/assets');
     for (const file of assets) {
-      await client.uploadFrom(path.join(assetsDir, file), '/assets/' + file);
+      await client.uploadFrom(path.join(assetsDir, file), '/httpdocs/assets/' + file);
       console.log('  assets/' + file);
     }
 
     // Upload server dist
     console.log('Uploading server...');
-    await client.ensureDir('/server/dist/routes');
+    await client.ensureDir('/httpdocs/server/dist/routes');
 
     const routesDir = path.join(serverDistDir, 'routes');
     for (const file of fs.readdirSync(routesDir)) {
-      await client.uploadFrom(path.join(routesDir, file), '/server/dist/routes/' + file);
+      await client.uploadFrom(path.join(routesDir, file), '/httpdocs/server/dist/routes/' + file);
       console.log('  server/dist/routes/' + file);
     }
 
     const serverFiles = fs.readdirSync(serverDistDir).filter(f => f.endsWith('.js'));
     for (const file of serverFiles) {
-      await client.uploadFrom(path.join(serverDistDir, file), '/server/dist/' + file);
+      await client.uploadFrom(path.join(serverDistDir, file), '/httpdocs/server/dist/' + file);
       console.log('  server/dist/' + file);
     }
 
