@@ -20,6 +20,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
     const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl || '');
     const [email, setEmail] = useState(user?.email || '');
     const [phone, setPhone] = useState(user?.phone || '');
+    const [country, setCountry] = useState(user?.country || '');
     const [timezone, setTimezone] = useState(user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York');
     const [isSaving, setIsSaving] = useState(false);
 
@@ -73,7 +74,7 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
         if (!user) return;
         setIsSaving(true);
         try {
-            await updateUser({ id: user.id, avatarUrl, email: email || undefined, phone: phone || undefined, timezone });
+            await updateUser({ id: user.id, avatarUrl, email: email || undefined, phone: phone || undefined, country: country || undefined, timezone });
             alert(t('profileUpdated'));
         } catch (e) {
             alert(t('profileUpdateFailed'));
@@ -148,11 +149,35 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                                 </div>
                             </div>
                             <p className="text-xs text-gray-500 mt-2">{t('avatarHint')}</p>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-gray-700 p-3 rounded">
-                                    <p className="text-xs text-gray-400">{t('country')}</p>
-                                    <p className="font-bold">{user.country}</p>
-                                </div>
+                            <div className="space-y-2">
+                                <label className="block text-gray-400 text-xs font-bold uppercase tracking-wider"><i className="fas fa-flag text-red-500 mr-1"></i>{t('country')}</label>
+                                <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm">
+                                    <option value="">{t('selectCountry')}</option>
+                                    {[
+                                        'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria',
+                                        'Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan',
+                                        'Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia',
+                                        'Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Congo','Costa Rica',
+                                        'Croatia','Cuba','Cyprus','Czech Republic','Denmark','Djibouti','Dominica','Dominican Republic','East Timor','Ecuador',
+                                        'Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France',
+                                        'Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau',
+                                        'Guyana','Haiti','Honduras','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland',
+                                        'Israel','Italy','Ivory Coast','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Kosovo',
+                                        'Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania',
+                                        'Luxembourg','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius',
+                                        'Mexico','Micronesia','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia',
+                                        'Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Korea','North Macedonia','Norway',
+                                        'Oman','Pakistan','Palau','Palestine','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland',
+                                        'Portugal','Qatar','Romania','Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines',
+                                        'Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore',
+                                        'Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan',
+                                        'Suriname','Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Togo','Tonga',
+                                        'Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu','Uganda','Ukraine','United Arab Emirates',
+                                        'United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Yemen','Zambia','Zimbabwe'
+                                    ].map(c => <option key={c} value={c}>{c}</option>)}
+                                </select>
+                            </div>
+                            <div className="grid grid-cols-1 gap-4">
                                 <div className="bg-gray-700 p-3 rounded">
                                     <p className="text-xs text-gray-400">{t('age')}</p>
                                     <p className="font-bold">{user.age}</p>
