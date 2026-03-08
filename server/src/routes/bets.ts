@@ -76,6 +76,10 @@ router.post('/', async (req: Request, res: Response) => {
     if (user.balance < event.bet_value) return res.status(400).json({ error: 'Insufficient balance' });
     if (event.status !== 'Upcoming') return res.status(400).json({ error: 'Betting is closed for this event.' });
 
+    // Time-based cutoff: reject bets once the event start time has passed
+    const eventStart = new Date(event.date).getTime();
+    if (Date.now() >= eventStart) return res.status(400).json({ error: 'Betting is closed — this event has already started.' });
+
     // Max 4 active bets per event per user
     const activeBets = await query<RowDataPacket[]>(
       `SELECT COUNT(*) as cnt FROM bets WHERE user_id = ? AND event_id = ? AND status = 'Active'`,
@@ -168,6 +172,10 @@ router.delete('/:id', async (req: Request, res: Response) => {
     const eventRows = await query<RowDataPacket[]>(`SELECT * FROM events WHERE id = ?`, [bet.event_id]);
     if (eventRows.length === 0) return res.status(400).json({ error: 'Event not found' });
     const event = eventRows[0];
+
+    // Time-based cutoff: cannot cancel bets after the event has started
+    const eventStart = new Date(event.date).getTime();
+    if (Date.now() >= eventStart) return res.status(400).json({ error: 'Cannot cancel — this event has already started.' });
 
     const pool = getPool();
     const conn = await pool.getConnection();

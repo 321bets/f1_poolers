@@ -107,11 +107,13 @@ const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; onView
     const userTz = user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York';
     const [multiplier, setMultiplier] = useState(1.0);
     const [countdown, setCountdown] = useState('--:--:--:---');
+    const [eventStarted, setEventStarted] = useState(Date.now() >= event.date.getTime());
 
     useEffect(() => {
         const updateTimer = () => {
             const { multiplier: currentMult, nextTierDiff } = getMultiplierStats(event.date);
             setMultiplier(currentMult);
+            setEventStarted(Date.now() >= event.date.getTime());
 
             if (nextTierDiff < 0) {
                 setCountdown('00:00:00:000');
@@ -182,9 +184,14 @@ const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; onView
 
             {/* Actions */}
             <div className="mt-4">
-                {event.status === EventStatus.UPCOMING && (
+                {event.status === EventStatus.UPCOMING && !eventStarted && (
                     <button onClick={() => onPlaceBet(event)} className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-3 text-sm rounded shadow transition-transform transform hover:scale-[1.02]">
                         Place Prediction
+                    </button>
+                )}
+                {event.status === EventStatus.UPCOMING && eventStarted && (
+                    <button disabled className="w-full bg-yellow-700 text-yellow-200 font-bold py-2.5 px-3 text-sm rounded cursor-not-allowed border border-yellow-600">
+                        <i className="fas fa-lock mr-1"></i> Betting Closed
                     </button>
                 )}
                 {event.status === EventStatus.FINISHED && (

@@ -208,6 +208,12 @@ const BettingModal: React.FC<BettingModalProps> = ({ event, onClose, onBetPlaced
   const handleSubmit = async (submitBoth: boolean = false) => {
     if (!user) return;
     setError('');
+
+    // Time-based cutoff: prevent submission if event has already started
+    if (Date.now() >= liveEvent.date.getTime()) {
+        setError('Betting is closed — this event has already started.');
+        return;
+    }
     
     if (submitBoth) {
         // Submit both drivers and teams together

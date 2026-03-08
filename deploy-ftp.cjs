@@ -1,0 +1,58 @@
+const ftp = require('basic-ftp');
+const path = require('path');
+const fs = require('fs');
+
+async function deploy() {
+  const client = new ftp.Client();
+  client.ftp.verbose = false;
+  try {
+    await client.access({
+      host: '109.203.109.67',
+      user: 'adster.app_o52i81reut8',
+      password: 'q65cFaMX$1',
+      secure: false
+    });
+    console.log('Connected to FTP');
+
+    const distDir = path.join(__dirname, 'dist');
+    const serverDistDir = path.join(__dirname, 'server', 'dist');
+
+    // Upload frontend
+    console.log('Uploading frontend...');
+    await client.ensureDir('/');
+    await client.uploadFrom(path.join(distDir, 'index.html'), '/index.html');
+    console.log('  index.html');
+
+    const assetsDir = path.join(distDir, 'assets');
+    const assets = fs.readdirSync(assetsDir);
+    await client.ensureDir('/assets');
+    for (const file of assets) {
+      await client.uploadFrom(path.join(assetsDir, file), '/assets/' + file);
+      console.log('  assets/' + file);
+    }
+
+    // Upload server dist
+    console.log('Uploading server...');
+    await client.ensureDir('/server/dist/routes');
+
+    const routesDir = path.join(serverDistDir, 'routes');
+    for (const file of fs.readdirSync(routesDir)) {
+      await client.uploadFrom(path.join(routesDir, file), '/server/dist/routes/' + file);
+      console.log('  server/dist/routes/' + file);
+    }
+
+    const serverFiles = fs.readdirSync(serverDistDir).filter(f => f.endsWith('.js'));
+    for (const file of serverFiles) {
+      await client.uploadFrom(path.join(serverDistDir, file), '/server/dist/' + file);
+      console.log('  server/dist/' + file);
+    }
+
+    console.log('\nDeploy complete!');
+  } catch (e) {
+    console.error('Deploy error:', e.message);
+  } finally {
+    client.close();
+  }
+}
+
+deploy();
