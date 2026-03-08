@@ -32,11 +32,14 @@ const getStatusClasses = (status: EventStatus) => {
 }
 
 const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; userTz: string; t: (key: string) => string }> = ({ event, onPlaceBet, userTz, t }) => {
-  const { allBets, rounds } = useData();
+  const { allBets, rounds, results } = useData();
   const { user } = useAuth();
   const [eventStarted, setEventStarted] = useState(Date.now() >= event.date.getTime());
   const [expandedBet, setExpandedBet] = useState<string | null>(null);
   const [shareStatus, setShareStatus] = useState<Record<string, string>>({});
+  const [showResults, setShowResults] = useState(false);
+
+  const eventResult = results.find(r => r.eventId === event.id);
 
   const userBets = allBets.filter(b => b.userId === user?.id && b.eventId === event.id && b.status === 'Active');
   const round = rounds.find(r => r.id === event.roundId);
@@ -104,8 +107,8 @@ const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; userTz
             </button>
           )}
           {event.status === EventStatus.FINISHED && (
-            <button onClick={() => alert('Results view not implemented yet.')} className="w-full bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-3 text-sm rounded transition-colors">
-              {t('viewResults')}
+            <button onClick={() => setShowResults(!showResults)} className="w-full bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-3 text-sm rounded transition-colors flex items-center justify-center gap-1">
+              <i className={`fas fa-${showResults ? 'chevron-up' : 'trophy'}`}></i> {t('viewResults')}
             </button>
           )}
           {event.status === EventStatus.LIVE && (
@@ -114,6 +117,73 @@ const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; userTz
             </button>
           )}
         </div>
+
+        {/* Event Results Section */}
+        {event.status === EventStatus.FINISHED && showResults && eventResult && (
+          <div className="mt-3 pt-3 border-t border-gray-500">
+            {/* Finish Line - Positions */}
+            {eventResult.positions.length > 0 && (
+              <div className="mb-3">
+                <p className="text-[10px] text-gray-400 uppercase font-bold mb-1.5 flex items-center gap-1">
+                  <i className="fas fa-flag-checkered"></i> {t('finishLine')}
+                </p>
+                {eventResult.positions.map((driver, i) => (
+                  <div key={driver.id} className={`flex items-center gap-2 py-1 ${i < 3 ? 'bg-gray-600/40 rounded px-1.5' : 'px-1.5'}`}>
+                    <span className={`text-[10px] font-bold w-5 text-center ${
+                      i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-300' : i === 2 ? 'text-amber-600' : 'text-gray-500'
+                    }`}>
+                      {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `P${i + 1}`}
+                    </span>
+                    <img src={driver.imageUrl} alt={driver.name} className="w-5 h-5 rounded-full object-cover" />
+                    <span className="text-xs text-white">{driver.name}</span>
+                    <span className="text-[9px] text-gray-500 ml-auto">{(driver as any).teamName || ''}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Winners - Points & Prizes */}
+            {eventResult.winners.length > 0 ? (
+              <div className="mb-2">
+                <p className="text-[10px] text-gray-400 uppercase font-bold mb-1.5 flex items-center gap-1">
+                  <i className="fas fa-coins text-yellow-400"></i> {t('winnersAndPrizes')}
+                </p>
+                {eventResult.winners.map((winner, i) => (
+                  <div key={`${winner.userId}-${i}`} className="flex items-center justify-between py-1 px-1.5 bg-gray-600/30 rounded mb-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold text-yellow-500">#{i + 1}</span>
+                      <span className="text-xs text-white font-semibold">{winner.username}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] text-blue-400 font-bold flex items-center gap-0.5">
+                        <i className="fas fa-star text-[8px]"></i> {winner.pointsEarned} {t('pts')}
+                      </span>
+                      {winner.prizeAmount > 0 && (
+                        <span className="text-[10px] text-green-400 font-bold flex items-center gap-0.5">
+                          <i className="fas fa-coins text-[8px]"></i> {winner.prizeAmount.toLocaleString()}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* No winners - jackpot rolled over */
+              <div className="mb-2 bg-yellow-900/20 border border-yellow-800/40 rounded p-2.5">
+                <p className="text-[10px] text-yellow-400 font-bold flex items-center gap-1 mb-1">
+                  <i className="fas fa-exclamation-triangle"></i> {t('noWinners')}
+                </p>
+                <p className="text-[10px] text-yellow-200/70">{t('jackpotRolledOver')}</p>
+              </div>
+            )}
+
+            {/* Total Prize Pool */}
+            <div className="flex items-center justify-between pt-2 border-t border-gray-600">
+              <span className="text-[10px] text-gray-400 font-bold uppercase">{t('totalPrizePool')}</span>
+              <span className="text-xs text-green-400 font-bold">{eventResult.totalPrizePool.toLocaleString()} <i className="fas fa-coins text-[9px]"></i></span>
+            </div>
+          </div>
+        )}
 
         {/* User's Predictions with Share */}
         {userBets.length > 0 && (
