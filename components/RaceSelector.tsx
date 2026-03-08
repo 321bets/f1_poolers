@@ -218,9 +218,27 @@ const RoundSelector: React.FC<RoundSelectorProps> = ({ selectedRound, onSelectRo
   const { t } = useLanguage();
   const { user } = useAuth();
   const userTz = user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York';
+  const [showPastRounds, setShowPastRounds] = useState(false);
 
-  if (!selectedRound && rounds.length > 0) {
-    onSelectRound(rounds[0]);
+  // Classify rounds: a round is "past" if ALL its events are Finished
+  const isRoundFinished = (round: Round) => {
+    const roundEvents = events.filter(e => e.roundId === round.id);
+    return roundEvents.length > 0 && roundEvents.every(e => e.status === EventStatus.FINISHED);
+  };
+
+  const activeRounds = rounds.filter(r => !isRoundFinished(r)).sort((a, b) => a.number - b.number);
+  const pastRounds = rounds.filter(r => isRoundFinished(r)).sort((a, b) => b.number - a.number);
+
+  // The single active round is the first one (lowest round number)
+  const currentActiveRound = activeRounds.length > 0 ? activeRounds[0] : null;
+
+  // Auto-select the active round if nothing selected or selected round is now past
+  if (currentActiveRound && (!selectedRound || (selectedRound && isRoundFinished(selectedRound) && !showPastRounds))) {
+    if (selectedRound?.id !== currentActiveRound.id) {
+      onSelectRound(currentActiveRound);
+    }
+  } else if (!selectedRound && pastRounds.length > 0) {
+    onSelectRound(pastRounds[0]);
   }
 
   const eventsForSelectedRound = events.filter(e => e.roundId === selectedRound?.id).sort((a,b) => {
@@ -229,27 +247,95 @@ const RoundSelector: React.FC<RoundSelectorProps> = ({ selectedRound, onSelectRo
     return dateA - dateB;
   });
 
+  const isSelectedRoundPast = selectedRound ? isRoundFinished(selectedRound) : false;
+
   return (
     <div className="bg-gray-800 rounded-lg shadow-xl p-6">
-      <h2 className="text-2xl font-bold mb-4 text-red-500">{t('upcomingRounds')}</h2>
-      <div className="flex space-x-2 mb-6 border-b border-gray-700 pb-4 overflow-x-auto">
-        {rounds.map(round => (
+      {/* Active Round Section */}
+      <h2 className="text-2xl font-bold mb-4 text-red-500">
+        <i className="fas fa-flag-checkered mr-2"></i>{t('activeRound')}
+      </h2>
+
+      {currentActiveRound ? (
+        <div
+          onClick={() => { onSelectRound(currentActiveRound); setShowPastRounds(false); }}
+          className={`mb-4 p-4 rounded-lg cursor-pointer transition-all border-2 ${
+            selectedRound?.id === currentActiveRound.id && !showPastRounds
+              ? 'bg-red-900/30 border-red-600 shadow-lg shadow-red-900/20'
+              : 'bg-gray-700 border-gray-600 hover:border-gray-500'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-xs text-red-400 font-bold uppercase tracking-wider">
+                {t('activeRound')} — #{currentActiveRound.number}
+              </span>
+              <h3 className="text-lg font-bold text-white">{currentActiveRound.name}</h3>
+              <p className="text-xs text-gray-400">{currentActiveRound.circuit}, {currentActiveRound.location}</p>
+            </div>
+            <div className="flex-shrink-0">
+              <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-900/40 text-green-400 text-[10px] font-bold uppercase rounded-full border border-green-800">
+                <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                {t('live')}
+              </span>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="mb-4 p-4 rounded-lg bg-gray-700 border border-gray-600 text-center">
+          <i className="fas fa-hourglass-half text-gray-500 text-2xl mb-2"></i>
+          <p className="text-gray-400 text-sm">{t('noActiveRound')}</p>
+        </div>
+      )}
+
+      {/* Past Rounds Accordion */}
+      {pastRounds.length > 0 && (
+        <div className="mb-4">
           <button
-            key={round.id}
-            onClick={() => onSelectRound(round)}
-            className={`px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200 whitespace-nowrap ${
-              selectedRound?.id === round.id ? 'bg-red-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-            }`}
+            onClick={() => setShowPastRounds(!showPastRounds)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-gray-700 hover:bg-gray-650 rounded-lg transition-colors text-left border border-gray-600"
           >
-            #{round.number} {round.name}
+            <span className="text-sm font-bold text-gray-300 flex items-center gap-2">
+              <i className="fas fa-history text-gray-500"></i>
+              {t('pastRounds')} ({pastRounds.length})
+            </span>
+            <i className={`fas fa-chevron-${showPastRounds ? 'up' : 'down'} text-gray-500 text-xs`}></i>
           </button>
-        ))}
-      </div>
-      
+
+          {showPastRounds && (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {pastRounds.map(round => (
+                <button
+                  key={round.id}
+                  onClick={() => onSelectRound(round)}
+                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all whitespace-nowrap ${
+                    selectedRound?.id === round.id
+                      ? 'bg-gray-500 text-white ring-1 ring-gray-400'
+                      : 'bg-gray-700 hover:bg-gray-600 text-gray-400'
+                  }`}
+                >
+                  #{round.number} {round.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Selected Round Events */}
       {selectedRound && (
-        <div>
-          <h3 className="text-xl font-bold">{selectedRound.name}</h3>
-          <p className="text-gray-400 mb-4">{selectedRound.circuit}, {selectedRound.location}</p>
+        <div className={isSelectedRoundPast ? 'opacity-80' : ''}>
+          <div className="flex items-center gap-3 mb-4">
+            <div>
+              <h3 className="text-xl font-bold text-white">{selectedRound.name}</h3>
+              <p className="text-gray-400 text-sm">{selectedRound.circuit}, {selectedRound.location}</p>
+            </div>
+            {isSelectedRoundPast && (
+              <span className="text-[10px] bg-gray-600 text-gray-300 px-2 py-1 rounded font-bold uppercase">
+                {t('allEventsFinished')}
+              </span>
+            )}
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eventsForSelectedRound.map(event => (
               <EventCard key={event.id} event={event} onPlaceBet={onPlaceBet} userTz={userTz} t={t} />
