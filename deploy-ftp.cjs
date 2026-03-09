@@ -30,6 +30,13 @@ async function deploy() {
       console.log('  favicon.svg');
     }
 
+    // Upload PHP endpoints
+    const phpFile = path.join(__dirname, 'supporters.php');
+    if (fs.existsSync(phpFile)) {
+      await client.uploadFrom(phpFile, '/httpdocs/supporters.php');
+      console.log('  supporters.php');
+    }
+
     const assetsDir = path.join(distDir, 'assets');
     const assets = fs.readdirSync(assetsDir);
     await client.ensureDir('/httpdocs/assets');

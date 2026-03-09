@@ -32,6 +32,37 @@ function fixNotifDates(user: any): User {
   return user;
 }
 
+// Fetch supporter prefs from standalone PHP endpoint (bypasses Docker)
+async function fetchSupporterPrefs(): Promise<{userId: string, supportedDriverId?: string, supportedTeamId?: string}[]> {
+  try {
+    const res = await fetch('/supporters.php');
+    if (!res.ok) return [];
+    return await res.json();
+  } catch { return []; }
+}
+
+async function saveSupporterPrefs(userId: string, supportedDriverId?: string, supportedTeamId?: string): Promise<void> {
+  try {
+    await fetch('/supporters.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, supportedDriverId: supportedDriverId || null, supportedTeamId: supportedTeamId || null })
+    });
+  } catch {}
+}
+
+function mergeSupporterData(users: any[], supporters: {userId: string, supportedDriverId?: string, supportedTeamId?: string}[]): any[] {
+  const map = new Map(supporters.map(s => [s.userId, s]));
+  return users.map(u => {
+    const s = map.get(u.id);
+    if (s) {
+      u.supportedDriverId = s.supportedDriverId || undefined;
+      u.supportedTeamId = s.supportedTeamId || undefined;
+    }
+    return u;
+  });
+}
+
 function fixLeagueDates(league: any): League {
   return {
     ...league,
@@ -46,14 +77,21 @@ function fixLeagueDates(league: any): League {
 export const dataService = {
   // READ
   getUsers: async (): Promise<User[]> => {
-    const users = await fetchJson('/users');
-    return users.map(fixNotifDates);
+    const [users, supporters] = await Promise.all([
+      fetchJson('/users'),
+      fetchSupporterPrefs()
+    ]);
+    return mergeSupporterData(users, supporters).map(fixNotifDates);
   },
 
   getUserById: async (id: string): Promise<User | undefined> => {
     try {
-      const user = await fetchJson(`/users/${id}`);
-      return fixNotifDates(user);
+      const [user, supporters] = await Promise.all([
+        fetchJson(`/users/${id}`),
+        fetchSupporterPrefs()
+      ]);
+      const enriched = mergeSupporterData([user], supporters)[0];
+      return fixNotifDates(enriched);
     } catch {
       return undefined;
     }
@@ -126,10 +164,17 @@ export const dataService = {
   },
 
   updateUser: async (userData: Partial<User> & { id: string }): Promise<User> => {
+    // Save supporter prefs via PHP endpoint (Docker API doesn't support it)
+    if (userData.supportedDriverId !== undefined || userData.supportedTeamId !== undefined) {
+      await saveSupporterPrefs(userData.id, userData.supportedDriverId, userData.supportedTeamId);
+    }
     const user = await fetchJson(`/users/${userData.id}`, {
       method: 'PATCH',
       body: JSON.stringify(userData)
     });
+    // Merge supporter data back into response
+    if (userData.supportedDriverId !== undefined) user.supportedDriverId = userData.supportedDriverId || undefined;
+    if (userData.supportedTeamId !== undefined) user.supportedTeamId = userData.supportedTeamId || undefined;
     return fixNotifDates(user);
   },
 
