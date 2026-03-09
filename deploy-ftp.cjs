@@ -23,6 +23,13 @@ async function deploy() {
     await client.uploadFrom(path.join(distDir, 'index.html'), '/httpdocs/index.html');
     console.log('  index.html');
 
+    // Upload favicon if exists
+    const faviconPath = path.join(distDir, 'favicon.svg');
+    if (fs.existsSync(faviconPath)) {
+      await client.uploadFrom(faviconPath, '/httpdocs/favicon.svg');
+      console.log('  favicon.svg');
+    }
+
     const assetsDir = path.join(distDir, 'assets');
     const assets = fs.readdirSync(assetsDir);
     await client.ensureDir('/httpdocs/assets');
