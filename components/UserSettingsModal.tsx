@@ -147,6 +147,22 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                                     <div className="mt-2 text-yellow-400 font-bold text-lg mb-2">
                                         {user.balance.toLocaleString()} Fun-Coins
                                     </div>
+                                    {(supportedDriverId || supportedTeamId) && (
+                                        <div className="flex items-center gap-2 mt-1">
+                                            {(() => { const d = drivers.find(d => d.id === supportedDriverId); return d ? (
+                                                <div className="flex items-center gap-1.5 bg-gray-800 rounded-full pr-2.5 pl-0.5 py-0.5">
+                                                    <img src={d.imageUrl} alt={d.name} className="w-6 h-6 rounded-full object-cover" />
+                                                    <span className="text-xs text-gray-300 font-medium">{d.name}</span>
+                                                </div>
+                                            ) : null; })()}
+                                            {(() => { const tm = teams.find(t => t.id === supportedTeamId); return tm ? (
+                                                <div className="flex items-center gap-1.5 bg-gray-800 rounded-full pr-2.5 pl-0.5 py-0.5">
+                                                    <img src={tm.logoUrl} alt={tm.name} className="w-6 h-6 rounded-full object-contain bg-white p-0.5" />
+                                                    <span className="text-xs text-gray-300 font-medium">{tm.name}</span>
+                                                </div>
+                                            ) : null; })()}
+                                        </div>
+                                    )}
                                     {/* Get Fun Coins button hidden for now */}
                                 </div>
                             </div>
@@ -195,17 +211,23 @@ const UserSettingsModal: React.FC<UserSettingsModalProps> = ({ onClose }) => {
                             {/* Supported Driver & Team */}
                             <div className="space-y-2">
                                 <label className="block text-gray-400 text-xs font-bold uppercase tracking-wider"><i className="fas fa-heart text-red-500 mr-1"></i>{t('supportedDriver')}</label>
-                                <select value={supportedDriverId} onChange={(e) => setSupportedDriverId(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm">
-                                    <option value="">{t('selectYourDriver')}</option>
-                                    {drivers.map(d => <option key={d.id} value={d.id}>{d.name} #{d.number} — {d.teamName}</option>)}
-                                </select>
+                                <div className="flex items-center gap-3">
+                                    {(() => { const selDriver = drivers.find(d => d.id === supportedDriverId); return selDriver ? <img src={selDriver.imageUrl} alt={selDriver.name} className="w-10 h-10 rounded-full object-cover border-2 border-red-600 flex-shrink-0" /> : null; })()}
+                                    <select value={supportedDriverId} onChange={(e) => setSupportedDriverId(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm">
+                                        <option value="">{t('selectYourDriver')}</option>
+                                        {drivers.map(d => <option key={d.id} value={d.id}>{d.name} #{d.number} — {d.teamName}</option>)}
+                                    </select>
+                                </div>
                             </div>
                             <div className="space-y-2">
                                 <label className="block text-gray-400 text-xs font-bold uppercase tracking-wider"><i className="fas fa-heart text-red-500 mr-1"></i>{t('supportedTeam')}</label>
-                                <select value={supportedTeamId} onChange={(e) => setSupportedTeamId(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm">
-                                    <option value="">{t('selectYourTeam')}</option>
-                                    {teams.map(tm => <option key={tm.id} value={tm.id}>{tm.name}</option>)}
-                                </select>
+                                <div className="flex items-center gap-3">
+                                    {(() => { const selTeam = teams.find(t => t.id === supportedTeamId); return selTeam ? <img src={selTeam.logoUrl} alt={selTeam.name} className="w-10 h-10 rounded-full object-contain bg-white p-0.5 border-2 border-red-600 flex-shrink-0" /> : null; })()}
+                                    <select value={supportedTeamId} onChange={(e) => setSupportedTeamId(e.target.value)} className="w-full bg-gray-700 text-white rounded py-2 px-3 focus:outline-none focus:ring-1 focus:ring-red-600 text-sm">
+                                        <option value="">{t('selectYourTeam')}</option>
+                                        {teams.map(tm => <option key={tm.id} value={tm.id}>{tm.name}</option>)}
+                                    </select>
+                                </div>
                             </div>
                             <div className="space-y-3">
                                 <h4 className="text-sm font-bold text-gray-300 uppercase tracking-wider"><i className="fas fa-shield-alt text-red-500 mr-2"></i>{t('recoveryContactLabel')}</h4>
