@@ -47,7 +47,11 @@ const SPRINT_POINTS: Record<number, number> = {
   0: 8, 1: 7, 2: 6, 3: 5, 4: 4,
 };
 
-const Statistics: React.FC = () => {
+interface StatisticsProps {
+  onBack?: () => void;
+}
+
+const Statistics: React.FC<StatisticsProps> = ({ onBack }) => {
   const { results, events, rounds, drivers, teams, users } = useData();
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<StatTab>('drivers');
@@ -275,6 +279,11 @@ const Statistics: React.FC = () => {
       <div className="bg-gray-800 rounded-lg p-4 border-t-4 border-red-600">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div className="flex items-center gap-3">
+            {onBack && (
+              <button onClick={onBack} className="text-gray-400 hover:text-white transition-colors" title="Back to Dashboard">
+                <i className="fas fa-arrow-left text-lg"></i>
+              </button>
+            )}
             <i className="fas fa-chart-line text-red-500 text-2xl"></i>
             <h2 className="text-xl font-bold text-white uppercase tracking-wider">{t('statistics')}</h2>
           </div>
