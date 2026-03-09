@@ -47,7 +47,13 @@ const BetConfirmationModal: React.FC<BetConfirmationModalProps> = ({ bet, event,
         <div className="p-4 border-b border-gray-700 text-center sticky top-0 bg-gray-800 z-10">
           <i className="fas fa-check-circle text-green-500 text-4xl mb-3"></i>
           <h2 className="text-xl font-bold text-white">{t('betConfirmed')}</h2>
-          <p className="text-gray-400 text-sm">{t('yourSlipFor')} {event.type}</p>
+          {round && (
+            <p className="text-white text-sm font-semibold mt-1">R{round.number} — {round.name}</p>
+          )}
+          {round && (
+            <p className="text-gray-400 text-xs">{round.circuit}, {round.location}</p>
+          )}
+          <p className="text-gray-400 text-sm mt-1">{t('yourSlipFor')} {event.type}</p>
         </div>
         
         <div className="p-4">

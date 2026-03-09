@@ -4,7 +4,7 @@ import { useData } from '../../contexts/DataContext';
 import { Bet } from '../../types';
 
 const BetManagement: React.FC = () => {
-    const { allBets, users, events, cancelBet } = useData();
+    const { allBets, users, events, rounds, cancelBet } = useData();
     const [viewBet, setViewBet] = useState<Bet | null>(null);
 
     const handleCancel = async (betId: string) => {
@@ -20,7 +20,8 @@ const BetManagement: React.FC = () => {
     const getViewDetails = (bet: Bet) => {
         const user = users.find(u => u.id === bet.userId);
         const event = events.find(e => e.id === bet.eventId);
-        return { user, event };
+        const round = event ? rounds.find(r => r.id === event.roundId) : undefined;
+        return { user, event, round };
     };
 
     return (
@@ -32,6 +33,7 @@ const BetManagement: React.FC = () => {
                         <tr className="bg-gray-900">
                             <th className="py-3 px-4 text-left text-sm font-semibold text-gray-300">Bet ID</th>
                             <th className="py-3 px-4 text-left text-sm font-semibold text-gray-300">User</th>
+                            <th className="py-3 px-4 text-left text-sm font-semibold text-gray-300">Round</th>
                             <th className="py-3 px-4 text-left text-sm font-semibold text-gray-300">Event</th>
                             <th className="py-3 px-4 text-left text-sm font-semibold text-gray-300">Date</th>
                             <th className="py-3 px-4 text-left text-sm font-semibold text-gray-300">Status</th>
@@ -40,11 +42,12 @@ const BetManagement: React.FC = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-800">
                         {[...allBets].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()).map((bet) => {
-                            const { user, event } = getViewDetails(bet);
+                            const { user, event, round } = getViewDetails(bet);
                             return (
                                 <tr key={bet.id} className="hover:bg-gray-600">
                                     <td className="py-3 px-4 text-sm text-gray-400 font-mono">{bet.id}</td>
                                     <td className="py-3 px-4 text-sm text-white">{user?.username || 'Unknown'}</td>
+                                    <td className="py-3 px-4 text-sm text-white">{round ? `R${round.number} — ${round.name}` : '—'}</td>
                                     <td className="py-3 px-4 text-sm text-white">{event?.type || 'Unknown'}</td>
                                     <td className="py-3 px-4 text-sm text-gray-400">{bet.timestamp.toLocaleString()}</td>
                                     <td className="py-3 px-4 text-sm">
@@ -79,7 +82,7 @@ const BetManagement: React.FC = () => {
                         })}
                         {allBets.length === 0 && (
                             <tr>
-                                <td colSpan={6} className="py-4 text-center text-gray-400">No bets placed yet.</td>
+                                <td colSpan={7} className="py-4 text-center text-gray-400">No bets placed yet.</td>
                             </tr>
                         )}
                     </tbody>
@@ -95,9 +98,15 @@ const BetManagement: React.FC = () => {
                         </div>
                         <div className="p-4 space-y-4">
                              {(() => {
-                                 const { user, event } = getViewDetails(viewBet);
+                                 const { user, event, round } = getViewDetails(viewBet);
                                  return (
                                      <>
+                                        {round && (
+                                          <div className="bg-gray-700 rounded p-3 mb-3">
+                                            <p className="text-white font-bold">R{round.number} — {round.name}</p>
+                                            <p className="text-gray-400 text-xs">{round.circuit}, {round.location}</p>
+                                          </div>
+                                        )}
                                         <div className="grid grid-cols-2 gap-4 text-sm">
                                             <div>
                                                 <p className="text-gray-400">User</p>

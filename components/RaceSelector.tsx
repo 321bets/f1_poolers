@@ -210,8 +210,9 @@ const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; userTz
                     onClick={() => setExpandedBet(isExpanded ? null : bet.id)}
                     className="w-full flex items-center justify-between px-2.5 py-2 hover:bg-gray-650 transition-colors text-left"
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-[10px] bg-gray-600 text-gray-300 px-1.5 py-0.5 rounded font-bold">#{idx + 1}</span>
+                      {round && <span className="text-[10px] text-gray-400 font-semibold">R{round.number}</span>}
                       <span className="text-xs text-white font-semibold">{label}</span>
                       {bet.lockedMultiplier > 1.0 ? (
                         <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30 animate-pulse">
@@ -229,6 +230,12 @@ const EventCard: React.FC<{ event: Event; onPlaceBet: (e: Event) => void; userTz
                   {/* Expanded content */}
                   {isExpanded && (
                     <div className="px-2.5 pb-2.5 border-t border-gray-600">
+                      {round && (
+                        <div className="mt-2 mb-2 bg-gray-800 rounded p-2">
+                          <p className="text-[10px] text-white font-bold">R{round.number} — {round.name}</p>
+                          <p className="text-[9px] text-gray-400">{round.circuit}, {round.location}</p>
+                        </div>
+                      )}
                       {hasDrivers && (
                         <div className="mt-2">
                           <p className="text-[9px] text-gray-400 uppercase font-bold mb-1">{t('drivers')}</p>
