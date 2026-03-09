@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import RoundSelector from './RaceSelector';
 import Leaderboard from './Leaderboard';
 import LeagueLeaderboard from './LeagueLeaderboard';
@@ -13,9 +13,28 @@ import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Dashboard: React.FC = () => {
-  const { rounds } = useData();
+  const { rounds, users, drivers, teams } = useData();
   const { user } = useAuth();
   const { t } = useLanguage();
+  const [fanTab, setFanTab] = useState<'drivers' | 'teams'>('drivers');
+
+  const topDriverFans = useMemo(() => {
+    const map: Record<string, number> = {};
+    users.forEach(u => { if (u.supportedDriverId) map[u.supportedDriverId] = (map[u.supportedDriverId] || 0) + 1; });
+    return Object.entries(map)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([id, count]) => ({ driver: drivers.find(d => d.id === id), count }));
+  }, [users, drivers]);
+
+  const topTeamFans = useMemo(() => {
+    const map: Record<string, number> = {};
+    users.forEach(u => { if (u.supportedTeamId) map[u.supportedTeamId] = (map[u.supportedTeamId] || 0) + 1; });
+    return Object.entries(map)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([id, count]) => ({ team: teams.find(t => t.id === id), count }));
+  }, [users, teams]);
   const [selectedRound, setSelectedRound] = useState<Round | null>(rounds.length > 0 ? rounds[0] : null);
   const [isBettingModalOpen, setIsBettingModalOpen] = useState(false);
   const [bettingEvent, setBettingEvent] = useState<Event | null>(null);
@@ -86,6 +105,59 @@ const Dashboard: React.FC = () => {
         {/* Right Column: Leaderboards */}
         <div className="lg:col-span-4 flex flex-col gap-6">
           <Leaderboard />
+
+          {/* Fan Favorites Top 5 */}
+          <div className="bg-gray-800 rounded-lg shadow-xl p-4">
+            <h2 className="text-xl font-bold mb-3 text-red-500 flex items-center">
+              <i className="fas fa-heart mr-2 text-red-400"></i>
+              {t('fanFavorites')}
+            </h2>
+            <div className="flex mb-3 bg-gray-700 rounded-lg p-0.5">
+              <button onClick={() => setFanTab('drivers')} className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${fanTab === 'drivers' ? 'bg-red-600 text-white' : 'text-gray-400 hover:text-white'}`}>
+                <i className="fas fa-user mr-1"></i>{t('topDrivers')}
+              </button>
+              <button onClick={() => setFanTab('teams')} className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${fanTab === 'teams' ? 'bg-red-600 text-white' : 'text-gray-400 hover:text-white'}`}>
+                <i className="fas fa-flag mr-1"></i>{t('topTeams')}
+              </button>
+            </div>
+            <div className="space-y-2">
+              {fanTab === 'drivers' ? (
+                topDriverFans.length === 0 ? (
+                  <p className="text-gray-500 text-sm text-center py-3">{t('noFansYet')}</p>
+                ) : topDriverFans.map(({ driver, count }, i) => driver && (
+                  <div key={driver.id} className="flex items-center justify-between bg-gray-700 p-2 rounded-md">
+                    <div className="flex items-center">
+                      <div className={`w-8 text-center font-bold text-sm ${i < 3 ? 'text-yellow-400' : 'text-gray-400'}`}>{i + 1}</div>
+                      <img src={driver.imageUrl} alt={driver.name} className="w-8 h-8 rounded-full mr-2 border-2 border-gray-600 object-cover" />
+                      <div>
+                        <p className="font-semibold text-white text-sm">{driver.name}</p>
+                        <p className="text-[10px] text-gray-400">#{driver.number} — {driver.teamName}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 text-red-400 font-bold text-sm">
+                      <i className="fas fa-heart text-[10px]"></i>{count}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                topTeamFans.length === 0 ? (
+                  <p className="text-gray-500 text-sm text-center py-3">{t('noFansYet')}</p>
+                ) : topTeamFans.map(({ team, count }, i) => team && (
+                  <div key={team.id} className="flex items-center justify-between bg-gray-700 p-2 rounded-md">
+                    <div className="flex items-center">
+                      <div className={`w-8 text-center font-bold text-sm ${i < 3 ? 'text-yellow-400' : 'text-gray-400'}`}>{i + 1}</div>
+                      <img src={team.logoUrl} alt={team.name} className="w-8 h-8 rounded-full mr-2 border-2 border-gray-600 object-contain bg-white p-0.5" />
+                      <p className="font-semibold text-white text-sm">{team.name}</p>
+                    </div>
+                    <div className="flex items-center gap-1 text-red-400 font-bold text-sm">
+                      <i className="fas fa-heart text-[10px]"></i>{count}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
           <LeagueLeaderboard />
         </div>
 
