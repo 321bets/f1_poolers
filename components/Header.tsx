@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 import UserSettingsModal from './UserSettingsModal';
 
 interface HeaderProps {
@@ -15,6 +16,7 @@ const Header: React.FC<HeaderProps> = ({ currentView, onToggleView, onNavigate }
   const { user, logout, isAdmin } = useAuth();
   const { markNotificationRead } = useData();
   const { t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -85,7 +87,14 @@ const Header: React.FC<HeaderProps> = ({ currentView, onToggleView, onNavigate }
                     </div>
                 )}
              </div>
-
+             {/* Theme Toggle */}
+            <button
+                onClick={toggleTheme}
+                className="text-gray-300 hover:text-white transition-colors"
+                title={theme === 'dark' ? t('switchToLight') : t('switchToDark')}
+            >
+                <i className={`fas ${theme === 'dark' ? 'fa-sun text-yellow-400' : 'fa-moon text-indigo-400'} text-lg`}></i>
+            </button>
             {/* Statistics Tab */}
             <button
                 onClick={() => onNavigate(currentView === 'statistics' ? 'dashboard' : 'statistics')}
