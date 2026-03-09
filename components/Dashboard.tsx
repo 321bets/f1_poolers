@@ -12,7 +12,11 @@ import { useData } from '../contexts/DataContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onNavigateStats?: () => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ onNavigateStats }) => {
   const { rounds, users, drivers, teams } = useData();
   const { user } = useAuth();
   const { t } = useLanguage();
@@ -57,7 +61,14 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
+          <button 
+            onClick={onNavigateStats}
+            className="sm:hidden bg-gray-800 hover:bg-gray-700 text-white font-black py-2 px-6 rounded-full border border-red-600 shadow-lg text-xs transition-all flex items-center gap-2 uppercase italic"
+          >
+            <i className="fas fa-chart-line text-red-500"></i>
+            Stats
+          </button>
           <button 
             onClick={() => setIsHowToPlayOpen(true)}
             className="bg-gray-800 hover:bg-gray-700 text-white font-black py-2 px-6 rounded-full border border-red-600 shadow-lg text-xs transition-all flex items-center gap-2 uppercase italic"

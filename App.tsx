@@ -191,7 +191,7 @@ const MainContent: React.FC = () => {
             onNavigate={(v: 'dashboard' | 'statistics') => setView(v)}
           />
           <main className="container mx-auto p-4">
-            {view === 'admin' && isAdmin ? <AdminPanel /> : view === 'statistics' ? <Statistics /> : <Dashboard />}
+            {view === 'admin' && isAdmin ? <AdminPanel /> : view === 'statistics' ? <Statistics /> : <Dashboard onNavigateStats={() => setView('statistics')} />}
           </main>
         </>
       )}

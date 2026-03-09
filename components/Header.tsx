@@ -95,10 +95,10 @@ const Header: React.FC<HeaderProps> = ({ currentView, onToggleView, onNavigate }
             >
                 <i className={`fas ${theme === 'dark' ? 'fa-sun text-yellow-400' : 'fa-moon text-indigo-400'} text-lg`}></i>
             </button>
-            {/* Statistics Tab */}
+            {/* Statistics Tab - hidden on mobile, shown in Dashboard instead */}
             <button
                 onClick={() => onNavigate(currentView === 'statistics' ? 'dashboard' : 'statistics')}
-                className={`font-semibold py-2 px-4 rounded-full text-sm transition-colors ${currentView === 'statistics' ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'}`}
+                className={`hidden sm:inline-flex font-semibold py-2 px-4 rounded-full text-sm transition-colors ${currentView === 'statistics' ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'}`}
             >
                 <i className="fas fa-chart-line mr-2"></i>
                 Stats
