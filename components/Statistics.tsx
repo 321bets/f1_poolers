@@ -279,17 +279,19 @@ const Statistics: React.FC<StatisticsProps> = ({ onBack }) => {
       <div className="bg-gray-800 rounded-lg p-4 border-t-4 border-red-600">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div className="flex items-center gap-3">
-            {onBack && (
-              <button onClick={onBack} className="text-gray-400 hover:text-white transition-colors" title="Back to Dashboard">
-                <i className="fas fa-arrow-left text-lg"></i>
-              </button>
-            )}
             <i className="fas fa-chart-line text-red-500 text-2xl"></i>
             <h2 className="text-xl font-bold text-white uppercase tracking-wider">{t('statistics')}</h2>
           </div>
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-400">{t('statsEventsRecorded')}:</span>
-            <span className="text-white font-bold">{filteredResults.length}</span>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-xs">
+              <span className="text-gray-400">{t('statsEventsRecorded')}:</span>
+              <span className="text-white font-bold">{filteredResults.length}</span>
+            </div>
+            {onBack && (
+              <button onClick={onBack} className="bg-red-600 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-full text-xs uppercase tracking-wider transition-colors">
+                Go Back
+              </button>
+            )}
           </div>
         </div>
       </div>
