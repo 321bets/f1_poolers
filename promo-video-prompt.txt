@@ -252,7 +252,24 @@ VISUAL STYLE:
 - Quick cuts (0.5–1.5 sec per shot), mix of close-up hands + wide reaction shots
 - Neon glow effects on key moments (multiplier lock, jackpot, rank-up)
 
-=== SCENE-BY-SCENE BREAKDOWN (TARGET: 45 seconds, min 30s, max 60s) ===
+=== HOW TO GET APP SCREENSHOTS & IMAGES ===
+
+The live site is accessible at https://adster.app
+You can access and log in to get real screenshots of the game UI.
+Capture screens of:
+- The login/signup page
+- The main dashboard (rounds, events, bet buttons)
+- The prediction grid (P1-P5 driver/team selection)
+- The bet confirmation modal with multiplier
+- The league leaderboard
+- The global rankings / season leaderboard
+- The jackpot / prize pool display
+- The shareable bet slip image
+- The statistics page
+- The fan favorites section
+Use these real screenshots inside phone mockups throughout the video.
+
+=== SCENE-BY-SCENE BREAKDOWN (TARGET: 50 seconds, min 40s, max 60s) ===
 
 --- HOOK: 0:00–0:04 (PATTERN INTERRUPT — grab scroll-stoppers) ---
 
@@ -436,7 +453,7 @@ GAME SCREENS (use actual app screenshots styled into phone mockups):
 - Any specific player usernames from real accounts
 
 === TECHNICAL SPECS (30-60 second version) ===
-- Duration: 45 seconds target (30s minimum, 60s maximum)
+- Duration: 50 seconds target (40s minimum, 60s maximum)
 - Resolution PRIMARY: 1080×1920 (9:16 vertical — Reels, TikTok, YouTube Shorts)
 - Resolution SECONDARY: 1920×1080 (16:9 landscape — YouTube ads, TV)
 - Frame rate: 60fps preferred, 30fps acceptable
