@@ -13,8 +13,8 @@
 body {
   background: #15151e;
   overflow: hidden;
-  width: 1080px;
-  height: 1920px;
+  width: 100vw;
+  height: 100vh;
   font-family: 'Inter', sans-serif;
   color: white;
 }
@@ -22,8 +22,8 @@ body {
 .scene {
   position: absolute;
   top: 0; left: 0;
-  width: 1080px;
-  height: 1920px;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,7 +54,7 @@ body {
 }
 @keyframes speedLine {
   0% { transform: translateY(-100%); }
-  100% { transform: translateY(1920px); }
+  100% { transform: translateY(100vh); }
 }
 
 /* ===== COMMON ANIMATIONS ===== */
@@ -90,7 +90,7 @@ body {
 @keyframes coinRain {
   0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
   10% { opacity: 1; }
-  100% { transform: translateY(1920px) rotate(720deg); opacity: 0.5; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0.5; }
 }
 @keyframes glowPulse {
   0%, 100% { box-shadow: 0 0 20px rgba(225,6,0,0.5); }
@@ -141,14 +141,14 @@ body {
   animation: slamIn 0.6s ease-out forwards;
 }
 #scene1 .logo-icon {
-  font-size: 120px;
+  font-size: 80px;
   color: #e10600;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   filter: drop-shadow(0 0 40px rgba(225,6,0,0.8));
 }
 #scene1 .logo-text {
   font-family: 'Orbitron', sans-serif;
-  font-size: 88px;
+  font-size: 56px;
   font-weight: 900;
   font-style: italic;
   color: white;
@@ -158,7 +158,7 @@ body {
 }
 #scene1 .hook-question {
   font-family: 'Orbitron', sans-serif;
-  font-size: 52px;
+  font-size: 36px;
   font-weight: 700;
   font-style: italic;
   color: #e10600;
@@ -171,7 +171,7 @@ body {
   text-shadow: 0 0 20px rgba(225,6,0,0.5);
 }
 #scene1 .hook-sub {
-  font-size: 32px;
+  font-size: 22px;
   color: #aaa;
   margin-top: 30px;
   font-style: italic;
@@ -191,12 +191,12 @@ body {
 #scene2 { background: #15151e; }
 #scene2 .phones-row {
   display: flex;
-  gap: 30px;
-  margin-bottom: 60px;
+  gap: 20px;
+  margin-bottom: 30px;
 }
 #scene2 .phone-mock {
-  width: 280px;
-  height: 500px;
+  width: 200px;
+  height: 360px;
   background: #1f1f27;
   border: 3px solid #333;
   border-radius: 30px;
@@ -240,15 +240,16 @@ body {
 #scene2 .chat-bubbles {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-bottom: 60px;
-  width: 800px;
+  gap: 10px;
+  margin-bottom: 30px;
+  width: 90%;
+  max-width: 700px;
 }
 #scene2 .bubble {
-  padding: 20px 30px;
-  border-radius: 20px;
-  font-size: 28px;
-  max-width: 650px;
+  padding: 14px 20px;
+  border-radius: 16px;
+  font-size: 20px;
+  max-width: 500px;
   opacity: 0;
 }
 #scene2 .bubble.left {
@@ -267,7 +268,7 @@ body {
 }
 #scene2 .social-text {
   font-family: 'Orbitron', sans-serif;
-  font-size: 48px;
+  font-size: 32px;
   font-weight: 900;
   color: #e10600;
   text-transform: uppercase;
@@ -277,7 +278,7 @@ body {
   text-shadow: 0 0 20px rgba(225,6,0,0.5);
 }
 #scene2 .vo-text {
-  font-size: 30px;
+  font-size: 20px;
   color: #ccc;
   text-align: center;
   padding: 0 80px;
@@ -292,13 +293,14 @@ body {
   background: #1f1f27;
   border: 2px solid #333;
   border-radius: 20px;
-  padding: 30px;
-  width: 800px;
-  margin-bottom: 40px;
+  padding: 20px;
+  width: 90%;
+  max-width: 650px;
+  margin-bottom: 20px;
 }
 #scene3 .pred-title {
   font-family: 'Orbitron', sans-serif;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
   color: #e10600;
   text-transform: uppercase;
@@ -308,28 +310,28 @@ body {
 #scene3 .pred-slot {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 14px;
   background: #2a2a35;
-  padding: 15px 20px;
-  border-radius: 12px;
-  margin-bottom: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 8px;
   opacity: 0;
 }
 #scene3 .pred-slot img {
-  width: 60px; height: 60px;
+  width: 44px; height: 44px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #444;
 }
 #scene3 .pred-pos {
   font-family: 'Orbitron', sans-serif;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 900;
   color: #eab308;
   min-width: 50px;
 }
 #scene3 .pred-name {
-  font-size: 26px;
+  font-size: 18px;
   font-weight: 700;
 }
 #scene3 .pred-team {
@@ -340,13 +342,13 @@ body {
   background: #e10600;
   color: white;
   font-family: 'Orbitron', sans-serif;
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 900;
   text-transform: uppercase;
   border: none;
-  padding: 25px 60px;
-  border-radius: 16px;
-  margin-top: 20px;
+  padding: 16px 40px;
+  border-radius: 12px;
+  margin-top: 14px;
   opacity: 0;
   cursor: pointer;
   animation: glowPulse 1.5s ease-in-out infinite;
@@ -360,7 +362,7 @@ body {
 }
 #scene3 .multiplier-badge .badge {
   font-family: 'Orbitron', sans-serif;
-  font-size: 48px;
+  font-size: 36px;
   font-weight: 900;
   background: linear-gradient(135deg, #ff6600, #e10600);
   -webkit-background-clip: text;
@@ -368,13 +370,13 @@ body {
   animation: firePulse 1s ease-in-out infinite;
 }
 #scene3 .multiplier-badge .label {
-  font-size: 28px;
+  font-size: 20px;
   color: #fff;
   font-weight: 700;
 }
 #scene3 .gameplay-text {
   font-family: 'Orbitron', sans-serif;
-  font-size: 56px;
+  font-size: 36px;
   font-weight: 900;
   color: white;
   text-transform: uppercase;
@@ -419,7 +421,7 @@ body {
   background: linear-gradient(135deg, #eab308, #f59e0b);
   color: #000;
   font-family: 'Orbitron', sans-serif;
-  font-size: 64px;
+  font-size: 48px;
   font-weight: 900;
   padding: 30px 60px;
   border-radius: 20px;
@@ -429,7 +431,7 @@ body {
   box-shadow: 0 0 40px rgba(234,179,8,0.5);
 }
 #scene4 .coin-sub {
-  font-size: 36px;
+  font-size: 24px;
   color: #eab308;
   font-weight: 700;
   margin-bottom: 20px;
@@ -445,9 +447,9 @@ body {
 #scene4 .sc-card {
   background: #1f1f27;
   border-left: 5px solid #e10600;
-  padding: 25px 40px;
-  border-radius: 12px;
-  font-size: 32px;
+  padding: 18px 30px;
+  border-radius: 10px;
+  font-size: 22px;
   font-weight: 700;
   text-transform: uppercase;
   opacity: 0;
@@ -461,7 +463,7 @@ body {
 }
 #scene4 .strategy-text {
   font-family: 'Orbitron', sans-serif;
-  font-size: 52px;
+  font-size: 36px;
   font-weight: 900;
   color: #e10600;
   text-transform: uppercase;
@@ -481,8 +483,8 @@ body {
 /* ===== SCENE 5: JACKPOT ===== */
 #scene5 { background: #000; }
 #scene5 .vault {
-  width: 500px;
-  height: 400px;
+  width: 350px;
+  height: 280px;
   background: linear-gradient(135deg, #1a1a00, #2a2000, #3a3000);
   border: 6px solid #eab308;
   border-radius: 30px;
@@ -495,20 +497,20 @@ body {
   position: relative;
 }
 #scene5 .vault-icon {
-  font-size: 80px;
+  font-size: 60px;
   color: #eab308;
   margin-bottom: 20px;
 }
 #scene5 .vault-label {
   font-family: 'Orbitron', sans-serif;
-  font-size: 36px;
+  font-size: 26px;
   font-weight: 900;
   color: #eab308;
   text-transform: uppercase;
 }
 #scene5 .jackpot-title {
   font-family: 'Orbitron', sans-serif;
-  font-size: 72px;
+  font-size: 48px;
   font-weight: 900;
   color: #eab308;
   text-transform: uppercase;
@@ -518,7 +520,7 @@ body {
   text-align: center;
 }
 #scene5 .jackpot-sub {
-  font-size: 36px;
+  font-size: 26px;
   color: white;
   text-align: center;
   padding: 0 80px;
@@ -528,7 +530,7 @@ body {
 }
 #scene5 .pool-counter {
   font-family: 'Orbitron', sans-serif;
-  font-size: 100px;
+  font-size: 64px;
   font-weight: 900;
   color: #eab308;
   margin-top: 40px;
@@ -541,7 +543,7 @@ body {
   font-size: 60px;
 }
 #scene5 .rollover-text {
-  font-size: 32px;
+  font-size: 22px;
   color: #e10600;
   font-weight: 700;
   margin-top: 30px;
@@ -560,7 +562,7 @@ body {
 #scene6 { background: #15151e; }
 #scene6 .league-header {
   font-family: 'Orbitron', sans-serif;
-  font-size: 48px;
+  font-size: 32px;
   font-weight: 900;
   color: white;
   text-transform: uppercase;
@@ -568,7 +570,8 @@ body {
   opacity: 0;
 }
 #scene6 .leaderboard {
-  width: 800px;
+  width: 90%;
+  max-width: 650px;
   background: #1f1f27;
   border-radius: 20px;
   overflow: hidden;
@@ -642,7 +645,7 @@ body {
 }
 #scene6 .league-texts div {
   font-family: 'Orbitron', sans-serif;
-  font-size: 36px;
+  font-size: 24px;
   font-weight: 900;
   text-transform: uppercase;
   margin-bottom: 15px;
@@ -652,14 +655,14 @@ body {
 /* ===== SCENE 7: CTA ===== */
 #scene7 { background: #000; }
 #scene7 .cta-logo-icon {
-  font-size: 150px;
+  font-size: 100px;
   color: #e10600;
   filter: drop-shadow(0 0 60px rgba(225,6,0,0.8));
   opacity: 0;
 }
 #scene7 .cta-logo-text {
   font-family: 'Orbitron', sans-serif;
-  font-size: 96px;
+  font-size: 64px;
   font-weight: 900;
   font-style: italic;
   color: white;
@@ -671,7 +674,7 @@ body {
 }
 #scene7 .cta-tagline {
   font-family: 'Orbitron', sans-serif;
-  font-size: 40px;
+  font-size: 28px;
   font-weight: 700;
   color: #e10600;
   text-transform: uppercase;
@@ -681,7 +684,7 @@ body {
   letter-spacing: 4px;
 }
 #scene7 .cta-sub {
-  font-size: 36px;
+  font-size: 24px;
   color: #ccc;
   margin-top: 30px;
   text-align: center;
@@ -713,10 +716,11 @@ body {
 /* ===== VOICEOVER CAPTIONS ===== */
 #captions {
   position: fixed;
-  bottom: 80px;
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
-  width: 900px;
+  width: 90%;
+  max-width: 800px;
   text-align: center;
   z-index: 1000;
   pointer-events: none;
@@ -724,7 +728,7 @@ body {
 #captions .caption {
   background: rgba(0,0,0,0.85);
   color: white;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 700;
   padding: 20px 40px;
   border-radius: 12px;
@@ -752,7 +756,7 @@ body {
 #play-overlay {
   position: fixed;
   top: 0; left: 0;
-  width: 1080px; height: 1920px;
+  width: 100vw; height: 100vh;
   background: rgba(0,0,0,0.9);
   display: flex;
   flex-direction: column;
@@ -1000,7 +1004,7 @@ function spawnCoins() {
     const coin = document.createElement('div');
     coin.className = 'coin';
     coin.innerHTML = '<i class="fas fa-coins"></i>';
-    coin.style.left = Math.random() * 1000 + 'px';
+    coin.style.left = Math.random() * window.innerWidth + 'px';
     coin.style.top = '-60px';
     coin.style.animationDelay = (Math.random() * 2) + 's';
     coin.style.fontSize = (30 + Math.random() * 40) + 'px';
@@ -1013,8 +1017,8 @@ function spawnGoldBurst() {
   for (let i = 0; i < 40; i++) {
     const coin = document.createElement('div');
     coin.style.position = 'absolute';
-    coin.style.left = (440 + (Math.random() - 0.5) * 200) + 'px';
-    coin.style.top = (800 + (Math.random() - 0.5) * 200) + 'px';
+    coin.style.left = (window.innerWidth/2 + (Math.random() - 0.5) * 200) + 'px';
+    coin.style.top = (window.innerHeight/2 + (Math.random() - 0.5) * 200) + 'px';
     coin.style.fontSize = (20 + Math.random() * 40) + 'px';
     coin.style.color = '#eab308';
     coin.innerHTML = '<i class="fas fa-coins"></i>';
@@ -1046,7 +1050,7 @@ function createSpeedLines(containerId) {
   for (let i = 0; i < 15; i++) {
     const line = document.createElement('div');
     line.className = 'line';
-    line.style.left = Math.random() * 1080 + 'px';
+    line.style.left = Math.random() * window.innerWidth + 'px';
     line.style.height = (100 + Math.random() * 300) + 'px';
     line.style.animationDelay = (Math.random() * 0.8) + 's';
     line.style.opacity = (0.1 + Math.random() * 0.3).toString();
