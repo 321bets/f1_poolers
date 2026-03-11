@@ -1,8 +1,8 @@
-F1 POOLERS — 20-SECOND PROMO VIDEO GENERATION PROMPT
-=====================================================
+F1 POOLERS — PROMO VIDEO GENERATION PROMPT
+============================================
 
 OBJECTIVE:
-Generate a fast-paced, cinematic 20-second promotional video for "F1 Poolers" — a free-to-play Formula 1 prediction strategy game. The video must feel like a high-energy F1 broadcast opener: dark backgrounds, neon accents, bold typography, rapid transitions, and adrenaline-pumping pacing.
+Generate a fast-paced, cinematic 40-to-60-second promotional video for "F1 Poolers" — a free-to-play Formula 1 prediction strategy game. The video must feel like a high-energy F1 broadcast opener: dark backgrounds, neon accents, bold typography, rapid transitions, and adrenaline-pumping pacing.
 
 VISUAL STYLE & BRANDING:
 - Color palette: Deep black/dark gray (#15151e, #1f1f27) backgrounds, F1 Red (#e10600) as primary accent, yellow/gold for Fun-Coins and Jackpot, blue for multipliers, green for points
@@ -16,7 +16,7 @@ AUDIO:
 - Quick whoosh transitions between scenes
 - Dramatic bass drop at the Jackpot reveal
 
-=== SCENE-BY-SCENE BREAKDOWN (20 seconds total) ===
+=== LEGACY SCENE-BY-SCENE BREAKDOWN (condensed version — see full 40-60s version below) ===
 
 SCENE 1 — THE HOOK (0:00–0:03)
 Visual: Black screen. A glowing F1 Poolers logo slams into frame with a light burst. Tagline zooms in underneath:
@@ -215,8 +215,8 @@ APP SCREENSHOT URL (live app — can be screen-captured):
 - Login/Signup page: https://adster.app
 - In-app (requires login): https://adster.app (after auth)
 
-=== TECHNICAL SPECS (20-second version) ===
-- Duration: 20 seconds maximum (hard limit)
+=== TECHNICAL SPECS (condensed version) ===
+- Duration: 40 seconds minimum, 60 seconds maximum
 - Resolution: 1080×1920 (vertical) / 1920×1080 (horizontal)
 - Frame rate: 30fps or 60fps
 - Use the real driver images and team logos listed above
