@@ -37,6 +37,12 @@ async function deploy() {
       console.log('  supporters.php');
     }
 
+    const rolloversPhp = path.join(__dirname, 'pending-rollovers.php');
+    if (fs.existsSync(rolloversPhp)) {
+      await client.uploadFrom(rolloversPhp, '/httpdocs/pending-rollovers.php');
+      console.log('  pending-rollovers.php');
+    }
+
     const assetsDir = path.join(distDir, 'assets');
     const assets = fs.readdirSync(assetsDir);
     await client.ensureDir('/httpdocs/assets');

@@ -1,7 +1,39 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { EventStatus, EventType } from '../../types';
+
+interface PendingRollover {
+  id: string;
+  eventType: string;
+  amount: number;
+  sourceEventId: string;
+  sourceRoundNumber: number;
+  sourceRoundName: string;
+  createdAt: string;
+}
+interface ActivePool {
+  eventId: string;
+  eventType: string;
+  poolPrize: number;
+  status: string;
+  roundId: string;
+  roundName: string;
+  roundNumber: number;
+}
+interface RolloverHistoryItem {
+  eventId: string;
+  eventType: string;
+  roundName: string;
+  roundNumber: number;
+  totalPrizePool: number;
+  jackpotWon: boolean;
+}
+interface JackpotData {
+  pendingRollovers: PendingRollover[];
+  activePools: ActivePool[];
+  rolloverHistory: RolloverHistoryItem[];
+}
 
 // Simple bar chart component
 const BarChart: React.FC<{ data: { label: string; value: number; color?: string }[]; title: string; maxBars?: number }> = ({ data, title, maxBars }) => {
@@ -109,6 +141,23 @@ const KPI: React.FC<{ icon: string; label: string; value: string | number; sub?:
 
 const OverviewDashboard: React.FC = () => {
   const { users, allBets, events, results, leagues, rounds, drivers, teams } = useData();
+  const [jackpotData, setJackpotData] = useState<JackpotData | null>(null);
+
+  useEffect(() => {
+    const fetchJackpotData = async () => {
+      try {
+        const baseUrl = window.location.hostname === 'localhost' ? 'https://adster.app' : '';
+        const res = await fetch(`${baseUrl}/pending-rollovers.php`);
+        if (res.ok) {
+          const data = await res.json();
+          setJackpotData(data);
+        }
+      } catch (err) {
+        console.log('[Jackpot] Could not fetch pending rollovers:', err);
+      }
+    };
+    fetchJackpotData();
+  }, []);
 
   const stats = useMemo(() => {
     // --- USER STATS ---
@@ -374,6 +423,146 @@ const OverviewDashboard: React.FC = () => {
           <BarChart data={stats.driverFansData} title="Most Supported Drivers" maxBars={10} />
           <BarChart data={stats.teamFansData} title="Most Supported Teams" maxBars={10} />
         </div>
+      </div>
+
+      {/* Jackpot Tracker */}
+      <div className="bg-[#1a1a24] border border-yellow-900/40 rounded-lg p-3">
+        <h4 className="text-[10px] text-gray-500 font-black uppercase mb-3 flex items-center gap-2">
+          <i className="fas fa-vault text-yellow-400"></i> Jackpot Tracker
+        </h4>
+
+        {/* Active Pools */}
+        {jackpotData && jackpotData.activePools.length > 0 && (
+          <div className="mb-4">
+            <h5 className="text-[9px] text-yellow-400 font-black uppercase mb-2 flex items-center gap-1">
+              <i className="fas fa-coins"></i> Active Jackpot Pools
+            </h5>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+              {jackpotData.activePools.map(pool => (
+                <div key={pool.eventId} className="bg-gray-800/50 rounded-lg p-2.5 border border-yellow-900/20">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-bold text-white">{pool.eventType}</span>
+                    <span className={`text-[8px] font-bold uppercase px-1.5 py-0.5 rounded ${
+                      pool.status === 'Live' ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'
+                    }`}>{pool.status}</span>
+                  </div>
+                  <div className="text-lg font-black text-yellow-400">{pool.poolPrize.toLocaleString()} <span className="text-[9px] text-gray-500">FC</span></div>
+                  <div className="text-[9px] text-gray-500">R{pool.roundNumber} — {pool.roundName}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Pending Rollovers */}
+        {jackpotData && jackpotData.pendingRollovers.length > 0 && (
+          <div className="mb-4">
+            <h5 className="text-[9px] text-red-400 font-black uppercase mb-2 flex items-center gap-1">
+              <i className="fas fa-clock"></i> Pending Rollovers (Waiting to be Applied)
+            </h5>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="text-gray-500 text-[9px] uppercase font-black border-b border-gray-800">
+                    <th className="text-left pb-2">Event Type</th>
+                    <th className="text-right pb-2">Amount</th>
+                    <th className="text-left pb-2">From</th>
+                    <th className="text-left pb-2">Since</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {jackpotData.pendingRollovers.map(pr => (
+                    <tr key={pr.id} className="border-b border-gray-800/50 text-gray-300">
+                      <td className="py-1.5 font-bold">
+                        <span className="text-yellow-400"><i className="fas fa-coins mr-1"></i></span>
+                        {pr.eventType}
+                      </td>
+                      <td className="text-right font-black text-yellow-400">{pr.amount.toLocaleString()} FC</td>
+                      <td className="py-1.5">R{pr.sourceRoundNumber} — {pr.sourceRoundName}</td>
+                      <td className="py-1.5 text-gray-500">{new Date(pr.createdAt).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-2 text-[9px] text-gray-600 italic">
+              <i className="fas fa-info-circle mr-1"></i>
+              These amounts will be automatically added when you create the next event of that type.
+            </div>
+          </div>
+        )}
+
+        {/* Rollover Summary by Event Type */}
+        {jackpotData && (
+          <div className="mb-4">
+            <h5 className="text-[9px] text-gray-400 font-black uppercase mb-2 flex items-center gap-1">
+              <i className="fas fa-history"></i> Jackpot History (Recent Events)
+            </h5>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="text-gray-500 text-[9px] uppercase font-black border-b border-gray-800">
+                    <th className="text-left pb-2">Round</th>
+                    <th className="text-left pb-2">Event Type</th>
+                    <th className="text-right pb-2">Pool</th>
+                    <th className="text-center pb-2">Outcome</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {jackpotData.rolloverHistory.map((item, i) => (
+                    <tr key={i} className="border-b border-gray-800/50 text-gray-300">
+                      <td className="py-1.5">R{item.roundNumber} — {item.roundName}</td>
+                      <td className="py-1.5 font-bold">{item.eventType}</td>
+                      <td className="text-right font-black text-yellow-400">{item.totalPrizePool.toLocaleString()} FC</td>
+                      <td className="text-center">
+                        {item.jackpotWon ? (
+                          <span className="text-[9px] font-bold text-green-400 bg-green-500/10 px-2 py-0.5 rounded">
+                            <i className="fas fa-trophy mr-1"></i>WON
+                          </span>
+                        ) : (
+                          <span className="text-[9px] font-bold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded">
+                            <i className="fas fa-arrow-right mr-1"></i>ROLLED OVER
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                  {jackpotData.rolloverHistory.length === 0 && (
+                    <tr><td colSpan={4} className="text-center text-gray-600 py-4 italic">No results yet</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Summary KPIs */}
+        {jackpotData && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div className="bg-gray-800/50 rounded p-2 text-center">
+              <div className="text-lg font-black text-yellow-400">
+                {(jackpotData.pendingRollovers.reduce((s, r) => s + r.amount, 0) + jackpotData.activePools.reduce((s, p) => s + p.poolPrize, 0)).toLocaleString()}
+              </div>
+              <div className="text-[9px] text-gray-500 font-bold uppercase">Total in Play (FC)</div>
+            </div>
+            <div className="bg-gray-800/50 rounded p-2 text-center">
+              <div className="text-lg font-black text-orange-400">{jackpotData.pendingRollovers.length}</div>
+              <div className="text-[9px] text-gray-500 font-bold uppercase">Pending Rollovers</div>
+            </div>
+            <div className="bg-gray-800/50 rounded p-2 text-center">
+              <div className="text-lg font-black text-green-400">{jackpotData.rolloverHistory.filter(h => h.jackpotWon).length}</div>
+              <div className="text-[9px] text-gray-500 font-bold uppercase">Jackpots Won</div>
+            </div>
+            <div className="bg-gray-800/50 rounded p-2 text-center">
+              <div className="text-lg font-black text-red-400">{jackpotData.rolloverHistory.filter(h => !h.jackpotWon).length}</div>
+              <div className="text-[9px] text-gray-500 font-bold uppercase">Times Rolled Over</div>
+            </div>
+          </div>
+        )}
+
+        {!jackpotData && (
+          <div className="text-center text-gray-600 py-4 text-xs italic">Loading jackpot data...</div>
+        )}
       </div>
 
       {/* Quick Stats Table */}
