@@ -215,9 +215,232 @@ APP SCREENSHOT URL (live app — can be screen-captured):
 - Login/Signup page: https://adster.app
 - In-app (requires login): https://adster.app (after auth)
 
-=== TECHNICAL SPECS ===
+=== TECHNICAL SPECS (20-second version) ===
 - Duration: 20 seconds maximum (hard limit)
 - Resolution: 1080×1920 (vertical) / 1920×1080 (horizontal)
 - Frame rate: 30fps or 60fps
 - Use the real driver images and team logos listed above
 - All animations should be stylized with the app's dark theme
+
+
+=======================================================================
+F1 POOLERS — 30-TO-60-SECOND SOCIAL AD VIDEO (FULL MARKETING CAMPAIGN)
+=======================================================================
+
+MARKETING STRATEGY APPLIED:
+- Hook within first 3 seconds (pattern interrupt — emotional trigger)
+- FOMO + Scarcity mechanics (only 50 FunCoins, max 4 bets — forces urgency)
+- Social proof (friends competing, league leaderboards, global rankings)
+- Aspirational journey (from casual fan → strategy master → jackpot winner)
+- Emotional arc: tension → excitement → strategy → celebration → FOMO
+- Real-life visuals to maximize relatability (hands, phones, TV, reactions)
+- Voiceover narrative flows behind visuals (never pause the visuals)
+- No URL mentioned — CTA directs to search "F1 Poolers"
+- Optimized for vertical 9:16 (Reels / TikTok / YouTube Shorts) and 16:9 (YouTube)
+
+AUDIO DIRECTION:
+- Music: High-energy synthwave/electronic track with F1 engine rev accents
+- Beat hits synchronize with every scene cut
+- Voiceover: Confident, fast-paced male or female narrator. Excited but clear.
+- SFX: Coin clink, crowd cheer, phone tap sounds, crowd gasp, jackpot fanfare
+- Bass drop hits exactly on JACKPOT reveal scene
+
+VISUAL STYLE:
+- Dark backgrounds (#15151e), F1 Red (#e10600) accent, gold for coins, green for wins
+- Bold uppercase italic titles with motion blur entry animations
+- App UI overlaid on real-life phone mockups (no raw screenshot dumps — styled)
+- Quick cuts (0.5–1.5 sec per shot), mix of close-up hands + wide reaction shots
+- Neon glow effects on key moments (multiplier lock, jackpot, rank-up)
+
+=== SCENE-BY-SCENE BREAKDOWN (TARGET: 45 seconds, min 30s, max 60s) ===
+
+--- HOOK: 0:00–0:04 (PATTERN INTERRUPT — grab scroll-stoppers) ---
+
+Visual:
+  Close-up of a living room couch. F1 race BLASTING on the big TV in background — blurred but unmistakable. A hand grabs a phone off the armrest. The phone screen lights up: F1 POOLERS dashboard.
+  SMASH CUT to black. Glowing F1 Poolers logo SLAMS into frame with a light burst and engine rev.
+
+Text on screen (bold, italic, red):
+  "THINK YOU KNOW WHO'S GOING TO WIN?"
+
+Voiceover (sharp, fast):
+  "Every F1 fan has an opinion. But only the smartest ones turn that into glory."
+
+SFX: Engine ignition + hard bass hit
+
+--- SOCIAL PROOF / FOMO: 0:04–0:09 ---
+
+Visual:
+  Quick montage — three phone screens side by side, each showing a different user's prediction slip filled out.
+  Cut to: A group of friends around a couch, everyone eyes-on-phone + eyes-on-TV simultaneously. One person pumps their fist at something on their phone. Others groan.
+  Cut to: WhatsApp-style group chat (no branding — just fictional chat bubbles) showing: "🏆 I called Verstappen P1 - 5x multiplier!!!!" / "How??" / "F1 Poolers bro"
+
+Text overlay:
+  "YOUR FRIENDS ARE ALREADY PLAYING."
+
+Voiceover:
+  "Predict the top 5 for every qualifying, sprint, and race — and compete with your crew."
+
+SFX: Notification pings, crowd cheer snippet
+
+--- GAMEPLAY REVEAL: 0:09–0:18 ---
+
+Visual:
+  Cinematic close-up of fingers tapping an app on a phone — app screen clearly shows the F1 Poolers prediction grid. Driver thumbnail cards snap into P1 through P5 slots one by one with satisfying click sounds.
+  Cut to: The BET button glowing red — a thumb taps it confidently.
+  Cut to: Confirmation modal — "BET CONFIRMED. 5.0x MULTIPLIER LOCKED." Text pulses with orange fire glow.
+  Cut to: A woman on a sofa watching the F1 race start on TV — phone in hand — her prediction is already in. She smirks. She knows something.
+
+Background text cascade (small, fast-scrolling below main text):
+  "Qualifying • Sprint Qualifying • Sprint Race • Main Race"
+  "Up to 4 events per round"
+
+Text overlay (large, punchy):
+  "PREDICT. LOCK IN. WIN."
+
+Voiceover:
+  "Pick your top 5 — drivers or teams — for every session of the race weekend. Up to four bets per event. Multiple events every round. The earlier you predict, the bigger your multiplier — up to 5 times your points."
+
+SFX: Card snap SFX × 5, button tap, confirmation chime
+
+--- STRATEGY + SCARCITY: 0:18–0:28 ---
+
+Visual:
+  Animated Fun-Coins (gold, glowing ₣ symbol) rain down onto phone screen. Counter shows "+50 FREE" — pulsing gold badge appears.
+  HARD CUT to: Only 50 coins. A strategy grid appears — 4 bet slots are shown. Someone carefully placing limited coins across different events (Qualifying, Sprint, Race). Brain animation flickers briefly.
+  Cut to: A scoreboard — top ranked player pulling ahead. Another user stares at their phone, realizing they need to be smarter about their bets next round.
+
+Text overlay (1st shot — gold):
+  "50 FUNCOINS. EVERY RACE WEEKEND. FREE."
+
+Text overlay (2nd shot — red):
+  "MAX 4 BETS PER EVENT."
+  "STRATEGY IS EVERYTHING."
+
+Voiceover:
+  "You only get fifty FunCoins each race weekend — and only four bets per event. Every coin counts. Spread smart across sessions, lock in your strongest picks early, and rack up the biggest score."
+
+SFX: Coin clinks, subtle tension music beat
+
+--- JACKPOT MOMENT: 0:28–0:36 ---
+
+Visual:
+  Screen goes dark. A golden vault appears center frame — cracks of light burst from the seams. Text EXPLODES outward:
+  "JACKPOT PROTOCOL"
+  Reveal: The prize pool counter — coins stacking, number growing (500 → 1200 → 3400 → ???)
+  Cut to: A player on their phone, wide-eyed, hand over mouth. They look at the TV. They look back at the phone. They got it. P1 through P5 in exact order.
+  EXPLOSION of gold coins fills the screen. The player JUMPS off the couch, arms raised.
+
+Text overlay (massive, gold, glowing):
+  "PREDICT THE EXACT TOP 5 IN ORDER."
+  "WIN THE ENTIRE PRIZE POOL."
+  "(No winner? It rolls over. Bigger every round.)"
+
+Voiceover (dramatic build):
+  "And if you're bold enough — predict the exact top five in perfect order — and the entire jackpot is YOURS. No winner? It rolls over. Bigger. Every. Single. Round."
+
+SFX: Bass drop, explosion of coins SFX, crowd roar
+
+--- LEAGUES & CHALLENGE: 0:36–0:44 ---
+
+Visual:
+  Side-by-side phone screens showing two friends in the same league leaderboard — neck and neck in points.
+  Cut to: Private league creation screen — person typing their league name, setting custom trophy.
+  Cut to: A group of friends watching an F1 race together — everyone glancing at their phones between laps. Trash talk, laughter, celebrating.
+  Cut to: Global leaderboard scrolling — usernames, flags, point totals. Someone watching their name climb upward — Bronze → Silver → Gold badge glows.
+
+Text overlay:
+  "OPEN OR PRIVATE LEAGUES."
+  "CHALLENGE YOUR FRIENDS."
+  "CLIMB THE GLOBAL RANKINGS."
+
+Voiceover:
+  "Create private leagues. Challenge your friends. Or battle the world on the global leaderboard — rising from Bronze all the way to Legend. Every race weekend is a new chance to prove you're the best."
+
+SFX: Crowd ambiance, notification pings, upbeat beat build
+
+--- CELEBRATION + CTA: 0:44–0:52 ---
+
+Visual:
+  Rapid-fire montage — 1 second each:
+    1. Person thrusting fist in air while watching F1 race finish, phone showing winning result
+    2. Group of friends high-fiving, phones in hand, leaderboard visible
+    3. Close-up of a hand scrolling the season leaderboard — their name at #1 — gold crown icon
+    4. A bet slip being confirmed on the phone — "JACKPOT ELIGIBLE" badge glowing
+    5. Smiling player lying back on the couch like they already know they've won
+  Final frame: F1 Poolers dashboard on a phone — dark theme, red accents, gold coins, clean UI.
+  Logo SLAMS back to center on black background. Tagline zooms in beneath it.
+
+Text overlay (bold, center screen, white on black):
+  "F1 POOLERS"
+  "FREE TO PLAY. STRATEGY REQUIRED."
+  "OUTSMART YOUR FRIENDS. BECOME A LEGEND."
+
+Voiceover (energized, final push):
+  "F1 Poolers. Free to play. No luck required — just strategy, passion, and the guts to call it before anyone else. Download now. Your race weekend starts here."
+
+SFX: Final engine rev + crowd cheer fade out
+
+=== KEY MESSAGES TO HIT (MUST APPEAR IN VIDEO) ===
+
+1. FREE TO PLAY — No real money. FunCoins are in-game only.
+2. PREDICT TOP 5 — For Qualifying, Sprint Qualifying, Sprint Race & Main Race.
+3. ONLY 50 FUNCOINS PER EVENT — Scarcity forces strategic decisions.
+4. MAX 4 BETS PER EVENT — Limited slots = every prediction matters.
+5. BET EARLY = 5× MULTIPLIER — Timing is a strategic weapon.
+6. JACKPOT — Exact P1-P5 order wins the entire prize pool. Rolls over if no winner.
+7. OPEN & PRIVATE LEAGUES — Challenge friends or strangers.
+8. GLOBAL LEADERBOARD + RANKS — Bronze, Silver, Gold, Platinum, Legend.
+9. MULTIPLE EVENTS PER ROUND — Qualifying, Sprint, and Race all live separately.
+10. SHOW HANDS PLAYING — Phone mockup + real finger interactions throughout.
+11. SHOW F1 ON TV — People watching races with phones in hand.
+12. SHOW CELEBRATIONS — Fist pumps, group reactions, laughter, disbelief.
+
+=== VISUAL CONTENT LIBRARY (REAL FOOTAGE / STOCK SUGGESTIONS) ===
+
+HANDS ON PHONE:
+- Close-up of thumb scrolling prediction grid on dark-themed phone UI
+- Finger tapping "CONFIRM BET" red button
+- Two hands — two phones — same league leaderboard, different positions
+
+WATCHING F1 ON TV:
+- Person on sofa, TV blurred in background showing F1 race start grid
+- Group of people all reacting to same TV moment, phones in hand
+- Someone looking up at TV then immediately looking down at phone
+
+CELEBRATING:
+- Person jumping off couch arms raised after a correct prediction
+- Group high-five with phones visible
+- Person covering mouth in disbelief looking at jackpot result
+
+GAME SCREENS (use actual app screenshots styled into phone mockups):
+- Dashboard (upcoming rounds + events)
+- Prediction grid (P1-P5 filled in)
+- Bet confirmation with multiplier
+- League leaderboard
+- Global rankings
+- Jackpot/prize pool counter
+
+=== RANKING SYSTEM TO MENTION ===
+- Bronze (entry level)
+- Silver
+- Gold
+- Platinum
+- Legend (top tier — the goal to aspire to)
+
+=== DO NOT INCLUDE ===
+- Any website URL
+- Any real F1 team logo usage that could trigger copyright
+- Any copyrighted F1 race footage
+- Any real money gambling language
+- Any specific player usernames from real accounts
+
+=== TECHNICAL SPECS (30-60 second version) ===
+- Duration: 45 seconds target (30s minimum, 60s maximum)
+- Resolution PRIMARY: 1080×1920 (9:16 vertical — Reels, TikTok, YouTube Shorts)
+- Resolution SECONDARY: 1920×1080 (16:9 landscape — YouTube ads, TV)
+- Frame rate: 60fps preferred, 30fps acceptable
+- Music: Licensed synthwave/electronic, ~128 BPM, with engine accent SFX
+- Captions: All voiceover text also appears as on-screen dynamic captions (accessibility + silent viewing)
+- Color grade: Dark, cinematic — blacks crushed, reds punchy, golds warm
+- Delivery: MP4 H.264 + separate 30-second cut for paid ads
